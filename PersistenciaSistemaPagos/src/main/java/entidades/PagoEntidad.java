@@ -59,7 +59,10 @@ public class PagoEntidad implements Serializable {
     @OneToMany(mappedBy = "pago", cascade = CascadeType.PERSIST)
     private List<AbonoEntidad> abono;
 
-    @OneToMany(mappedBy = "pago", cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "pago", cascade =
+    {
+        CascadeType.PERSIST
+    })
     private List<Estatus_pagoEntidad> estatusPagos;
 
     public PagoEntidad() {
@@ -164,19 +167,7 @@ public class PagoEntidad implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Pago{");
-        sb.append("id=").append(id);
-        sb.append(", monto=").append(monto);
-        sb.append(", comprobante=").append(comprobante);
-        sb.append(", fechaHora=").append(fechaHora);
-        sb.append(", beneficiario=").append(beneficiario);
-        sb.append(", cuentasBancaria=").append(cuentaBancaria);
-        sb.append(", tipoPago=").append(tipoPago);
-        sb.append(", abono=").append(abono);
-        sb.append(", Estatus_pago=").append(estatusPagos);
-        sb.append('}');
-        return sb.toString();
+        return "PagoEntidad{" + "id=" + id + ", monto=" + monto + ", comprobante=" + comprobante + ", fechaHora=" + fechaHora + ", beneficiario=" + beneficiario + ", cuentaBancaria=" + cuentaBancaria + ", tipoPago=" + tipoPago + ", abono=" + abono + ", estatusPagos=" + estatusPagos + '}';
     }
 
 }

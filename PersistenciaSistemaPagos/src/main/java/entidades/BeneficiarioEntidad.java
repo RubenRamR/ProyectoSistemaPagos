@@ -168,20 +168,7 @@ public class BeneficiarioEntidad implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Beneficiario{");
-        sb.append("id=").append(id);
-        sb.append(", nombres=").append(nombres);
-        sb.append(", apellidoPaterno=").append(apellidoPaterno);
-        sb.append(", apellidoMaterno=").append(apellidoMaterno);
-        sb.append(", usuario=").append(usuario);
-        sb.append(", contrasena=").append(contrasena);
-        sb.append(", claveContrato=").append(claveContrato);
-        sb.append(", saldo=").append(saldo);
-        sb.append(", cuentas=").append(cuentas);
-        sb.append(", pagos=").append(pagos);
-        sb.append('}');
-        return sb.toString();
+        return "BeneficiarioEntidad{" + "id=" + id + ", nombres=" + nombres + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", usuario=" + usuario + ", contrasena=" + contrasena + ", claveContrato=" + claveContrato + ", saldo=" + saldo + ", cuentas=" + cuentas + ", pagos=" + pagos + '}';
     }
 
 }

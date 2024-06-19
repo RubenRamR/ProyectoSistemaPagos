@@ -89,14 +89,7 @@ public class TipoPagoEntidad implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("TipoPago{");
-        sb.append("id=").append(id);
-        sb.append(", nombre=").append(nombre);
-        sb.append(", numMensualidades=").append(numMensualidades);
-        sb.append(", pagos=").append(pagos);
-        sb.append('}');
-        return sb.toString();
+        return "TipoPagoEntidad{" + "id=" + id + ", nombre=" + nombre + ", numMensualidades=" + numMensualidades + ", pagos=" + pagos + '}';
     }
 
 }
