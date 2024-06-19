@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "abonos")
-public class Abono implements Serializable {
+public class AbonoEntidad implements Serializable {
 
     @Id
     @Column(name = "idAbono")
@@ -39,19 +39,19 @@ public class Abono implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idPago", nullable = false)
-    private Pago pago;
+    private PagoEntidad pago;
 
-    public Abono() {
+    public AbonoEntidad() {
     }
 
-    public Abono(Long id, Calendar fechaHora, float monto, Pago pago) {
+    public AbonoEntidad(Long id, Calendar fechaHora, float monto, PagoEntidad pago) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.monto = monto;
         this.pago = pago;
     }
 
-    public Abono(Calendar fechaHora, float monto, Pago pago) {
+    public AbonoEntidad(Calendar fechaHora, float monto, PagoEntidad pago) {
         this.fechaHora = fechaHora;
         this.monto = monto;
         this.pago = pago;
@@ -81,24 +81,17 @@ public class Abono implements Serializable {
         this.monto = monto;
     }
 
-    public Pago getPago() {
+    public PagoEntidad getPago() {
         return pago;
     }
 
-    public void setPago(Pago pago) {
+    public void setPago(PagoEntidad pago) {
         this.pago = pago;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Abono{");
-        sb.append("id=").append(id);
-        sb.append(", fechaHora=").append(fechaHora);
-        sb.append(", monto=").append(monto);
-        sb.append(", pago=").append(pago);
-        sb.append('}');
-        return sb.toString();
+        return "Abono{" + "id=" + id + ", fechaHora=" + fechaHora + ", monto=" + monto + ", pago=" + pago + '}';
     }
 
 }

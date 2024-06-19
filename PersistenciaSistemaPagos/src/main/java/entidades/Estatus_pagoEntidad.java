@@ -24,7 +24,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table (name = "estatusPagos")
-public class Estatus_pago implements Serializable {
+public class Estatus_pagoEntidad implements Serializable {
 
     @Id
     @Column(name = "idEstatusPago")
@@ -40,16 +40,16 @@ public class Estatus_pago implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "idPago", nullable = false)
-    private Pago pago;
+    private PagoEntidad pago;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "idEstatus", nullable = false)
-    private Estatus estatus;
+    private EstatusEntidad estatus;
 
-    public Estatus_pago() {
+    public Estatus_pagoEntidad() {
     }
 
-    public Estatus_pago(Long id, String mensaje, Calendar fechaHora, Pago pago, Estatus estatus) {
+    public Estatus_pagoEntidad(Long id, String mensaje, Calendar fechaHora, PagoEntidad pago, EstatusEntidad estatus) {
         this.id = id;
         this.mensaje = mensaje;
         this.fechaHora = fechaHora;
@@ -57,7 +57,7 @@ public class Estatus_pago implements Serializable {
         this.estatus = estatus;
     }
 
-    public Estatus_pago(String mensaje, Calendar fechaHora, Pago pago, Estatus estatus) {
+    public Estatus_pagoEntidad(String mensaje, Calendar fechaHora, PagoEntidad pago, EstatusEntidad estatus) {
         this.mensaje = mensaje;
         this.fechaHora = fechaHora;
         this.pago = pago;
@@ -88,19 +88,19 @@ public class Estatus_pago implements Serializable {
         this.fechaHora = fechaHora;
     }
 
-    public Pago getPago() {
+    public PagoEntidad getPago() {
         return pago;
     }
 
-    public void setPago(Pago pago) {
+    public void setPago(PagoEntidad pago) {
         this.pago = pago;
     }
 
-    public Estatus getEstatus() {
+    public EstatusEntidad getEstatus() {
         return estatus;
     }
 
-    public void setEstatus(Estatus estatus) {
+    public void setEstatus(EstatusEntidad estatus) {
         this.estatus = estatus;
     }
 

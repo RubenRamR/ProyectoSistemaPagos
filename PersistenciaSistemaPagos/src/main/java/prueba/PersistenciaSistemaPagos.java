@@ -3,7 +3,7 @@
  */
 package prueba;
 
-import entidades.Beneficiario;
+import entidades.BeneficiarioEntidad;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -20,7 +20,7 @@ public class PersistenciaSistemaPagos {
 
         em.getTransaction().begin();
 
-        Beneficiario beneficiario = new Beneficiario();
+        BeneficiarioEntidad beneficiario = new BeneficiarioEntidad();
         beneficiario.setNombres("Juan");
         beneficiario.setApellidoPaterno("Perez");
         beneficiario.setApellidoMaterno("Lopez");

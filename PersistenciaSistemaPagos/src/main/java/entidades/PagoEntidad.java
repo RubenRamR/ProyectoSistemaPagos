@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "pagos")
-public class Pago implements Serializable {
+public class PagoEntidad implements Serializable {
 
     @Id
     @Column(name = "idPago")
@@ -46,28 +46,28 @@ public class Pago implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idBeneficiario", nullable = false)
-    private Beneficiario beneficiario;
+    private BeneficiarioEntidad beneficiario;
 
     @ManyToOne
     @JoinColumn(name = "idCuenta", nullable = false)
-    private CuentaBancaria cuentaBancaria;
+    private CuentaBancariaEntidad cuentaBancaria;
 
     @ManyToOne
     @JoinColumn(name = "idTipoPago", nullable = false)
-    private TipoPago tipoPago;
+    private TipoPagoEntidad tipoPago;
 
     @OneToMany(mappedBy = "pago", cascade = CascadeType.PERSIST)
-    private List<Abono> abono;
+    private List<AbonoEntidad> abono;
 
     @OneToMany(mappedBy = "pago", cascade = {CascadeType.PERSIST})
-    private List<Estatus_pago> estatusPagos;
+    private List<Estatus_pagoEntidad> estatusPagos;
 
-    public Pago() {
+    public PagoEntidad() {
         this.abono = new ArrayList<>();
         this.estatusPagos = new ArrayList<>();
     }
 
-    public Pago(Long id, float monto, String comprobante, Calendar fechaHora, Beneficiario beneficiario, CuentaBancaria cuentasBancaria, TipoPago tipoPago) {
+    public PagoEntidad(Long id, float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, CuentaBancariaEntidad cuentasBancaria, TipoPagoEntidad tipoPago) {
         this.id = id;
         this.monto = monto;
         this.comprobante = comprobante;
@@ -79,7 +79,7 @@ public class Pago implements Serializable {
         this.estatusPagos = new ArrayList<>();
     }
 
-    public Pago(float monto, String comprobante, Calendar fechaHora, Beneficiario beneficiario, CuentaBancaria cuentasBancaria, TipoPago tipoPago) {
+    public PagoEntidad(float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, CuentaBancariaEntidad cuentasBancaria, TipoPagoEntidad tipoPago) {
         this.monto = monto;
         this.comprobante = comprobante;
         this.fechaHora = fechaHora;
@@ -122,43 +122,43 @@ public class Pago implements Serializable {
         this.fechaHora = fechaHora;
     }
 
-    public Beneficiario getBeneficiario() {
+    public BeneficiarioEntidad getBeneficiario() {
         return beneficiario;
     }
 
-    public void setBeneficiario(Beneficiario beneficiario) {
+    public void setBeneficiario(BeneficiarioEntidad beneficiario) {
         this.beneficiario = beneficiario;
     }
 
-    public CuentaBancaria getCuentasBancaria() {
+    public CuentaBancariaEntidad getCuentasBancaria() {
         return cuentaBancaria;
     }
 
-    public void setCuentasBancaria(CuentaBancaria cuentasBancaria) {
+    public void setCuentasBancaria(CuentaBancariaEntidad cuentasBancaria) {
         this.cuentaBancaria = cuentasBancaria;
     }
 
-    public TipoPago getTipoPago() {
+    public TipoPagoEntidad getTipoPago() {
         return tipoPago;
     }
 
-    public void setTipoPago(TipoPago tipoPago) {
+    public void setTipoPago(TipoPagoEntidad tipoPago) {
         this.tipoPago = tipoPago;
     }
 
-    public List<Abono> getAbono() {
+    public List<AbonoEntidad> getAbono() {
         return abono;
     }
 
-    public void setAbono(List<Abono> abono) {
+    public void setAbono(List<AbonoEntidad> abono) {
         this.abono = abono;
     }
 
-    public List<Estatus_pago> getEstatus_pago() {
+    public List<Estatus_pagoEntidad> getEstatus_pago() {
         return estatusPagos;
     }
 
-    public void setEstatus_pago(List<Estatus_pago> Estatus_pago) {
+    public void setEstatus_pago(List<Estatus_pagoEntidad> Estatus_pago) {
         this.estatusPagos = Estatus_pago;
     }
 
