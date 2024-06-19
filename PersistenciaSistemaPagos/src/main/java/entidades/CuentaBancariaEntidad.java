@@ -50,7 +50,7 @@ public class CuentaBancariaEntidad implements Serializable {
     @OneToMany(mappedBy = "cuentaBancaria", cascade = CascadeType.PERSIST)
     private List<PagoEntidad> pagos;
 
-    public CuentaBancariaEntidad() {
+    public CuentaBancariaEntidad(long par, String clave123, String banco_XYZ, boolean par1, BeneficiarioEntidad beneficiario1) {
         this.pagos = new ArrayList<>();
     }
 
