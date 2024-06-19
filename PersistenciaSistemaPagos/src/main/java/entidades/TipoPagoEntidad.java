@@ -21,33 +21,38 @@ import javax.persistence.Table;
  * @author Chris
  */
 @Entity
-@Table (name = "estatus")
-public class Estatus implements Serializable {
+@Table(name = "tiposPagos")
+public class TipoPagoEntidad implements Serializable {
 
     @Id
-    @Column(name = "idEstatus")
+    @Column(name = "idTipoPago")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "estatus", cascade = {CascadeType.PERSIST})
-    private List<Estatus_pago> estatusPagos;
+    @Column(name = "numMensualidades", nullable = false)
+    private int numMensualidades;
 
-    public Estatus() {
-        this.estatusPagos = new ArrayList<>();
+    @OneToMany(mappedBy = "tipoPago", cascade = CascadeType.PERSIST)
+    private List<PagoEntidad> pagos;
+
+    public TipoPagoEntidad() {
+        this.pagos = new ArrayList<>();
     }
 
-    public Estatus(Long id, String nombre) {
+    public TipoPagoEntidad(Long id, String nombre, int numMensualidades) {
         this.id = id;
         this.nombre = nombre;
-        this.estatusPagos = new ArrayList<>();
+        this.numMensualidades = numMensualidades;
+        this.pagos = new ArrayList<>();
     }
 
-    public Estatus(String nombre) {
+    public TipoPagoEntidad(String nombre, int numMensualidades) {
         this.nombre = nombre;
-        this.estatusPagos = new ArrayList<>();
+        this.numMensualidades = numMensualidades;
+        this.pagos = new ArrayList<>();
     }
 
     public Long getId() {
@@ -66,21 +71,30 @@ public class Estatus implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Estatus_pago> getEstatus_pago() {
-        return estatusPagos;
+    public int getNumMensualidades() {
+        return numMensualidades;
     }
 
-    public void setEstatus_pago(List<Estatus_pago> Estatus_pago) {
-        this.estatusPagos = Estatus_pago;
+    public void setNumMensualidades(int numMensualidades) {
+        this.numMensualidades = numMensualidades;
+    }
+
+    public List<PagoEntidad> getPagos() {
+        return pagos;
+    }
+
+    public void setPagos(List<PagoEntidad> pagos) {
+        this.pagos = pagos;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Estatus{");
+        sb.append("TipoPago{");
         sb.append("id=").append(id);
         sb.append(", nombre=").append(nombre);
-        sb.append(", Estatus_pago=").append(estatusPagos);
+        sb.append(", numMensualidades=").append(numMensualidades);
+        sb.append(", pagos=").append(pagos);
         sb.append('}');
         return sb.toString();
     }

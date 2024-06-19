@@ -24,7 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "cuentasBancarias")
-public class CuentaBancaria implements Serializable {
+public class CuentaBancariaEntidad implements Serializable {
 
     @Id
     @Column(name = "idCuenta")
@@ -45,16 +45,16 @@ public class CuentaBancaria implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idBeneficiario", nullable = false)
-    private Beneficiario beneficiario;
+    private BeneficiarioEntidad beneficiario;
 
     @OneToMany(mappedBy = "cuentaBancaria", cascade = CascadeType.PERSIST)
-    private List<Pago> pagos;
+    private List<PagoEntidad> pagos;
 
-    public CuentaBancaria() {
+    public CuentaBancariaEntidad() {
         this.pagos = new ArrayList<>();
     }
 
-    public CuentaBancaria(Long id, long numeroCuenta, String clave, String banco, boolean eliminado, Beneficiario beneficiario) {
+    public CuentaBancariaEntidad(Long id, long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioEntidad beneficiario) {
         this.id = id;
         this.numeroCuenta = numeroCuenta;
         this.clave = clave;
@@ -64,7 +64,7 @@ public class CuentaBancaria implements Serializable {
         this.pagos = new ArrayList<>();
     }
 
-    public CuentaBancaria(long numeroCuenta, String clave, String banco, boolean eliminado, Beneficiario beneficiario, List<Pago> pagos) {
+    public CuentaBancariaEntidad(long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioEntidad beneficiario, List<PagoEntidad> pagos) {
         this.numeroCuenta = numeroCuenta;
         this.clave = clave;
         this.banco = banco;
@@ -114,19 +114,19 @@ public class CuentaBancaria implements Serializable {
         this.eliminado = eliminado;
     }
 
-    public Beneficiario getBeneficiario() {
+    public BeneficiarioEntidad getBeneficiario() {
         return beneficiario;
     }
 
-    public void setBeneficiario(Beneficiario beneficiario) {
+    public void setBeneficiario(BeneficiarioEntidad beneficiario) {
         this.beneficiario = beneficiario;
     }
 
-    public List<Pago> getPagos() {
+    public List<PagoEntidad> getPagos() {
         return pagos;
     }
 
-    public void setPagos(List<Pago> pagos) {
+    public void setPagos(List<PagoEntidad> pagos) {
         this.pagos = pagos;
     }
 
