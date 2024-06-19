@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
  * @author Chris
  */
 @Entity
-@Table (name = "estatusPagos")
+@Table(name = "estatusPagos")
 public class Estatus_pagoEntidad implements Serializable {
 
     @Id
@@ -38,11 +38,17 @@ public class Estatus_pagoEntidad implements Serializable {
     @Column(name = "fechaHora", nullable = false)
     private Calendar fechaHora;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade =
+    {
+        CascadeType.PERSIST
+    })
     @JoinColumn(name = "idPago", nullable = false)
     private PagoEntidad pago;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade =
+    {
+        CascadeType.PERSIST
+    })
     @JoinColumn(name = "idEstatus", nullable = false)
     private EstatusEntidad estatus;
 
@@ -106,15 +112,7 @@ public class Estatus_pagoEntidad implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Estatus_pago{");
-        sb.append("id=").append(id);
-        sb.append(", mensaje=").append(mensaje);
-        sb.append(", fechaHora=").append(fechaHora);
-        sb.append(", pago=").append(pago);
-        sb.append(", estatus=").append(estatus);
-        sb.append('}');
-        return sb.toString();
+        return "Estatus_pagoEntidad{" + "id=" + id + ", mensaje=" + mensaje + ", fechaHora=" + fechaHora + ", pago=" + pago + ", estatus=" + estatus + '}';
     }
 
 }
