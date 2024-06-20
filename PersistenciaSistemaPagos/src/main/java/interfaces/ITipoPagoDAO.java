@@ -4,16 +4,16 @@
  */
 package interfaces;
 
-import entidades.EstatusEntidad;
+import entidades.TipoPagoEntidad;
 import excepciones.PersistenciaException;
 
 /**
  *
- * @author caarl
+ * @author Chris
  */
-public interface IEstatusDAO {
+public interface ITipoPagoDAO {
 
-    public void guardarEstatus(EstatusEntidad estatus) throws PersistenciaException;
-
-    public void modificarEstatus(Long id, EstatusEntidad estatus) throws PersistenciaException;
+    public void guardarTipoPago(TipoPagoEntidad tipo) throws PersistenciaException;
+    
+    public void modificarBeneficiario(Long id, TipoPagoEntidad tipo) throws PersistenciaException;
 }

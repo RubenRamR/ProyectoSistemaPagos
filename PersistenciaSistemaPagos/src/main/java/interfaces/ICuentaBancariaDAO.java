@@ -7,6 +7,7 @@ package interfaces;
 import entidades.BeneficiarioEntidad;
 import entidades.CuentaBancariaEntidad;
 import entidades.PagoEntidad;
+import excepciones.PersistenciaException;
 import java.util.List;
 
 /**
@@ -14,7 +15,10 @@ import java.util.List;
  * @author caarl
  */
 public interface ICuentaBancariaDAO {
-   void guardarCuentaBancaria(CuentaBancariaEntidad cuentaBancaria);
-    void modificarCuentaBancaria(Long id, CuentaBancariaEntidad cuentaBancaria);
-    void guardarCuentaBancariaConRelaciones(CuentaBancariaEntidad cuentaBancaria, BeneficiarioEntidad beneficiario, List<PagoEntidad> pagos);
+
+    public void guardarCuentaBancaria(CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException;
+
+    public void modificarCuentaBancaria(Long id, CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException;
+
+    public void guardarCuentaBancariaConRelaciones(CuentaBancariaEntidad cuentaBancaria, BeneficiarioEntidad beneficiario, List<PagoEntidad> pagos) throws PersistenciaException;
 }

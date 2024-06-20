@@ -7,34 +7,50 @@ package daos;
 import entidades.BeneficiarioEntidad;
 import entidades.CuentaBancariaEntidad;
 import entidades.PagoEntidad;
+import excepciones.PersistenciaException;
+import interfaces.IBeneficiarioDAO;
+import interfaces.IConexionBD;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 
 /**
  *
  * @author caarl
  */
+public class BeneficiarioDAO implements IBeneficiarioDAO {
 
+    final IConexionBD conexion;
 
-    public class BeneficiarioDAO {
-        public void guardarBeneficiario(BeneficiarioEntidad beneficiario) {
-            EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ConexionJPA");
-            EntityManager entityManager = managerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            entityManager.persist(beneficiario);
-            entityManager.getTransaction().commit();
+    public BeneficiarioDAO(IConexionBD conexion) {
+        this.conexion = conexion;
+    }
+
+    @Override
+    public void guardarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            em.persist(beneficiario);
+            em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-            entityManager.close();
-            managerFactory.close();
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al guardar el beneficiario", e);
         }
+    }
 
-        public void modificarBeneficiario(Long id, BeneficiarioEntidad beneficiario) {
-            EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ConexionJPA");
-            EntityManager entityManager = managerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            BeneficiarioEntidad beneficiarioExistente = entityManager.find(BeneficiarioEntidad.class, id);
+    @Override
+    public void modificarBeneficiario(Long id, BeneficiarioEntidad beneficiario) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            BeneficiarioEntidad beneficiarioExistente = em.find(BeneficiarioEntidad.class, id);
+            if (beneficiarioExistente == null) {
+                throw new PersistenciaException("El beneficiario con ID " + id + " no existe");
+            }
             beneficiarioExistente.setNombres(beneficiario.getNombres());
             beneficiarioExistente.setApellidoPaterno(beneficiario.getApellidoPaterno());
             beneficiarioExistente.setApellidoMaterno(beneficiario.getApellidoMaterno());
@@ -42,23 +58,31 @@ import javax.persistence.Persistence;
             beneficiarioExistente.setContrasena(beneficiario.getContrasena());
             beneficiarioExistente.setClaveContrato(beneficiario.getClaveContrato());
             beneficiarioExistente.setSaldo(beneficiario.getSaldo());
-            entityManager.persist(beneficiarioExistente);
-            entityManager.getTransaction().commit();
+            em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
-            entityManager.close();
-            managerFactory.close();
-        }
-
-        public void guardarBeneficiarioConRelaciones(BeneficiarioEntidad beneficiario, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) {
-            EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ConexionJPA");
-            EntityManager entityManager = managerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            beneficiario.setCuentas(cuentas);
-            beneficiario.setPagos(pagos);
-            entityManager.persist(beneficiario);
-            entityManager.getTransaction().commit();
-            System.out.println("Operación terminada exitosamente");
-            entityManager.close();
-            managerFactory.close();
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al modificar el beneficiario", e);
         }
     }
+
+    @Override
+    public void guardarBeneficiarioConRelaciones(BeneficiarioEntidad beneficiario, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            beneficiario.setCuentas(cuentas);
+            beneficiario.setPagos(pagos);
+            em.persist(beneficiario);
+            em.getTransaction().commit();
+            System.out.println("Operación terminada exitosamente");
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al guardar el beneficiario con relaciones", e);
+        }
+    }
+}

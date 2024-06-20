@@ -4,58 +4,62 @@
  */
 package daos;
 
-import entidades.EstatusEntidad;
+import entidades.TipoPagoEntidad;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
-import interfaces.IEstatusDAO;
+import interfaces.ITipoPagoDAO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 /**
  *
- * @author caarl
+ * @author Chris
  */
-public class EstatusDAO implements IEstatusDAO {
+public class TipoPagoDAO implements ITipoPagoDAO {
 
     final IConexionBD conexion;
 
-    public EstatusDAO(IConexionBD conexion) {
+    public TipoPagoDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
 
     @Override
-    public void guardarEstatus(EstatusEntidad estatus) throws PersistenciaException {
+    public void guardarTipoPago(TipoPagoEntidad tipo) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         try {
             em.getTransaction().begin();
-            em.persist(estatus);
+            em.persist(tipo);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
         } catch (PersistenceException e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            throw new PersistenciaException("Error al guardar el estatus", e);
+            throw new PersistenciaException("Error al guardar el beneficiario", e);
         }
     }
 
     @Override
-    public void modificarEstatus(Long id, EstatusEntidad estatus) throws PersistenciaException {
+    public void modificarBeneficiario(Long id, TipoPagoEntidad tipo) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         try {
             em.getTransaction().begin();
-            EstatusEntidad estatusExistente = em.find(EstatusEntidad.class, id);
-            if (estatusExistente == null) {
-                throw new PersistenciaException("El estatus con ID " + id + " no existe");
+            TipoPagoEntidad tipoPago = em.find(TipoPagoEntidad.class, id);
+            if (tipoPago == null) {
+                throw new PersistenciaException("La cuenta bancaria con ID " + id + " no existe");
             }
-            estatusExistente.setNombre(estatus.getNombre());
+            tipoPago.setNombre(tipoPago.getNombre());
+            tipoPago.setNumMensualidades(tipoPago.getNumMensualidades());
+            tipoPago.setPagos(tipoPago.getPagos());
+
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
         } catch (PersistenceException e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            throw new PersistenciaException("Error al modificar el estatus", e);
+            throw new PersistenciaException("Error al modificar la cuenta bancaria", e);
         }
     }
+
 }

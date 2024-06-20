@@ -38,17 +38,17 @@ public class Estatus_pagoEntidad implements Serializable {
     @Column(name = "fechaHora", nullable = false)
     private Calendar fechaHora;
 
-    @ManyToOne(cascade =
-    {
-        CascadeType.PERSIST
-    })
+    @ManyToOne(cascade
+            = {
+                CascadeType.PERSIST
+            })
     @JoinColumn(name = "idPago", nullable = false)
     private PagoEntidad pago;
 
-    @ManyToOne(cascade =
-    {
-        CascadeType.PERSIST
-    })
+    @ManyToOne(cascade
+            = {
+                CascadeType.PERSIST
+            })
     @JoinColumn(name = "idEstatus", nullable = false)
     private EstatusEntidad estatus;
 
