@@ -92,8 +92,9 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel4.setText("Sistema de Pagos");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, -1, -1));
 
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo_banco.png"))); // NOI18N
         lblLogo.setText("logo aqui");
-        jPanel2.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, 130, 90));
+        jPanel2.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 220, 170));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 500));
 
