@@ -6,14 +6,18 @@ package interfaces;
 
 import entidades.AbonoEntidad;
 import entidades.PagoEntidad;
+import excepciones.PersistenciaException;
 
 /**
  *
  * @author caarl
  */
 public interface IAbonoDAO {
-    void guardarAbono(AbonoEntidad abono);
-    void modificarAbono(Long id, AbonoEntidad abono);
-    void guardarAbonoConRelacion(AbonoEntidad abono, PagoEntidad pago);
+
+    public void guardarAbono(AbonoEntidad abono) throws PersistenciaException;
+
+    public void modificarAbono(Long id, AbonoEntidad abono) throws PersistenciaException;
+
+    public void guardarAbonoConRelacion(AbonoEntidad abono, PagoEntidad pago) throws PersistenciaException;
 
 }

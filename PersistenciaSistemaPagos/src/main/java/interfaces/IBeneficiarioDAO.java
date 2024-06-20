@@ -7,6 +7,7 @@ package interfaces;
 import entidades.BeneficiarioEntidad;
 import entidades.CuentaBancariaEntidad;
 import entidades.PagoEntidad;
+import excepciones.PersistenciaException;
 import java.util.List;
 
 /**
@@ -14,7 +15,10 @@ import java.util.List;
  * @author caarl
  */
 public interface IBeneficiarioDAO {
-void guardarBeneficiario(BeneficiarioEntidad beneficiario);
-    void modificarBeneficiario(Long id, BeneficiarioEntidad beneficiario);
-    void guardarBeneficiarioConRelaciones(BeneficiarioEntidad beneficiario, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos);
+
+    public void guardarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException;
+
+    public void modificarBeneficiario(Long id, BeneficiarioEntidad beneficiario) throws PersistenciaException;
+
+    public void guardarBeneficiarioConRelaciones(BeneficiarioEntidad beneficiario, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) throws PersistenciaException;
 }

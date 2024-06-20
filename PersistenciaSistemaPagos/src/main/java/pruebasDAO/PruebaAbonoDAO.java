@@ -4,9 +4,11 @@
  */
 package pruebasDAO;
 
+import conexion.ConexionBD;
 import daos.AbonoDAO;
 import entidades.AbonoEntidad;
 import entidades.PagoEntidad;
+import interfaces.IConexionBD;
 import java.util.Calendar;
 
 /**
@@ -14,8 +16,11 @@ import java.util.Calendar;
  * @author caarl
  */
 public class PruebaAbonoDAO {
+
     public static void main(String[] args) {
-        AbonoDAO abonoDAO = new AbonoDAO(); // Implementación concreta del DAO
+
+        IConexionBD conexion = new ConexionBD();
+        AbonoDAO abonoDAO = new AbonoDAO(conexion);
 
         // Prueba de guardarAbono
         Calendar fechaHora = Calendar.getInstance();

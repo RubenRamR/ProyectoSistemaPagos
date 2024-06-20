@@ -4,8 +4,10 @@
  */
 package pruebasDAO;
 
+import conexion.ConexionBD;
 import daos.EstatusDAO;
 import entidades.EstatusEntidad;
+import interfaces.IConexionBD;
 
 /**
  *
@@ -13,15 +15,18 @@ import entidades.EstatusEntidad;
  */
 public class PruebaEstatusDAO {
     public static void main(String[] args) {
-        EstatusDAO estatusDAO = new EstatusDAO(); // Implementación concreta del DAO
+        
+        IConexionBD conexion = new ConexionBD();
+        
+        EstatusDAO estatusDAO = new EstatusDAO(conexion); // Implementación concreta del DAO
 
-        // Prueba de guardarEstatus
-        EstatusEntidad estatus = new EstatusEntidad("Pendiente");
-        estatusDAO.guardarEstatus(estatus);
-
-        // Prueba de modificarEstatus
-        Long idEstatus = 1L; // ID del estatus a modificar
-        EstatusEntidad estatusModificado = new EstatusEntidad("Pagado");
-        estatusDAO.modificarEstatus(idEstatus, estatusModificado);
+//        // Prueba de guardarEstatus
+//        EstatusEntidad estatus = new EstatusEntidad("Pendiente");
+//        estatusDAO.guardarEstatus(estatus);
+//
+//        // Prueba de modificarEstatus
+//        Long idEstatus = 1L; // ID del estatus a modificar
+//        EstatusEntidad estatusModificado = new EstatusEntidad("Pagado");
+//        estatusDAO.modificarEstatus(idEstatus, estatusModificado);
     }
 }
