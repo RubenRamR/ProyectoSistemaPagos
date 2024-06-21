@@ -30,7 +30,7 @@ public class PruebaBeneficiarioDAO {
 //        BeneficiarioEntidad beneficiario = new BeneficiarioEntidad("Juan", "Pérez", "Gómez", "jperez", "contraseña", "ABC123", 1000.0f);
 //        beneficiarioDAO.guardarBeneficiario(beneficiario);
 
-        System.out.println(beneficiarioDAO.buscarBeneficiarioPorId(1l));
+      System.out.println(beneficiarioDAO.buscarBeneficiarioPorId(1l));
         
     }
 }
