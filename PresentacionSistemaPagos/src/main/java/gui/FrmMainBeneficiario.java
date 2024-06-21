@@ -77,12 +77,12 @@ public class FrmMainBeneficiario extends javax.swing.JFrame {
     }
 
     protected void cargarMetodosIniciales() {
-        this.cargarConfiguracionInicialTablaPelicula();
+        this.cargarConfiguracionInicialTablaPagos();
         this.cargarPagosEnTabla();
 
     }
 
-    private void cargarConfiguracionInicialTablaPelicula() {
+    private void cargarConfiguracionInicialTablaPagos() {
         ActionListener onModificarPagoClickListener = (ActionEvent e) ->
         {
             modificarPago();

@@ -4,6 +4,7 @@
  */
 package gui;
 
+import entidadestemporales.Abono;
 import entidadestemporales.Pago;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,9 +26,10 @@ public class FrmVerAbonos extends javax.swing.JFrame {
     
     public FrmVerAbonos() {
         initComponents();
+        cargarMetodosIniciales();
     }
     
-    private void llenarTablaAbonos(List<Pago> listaPagos) {
+    private void llenarTablaAbonos(List<Abono> listaPagos) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblAbonos.getModel();
         if (modeloTabla.getRowCount() > 0)
         {
@@ -40,13 +42,12 @@ public class FrmVerAbonos extends javax.swing.JFrame {
         {
             listaPagos.forEach(row ->
             {
-                Object[] fila = new Object[6];
+                Object[] fila = new Object[5];
                 fila[0] = row.getId();
-                fila[1] = row.getMonto();
-                fila[2] = row.getTipo();
+                fila[1] = 1;
+                fila[2] = row.getMonto();
                 fila[3] = row.getFechaHora();
-                fila[4] = row.getParcialidades();
-                fila[5] = row.getEstatus();
+                
                 modeloTabla.addRow(fila);
             });
         }
@@ -55,20 +56,20 @@ public class FrmVerAbonos extends javax.swing.JFrame {
     public void cargarAbonosEnTabla() {
         try
         {
-            List<Pago> pagos = new ArrayList<>();
-            pagos.add(new Pago("1", "1000.00", "2024-06-01 10:00", "Autorizado", "Reembolso", "Juan Perez", "123456789", "Abonado", "1"));
-            pagos.add(new Pago("2", "1500.50", "2024-06-02 11:00", "Pagado", "Viatico", "Maria Gomez", "987654321", "Terminado", "5"));
-            pagos.add(new Pago("3", "200.00", "2024-06-03 12:00", "Rechazado", "Viatico", "Carlos Lopez", "123987456", "Abonado", "5"));
-            pagos.add(new Pago("4", "3000.00", "2024-06-04 13:00", "Autorizado", "Reembolso", "Ana Martinez", "456123789", "Abonado", "1"));
-            pagos.add(new Pago("5", "500.75", "2024-06-05 14:00", "Pagado", "Proveedor", "Luis Fernandez", "789456123", "Terminado", "7"));
-            pagos.add(new Pago("6", "750.25", "2024-06-06 15:00", "Rechazado", "Viatico", "Laura Sanchez", "321654987", "Pendiente", "5"));
-            pagos.add(new Pago("7", "900.00", "2024-06-07 16:00", "Autorizado", "Reembolso", "Pedro Ramirez", "654987321", "Pendiente", "1"));
-            pagos.add(new Pago("8", "1100.30", "2024-06-08 17:00", "Rechazado", "Proveedor", "Sofia Torres", "789123456", "Abonado", "7"));
-            pagos.add(new Pago("9", "2500.00", "2024-06-09 18:00", "Rechazado", "Proveedor", "Marta Ruiz", "987321654", "Pendiente", "7"));
-            pagos.add(new Pago("10", "1750.45", "2024-06-10 19:00", "Pagado", "Reembolso", "Alberto Mendoza", "321987654", "Terminado", "1"));
+            List<Abono> abonos = new ArrayList<>();
+            abonos.add(new Abono("1", "2023-06-20T10:00:00", "100.00"));
+            abonos.add(new Abono("2", "2023-06-21T11:00:00", "150.00"));
+            abonos.add(new Abono("3", "2023-06-22T12:00:00", "200.00"));
+            abonos.add(new Abono("4", "2023-06-23T13:00:00", "250.00"));
+            abonos.add(new Abono("5", "2023-06-24T14:00:00", "300.00"));
+            abonos.add(new Abono("6", "2023-06-25T15:00:00", "350.00"));
+            abonos.add(new Abono("7", "2023-06-26T16:00:00", "400.00"));
+            abonos.add(new Abono("8", "2023-06-27T17:00:00", "450.00"));
+            abonos.add(new Abono("9", "2023-06-28T18:00:00", "500.00"));
+            abonos.add(new Abono("10", "2023-06-29T19:00:00", "550.00"));
 
             
-            this.llenarTablaAbonos(pagos);
+            this.llenarTablaAbonos(abonos);
         } catch (Exception ex)
         {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
@@ -76,18 +77,18 @@ public class FrmVerAbonos extends javax.swing.JFrame {
     }
 
     protected void cargarMetodosIniciales() {
-        this.cargarConfiguracionInicialTablaPelicula();
+        this.cargarConfiguracionInicialTablaAbonos();
         this.cargarAbonosEnTabla();
 
     }
 
-    private void cargarConfiguracionInicialTablaPelicula() {
+    private void cargarConfiguracionInicialTablaAbonos() {
         ActionListener onModificarPagoClickListener = (ActionEvent e) ->
         {
             eliminarAbonos();
         };
 
-        int indiceColumnaEliminar = 6;
+        int indiceColumnaEliminar = 4;
         TableColumnModel modeloColumnas = this.tblAbonos.getColumnModel();
         
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar"));
@@ -95,8 +96,7 @@ public class FrmVerAbonos extends javax.swing.JFrame {
     }
 
     public void eliminarAbonos() {
-        DlgModificarPago frame = new DlgModificarPago(this, false);
-        frame.setVisible(true);
+        JOptionPane.showMessageDialog(this, "se eliminó el abono");
     }
     
     
