@@ -3,6 +3,7 @@ entidades\BeneficiarioEntidad.class
 entidades\CuentaBancariaEntidad.class
 entidades\EstatusEntidad_.class
 interfaces\IBeneficiarioDAO.class
+pruebasDAO\PruebaPagoDAO.class
 entidades\AbonoEntidad.class
 entidades\BeneficiarioEntidad_.class
 pruebasDAO\PruebaEstatusDAO.class
@@ -11,6 +12,7 @@ excepciones\PersistenciaException.class
 entidades\AbonoEntidad_.class
 entidades\CuentaBancariaEntidad_.class
 entidades\PagoEntidad_.class
+pruebasDAO\PruebaTipoPagoDAO.class
 interfaces\IEstatusDAO.class
 daos\EstatusDAO.class
 interfaces\ITipoPagoDAO.class

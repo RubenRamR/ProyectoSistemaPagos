@@ -9,10 +9,12 @@ C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\sr
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\entidades\AbonoEntidad.java
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\pruebasDAO\PruebaAbonoDAO.java
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\pruebasDAO\PruebaEstatusDAO.java
+C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\pruebasDAO\PruebaTipoPagoDAO.java
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\interfaces\IEstatusDAO.java
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\daos\BeneficiarioDAO.java
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\entidades\TipoPagoEntidad.java
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\interfaces\IPagoDAO.java
+C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\pruebasDAO\PruebaPagoDAO.java
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\entidades\EstatusEntidad.java
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\daos\AbonoDAO.java
 C:\Users\caarl\Documents\GitHub\ProyectoSistemaPagos\PersistenciaSistemaPagos\src\main\java\daos\EstatusDAO.java
