@@ -12,7 +12,12 @@ import interfaces.IConexionBD;
 import interfaces.ICuentaBancariaDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -82,5 +87,57 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
             }
             throw new PersistenciaException("Error al guardar la cuenta bancaria con relaciones", e);
         }
+    }
+
+    @Override
+    public CuentaBancariaEntidad buscarCuentaBancaria(CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<CuentaBancariaEntidad> criteria = cb.createQuery(CuentaBancariaEntidad.class);
+        Root<CuentaBancariaEntidad> root = criteria.from(CuentaBancariaEntidad.class);
+        criteria.select(root).where(cb.equal(root.get("id"), cuentaBancaria.getId()));
+        TypedQuery<CuentaBancariaEntidad> query = em.createQuery(criteria);
+        CuentaBancariaEntidad cuentas;
+        try {
+            cuentas = (CuentaBancariaEntidad) query.getSingleResult();
+
+        } catch (NoResultException nre) {
+            throw new PersistenciaException("Número de placa inexistente");
+        }
+        return cuentas;
+    }
+
+    @Override
+    public CuentaBancariaEntidad buscarCuentaBancariaPorId(Long idCuentaBancaria) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<CuentaBancariaEntidad> criteria = cb.createQuery(CuentaBancariaEntidad.class);
+        Root<CuentaBancariaEntidad> root = criteria.from(CuentaBancariaEntidad.class);
+        criteria.select(root).where(cb.equal(root.get("id"), idCuentaBancaria));
+        TypedQuery<CuentaBancariaEntidad> query = em.createQuery(criteria);
+        CuentaBancariaEntidad cuentaBancaria;
+        try {
+            cuentaBancaria = query.getSingleResult();
+        } catch (NoResultException nre) {
+            throw new PersistenciaException("Cuenta bancaria no encontrada con id: " + idCuentaBancaria);
+        }
+        return cuentaBancaria;
+    }
+
+    @Override
+    public List<CuentaBancariaEntidad> buscarCuentasBancarias() throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<CuentaBancariaEntidad> criteria = cb.createQuery(CuentaBancariaEntidad.class);
+        Root<CuentaBancariaEntidad> root = criteria.from(CuentaBancariaEntidad.class);
+        criteria.select(root);
+        TypedQuery<CuentaBancariaEntidad> query = em.createQuery(criteria);
+        List<CuentaBancariaEntidad> cuentasBancarias;
+        try {
+            cuentasBancarias = query.getResultList();
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al buscar cuentas bancarias", e);
+        }
+        return cuentasBancarias;
     }
 }
