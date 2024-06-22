@@ -2,42 +2,40 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Negocio;
+package bo;
 
-import DTOs.BeneficiarioDTO;
-import DTOs.CuentaBancariaDTO;
+import DTOs.AbonoDTO;
 import DTOs.PagoDTO;
-import InterfacesNegocio.IBeneficiarioNegocio;
+import InterfacesNegocio.IAbonoNegocio;
 import excepciones.NegocioException;
-import interfaces.IBeneficiarioDAO;
-import java.util.List;
+import interfaces.IAbonoDAO;
 import java.util.logging.Logger;
 
 /**
  *
  * @author rramirez
  */
-public class BeneficiarioNegocio implements IBeneficiarioNegocio {
+public class AbonoNegocio implements IAbonoNegocio {
 
-    private IBeneficiarioDAO beneficiarioDAO;
-    private static final Logger LOGGER = Logger.getLogger(BeneficiarioNegocio.class.getName());
+    private IAbonoDAO abonoDAO;
+    private static final Logger LOGGER = Logger.getLogger(AbonoNegocio.class.getName());
 
-    public BeneficiarioNegocio(IBeneficiarioDAO beneficiarioDAO) {
-        this.beneficiarioDAO = beneficiarioDAO;
+    public AbonoNegocio(IAbonoDAO abonoDAO) {
+        this.abonoDAO = abonoDAO;
     }
 
     @Override
-    public void guardarBeneficiario(BeneficiarioDTO beneficiario) throws NegocioException {
+    public void guardarAbono(AbonoDTO abono) throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void modificarBeneficiario(Long id, BeneficiarioDTO beneficiario) throws NegocioException {
+    public void modificarAbono(Long id, AbonoDTO abono) throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void guardarBeneficiarioConRelaciones(BeneficiarioDTO beneficiario, List<CuentaBancariaDTO> cuentas, List<PagoDTO> pagos) throws NegocioException {
+    public void guardarAbonoConRelacion(AbonoDTO abono, PagoDTO pago) throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

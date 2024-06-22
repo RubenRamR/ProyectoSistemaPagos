@@ -2,34 +2,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Negocio;
+package bo;
 
-import DTOs.EstatusDTO;
-import InterfacesNegocio.IEstatusNegocio;
+import DTOs.TipoPagoDTO;
+import InterfacesNegocio.ITipoPagoNegocio;
 import excepciones.NegocioException;
-import interfaces.IEstatusDAO;
+import interfaces.ITipoPagoDAO;
 import java.util.logging.Logger;
 
 /**
  *
  * @author rramirez
  */
-public class EstatusNegocio implements IEstatusNegocio {
+public class TipoPagoNegocio implements ITipoPagoNegocio {
 
-    private IEstatusDAO estatusDAO;
-    private static final Logger LOGGER = Logger.getLogger(EstatusNegocio.class.getName());
+    private ITipoPagoDAO TipoPagoDAO;
+    private static final Logger LOGGER = Logger.getLogger(TipoPagoNegocio.class.getName());
 
-    public EstatusNegocio(IEstatusDAO estatusDAO) {
-        this.estatusDAO = estatusDAO;
+    public TipoPagoNegocio(ITipoPagoDAO TipoPagoDAO) {
+        this.TipoPagoDAO = TipoPagoDAO;
     }
 
     @Override
-    public void guardarEstatus(EstatusDTO estatus) throws NegocioException {
+    public void guardarTipoPago(TipoPagoDTO tipo) throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void modificarEstatus(Long id, EstatusDTO estatus) throws NegocioException {
+    public void modificarBeneficiario(Long id, TipoPagoDTO tipo) throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
