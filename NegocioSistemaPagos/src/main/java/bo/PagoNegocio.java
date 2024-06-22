@@ -5,27 +5,59 @@
 package bo;
 
 import DTOs.PagoDTO;
-import InterfacesNegocio.IPagoNegocio;
-import excepciones.NegocioException;
+import InterfacesNegocio.IPagoBO;
+import entidades.PagoEntidad;
+import excepciones.PersistenciaException;
+import interfaces.IConexionBD;
 import interfaces.IPagoDAO;
+
 import java.util.logging.Logger;
 
 /**
  *
  * @author rramirez
  */
-public class PagoNegocio implements IPagoNegocio {
+public class PagoNegocio implements IPagoBO {
 
-    private IPagoDAO PagoDAO;
+    private final IPagoDAO pagoDAO;
     private static final Logger LOGGER = Logger.getLogger(PagoNegocio.class.getName());
+    IConexionBD conexion;
 
-    public PagoNegocio(IPagoDAO PagoDAO) {
-        this.PagoDAO = PagoDAO;
+    public PagoNegocio(IConexionBD conexion, IPagoDAO pagoDAO) {
+        this.conexion = conexion;
+        this.pagoDAO = pagoDAO;
     }
 
     @Override
-    public void guardarPago(PagoDTO pago) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void guardarPago(PagoDTO pagoDTO) throws PersistenciaException {
+        PagoEntidad pago = convertirADominio(pagoDTO);
+        pagoDAO.guardarPago(pago);
     }
 
+
+
+    @Override
+    public PagoDTO buscarPagoPorId(Long id) throws PersistenciaException {
+        PagoEntidad pago = pagoDAO.buscarPagoPorId(id);
+        return convertirADTO(pago);
+    }
+
+
+    private PagoEntidad convertirADominio(PagoDTO pagoDTO) {
+        // Convert DTO to Entity
+        PagoEntidad pago = new PagoEntidad();
+        pago.setId(pagoDTO.getId());
+        pago.setMonto(pagoDTO.getMonto());
+        // Set other fields
+        return pago;
+    }
+
+    private PagoDTO convertirADTO(PagoEntidad pago) {
+        // Convert Entity to DTO
+        PagoDTO pagoDTO = new PagoDTO();
+        pagoDTO.setId(pago.getId());
+        pagoDTO.setMonto(pago.getMonto());
+        // Set other fields
+        return pagoDTO;
+    }
 }

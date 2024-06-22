@@ -5,32 +5,65 @@
 package bo;
 
 import DTOs.TipoPagoDTO;
-import InterfacesNegocio.ITipoPagoNegocio;
-import excepciones.NegocioException;
+import InterfacesNegocio.ITipoPagoBO;
+import entidades.TipoPagoEntidad;
+import excepciones.PersistenciaException;
+import interfaces.IConexionBD;
 import interfaces.ITipoPagoDAO;
+
 import java.util.logging.Logger;
+
 
 /**
  *
  * @author rramirez
  */
-public class TipoPagoNegocio implements ITipoPagoNegocio {
+public class TipoPagoNegocio implements ITipoPagoBO {
 
-    private ITipoPagoDAO TipoPagoDAO;
+    private final ITipoPagoDAO tipoPagoDAO;
     private static final Logger LOGGER = Logger.getLogger(TipoPagoNegocio.class.getName());
+    IConexionBD conexion;
 
-    public TipoPagoNegocio(ITipoPagoDAO TipoPagoDAO) {
-        this.TipoPagoDAO = TipoPagoDAO;
+    public TipoPagoNegocio(IConexionBD conexion, ITipoPagoDAO tipoPagoDAO) {
+        this.conexion = conexion;
+        this.tipoPagoDAO = tipoPagoDAO;
     }
 
     @Override
-    public void guardarTipoPago(TipoPagoDTO tipo) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void guardarTipoPago(TipoPagoDTO tipoPagoDTO) throws PersistenciaException {
+        TipoPagoEntidad tipoPago = convertirADominio(tipoPagoDTO);
+        tipoPagoDAO.guardarTipoPago(tipoPago);
     }
 
     @Override
-    public void modificarBeneficiario(Long id, TipoPagoDTO tipo) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void modificarTipoPago(Long id, TipoPagoDTO tipoPagoDTO) throws PersistenciaException {
+        TipoPagoEntidad tipoPago = convertirADominio(tipoPagoDTO);
+        tipoPagoDAO.modificarTipoPago(id, tipoPago);
     }
 
+    @Override
+    public TipoPagoDTO buscarTipoPagoPorId(Long id) throws PersistenciaException {
+        TipoPagoEntidad tipoPago = tipoPagoDAO.buscarTipoPagoPorId(id);
+        return convertirADTO(tipoPago);
+    }
+
+
+
+    private TipoPagoEntidad convertirADominio(TipoPagoDTO tipoPagoDTO) {
+        // Convert DTO to Entity
+        TipoPagoEntidad tipoPago = new TipoPagoEntidad();
+        tipoPago.setId(tipoPagoDTO.getId());
+        tipoPago.setNombre(tipoPagoDTO.getNombre());
+        // Set other fields
+        return tipoPago;
+    }
+
+    private TipoPagoDTO convertirADTO(TipoPagoEntidad tipoPago) {
+        // Convert Entity to DTO
+        TipoPagoDTO tipoPagoDTO = new TipoPagoDTO();
+        tipoPagoDTO.setId(tipoPago.getId());
+        tipoPagoDTO.setNombre(tipoPago.getNombre());
+        // Set other fields
+        return tipoPagoDTO;
+    }
 }
