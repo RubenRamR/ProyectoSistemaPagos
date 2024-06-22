@@ -91,7 +91,14 @@ public class AbonoEntidad implements Serializable {
 
     @Override
     public String toString() {
-        return "Abono{" + "id=" + id + ", fechaHora=" + fechaHora + ", monto=" + monto + ", pago=" + pago + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("AbonoEntidad{");
+        sb.append("id=").append(id);
+        sb.append(", fechaHora=").append(fechaHora);
+        sb.append(", monto=").append(monto);
+        sb.append(", pago=").append(pago);
+        sb.append('}');
+        return sb.toString();
     }
 
 }

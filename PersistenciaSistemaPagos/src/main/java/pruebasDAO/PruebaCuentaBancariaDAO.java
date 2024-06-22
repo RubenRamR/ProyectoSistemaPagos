@@ -4,10 +4,13 @@
  */
 package pruebasDAO;
 
+import conexion.ConexionBD;
 import daos.CuentaBancariaDAO;
 import entidades.BeneficiarioEntidad;
 import entidades.CuentaBancariaEntidad;
 import entidades.PagoEntidad;
+import excepciones.PersistenciaException;
+import interfaces.IConexionBD;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +20,9 @@ import java.util.List;
  */
 public class PruebaCuentaBancariaDAO {
 
-    public static void main(String[] args) {
-//        CuentaBancariaDAO cuentaBancariaDAO = new CuentaBancariaDAO(); // Implementación concreta del DAO
+    public static void main(String[] args) throws PersistenciaException {
+        IConexionBD conexion = new ConexionBD();
+        CuentaBancariaDAO cuentaBancariaDAO = new CuentaBancariaDAO(conexion);
 
         // Prueba de guardarCuentaBancaria
 //        BeneficiarioEntidad beneficiario = new BeneficiarioEntidad(); // Crear una instancia de BeneficiarioEntidad
@@ -36,5 +40,7 @@ public class PruebaCuentaBancariaDAO {
 //        pagos.add(pago);
 //
 //        cuentaBancariaDAO.guardarCuentaBancariaConRelaciones(cuentaBancariaModificada, beneficiario, pagos);
+        System.out.println(cuentaBancariaDAO.buscarCuentasBancarias());
+
     }
 }

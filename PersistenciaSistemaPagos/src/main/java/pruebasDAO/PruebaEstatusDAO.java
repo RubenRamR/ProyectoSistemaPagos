@@ -7,26 +7,32 @@ package pruebasDAO;
 import conexion.ConexionBD;
 import daos.EstatusDAO;
 import entidades.EstatusEntidad;
+import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
+import java.util.List;
 
 /**
  *
  * @author caarl
  */
 public class PruebaEstatusDAO {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws PersistenciaException {
         
         IConexionBD conexion = new ConexionBD();
-        
-        EstatusDAO estatusDAO = new EstatusDAO(conexion); // Implementación concreta del DAO
+        EstatusDAO estatusDAO = new EstatusDAO(conexion);
 
-//        // Prueba de guardarEstatus
-//        EstatusEntidad estatus = new EstatusEntidad("Pendiente");
-//        estatusDAO.guardarEstatus(estatus);
-//
-//        // Prueba de modificarEstatus
-//        Long idEstatus = 1L; // ID del estatus a modificar
-//        EstatusEntidad estatusModificado = new EstatusEntidad("Pagado");
-//        estatusDAO.modificarEstatus(idEstatus, estatusModificado);
+        // Prueba de buscar todos los estatus
+        List<EstatusEntidad> todosEstatus = estatusDAO.buscarTodosLosEstatus();
+        System.out.println("Todos los estatus:");
+        for (EstatusEntidad estatus : todosEstatus) {
+            System.out.println(estatus);
+        }
+
+        // Prueba de buscar estatus por ID
+        Long idEstatusBuscar = 1L;
+        EstatusEntidad estatusBuscado = estatusDAO.buscarEstatusPorId(idEstatusBuscar);
+        System.out.println("\nEstatus buscado por ID " + idEstatusBuscar + ": " + estatusBuscado);
+
+        
     }
 }

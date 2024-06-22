@@ -7,6 +7,7 @@ package interfaces;
 import entidades.AbonoEntidad;
 import entidades.PagoEntidad;
 import excepciones.PersistenciaException;
+import java.util.List;
 
 /**
  *
@@ -19,5 +20,11 @@ public interface IAbonoDAO {
     public void modificarAbono(Long id, AbonoEntidad abono) throws PersistenciaException;
 
     public void guardarAbonoConRelacion(AbonoEntidad abono, PagoEntidad pago) throws PersistenciaException;
+
+    public AbonoEntidad buscarAbono(AbonoEntidad abono) throws PersistenciaException;
+    
+    public AbonoEntidad buscarAbonoPorId(Long idAbono) throws PersistenciaException;
+
+    public List<AbonoEntidad> buscarAbonos() throws PersistenciaException;
 
 }

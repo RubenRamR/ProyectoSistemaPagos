@@ -4,6 +4,7 @@
  */
 package daos;
 
+import entidades.AbonoEntidad;
 import entidades.BeneficiarioEntidad;
 import entidades.CuentaBancariaEntidad;
 import entidades.PagoEntidad;
@@ -12,7 +13,12 @@ import interfaces.IBeneficiarioDAO;
 import interfaces.IConexionBD;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -85,4 +91,57 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
             throw new PersistenciaException("Error al guardar el beneficiario con relaciones", e);
         }
     }
+
+    @Override
+    public BeneficiarioEntidad buscarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
+        Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
+        criteria.select(root).where(cb.equal(root.get("idBeneficiario"), beneficiario.getId()));
+        TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
+        BeneficiarioEntidad beneficiarios;
+        try {
+            beneficiarios = (BeneficiarioEntidad) query.getSingleResult();
+
+        } catch (NoResultException nre) {
+            throw new PersistenciaException("Número de placa inexistente");
+        }
+        return beneficiarios;
+    }
+
+    @Override
+    public BeneficiarioEntidad buscarBeneficiarioPorId(Long idBeneficiario) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
+        Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
+        criteria.select(root).where(cb.equal(root.get("id"), idBeneficiario));
+        TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
+        BeneficiarioEntidad beneficiario;
+        try {
+            beneficiario = query.getSingleResult();
+        } catch (NoResultException nre) {
+            throw new PersistenciaException("Beneficiario no encontrado con id: " + idBeneficiario);
+        }
+        return beneficiario;
+    }
+
+    @Override
+    public List<BeneficiarioEntidad> buscarBeneficiarios() throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
+        Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
+        criteria.select(root);
+        TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
+        List<BeneficiarioEntidad> beneficiarios;
+        try {
+            beneficiarios = query.getResultList();
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al buscar beneficiarios", e);
+        }
+        return beneficiarios;
+    }
+
 }

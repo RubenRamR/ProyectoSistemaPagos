@@ -21,4 +21,10 @@ public interface IBeneficiarioDAO {
     public void modificarBeneficiario(Long id, BeneficiarioEntidad beneficiario) throws PersistenciaException;
 
     public void guardarBeneficiarioConRelaciones(BeneficiarioEntidad beneficiario, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) throws PersistenciaException;
+
+    public BeneficiarioEntidad buscarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException;
+
+    public BeneficiarioEntidad buscarBeneficiarioPorId(Long idBeneficiario) throws PersistenciaException;
+
+    public List<BeneficiarioEntidad> buscarBeneficiarios() throws PersistenciaException;
 }

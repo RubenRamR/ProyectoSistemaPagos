@@ -9,8 +9,14 @@ import entidades.PagoEntidad;
 import excepciones.PersistenciaException;
 import interfaces.IAbonoDAO;
 import interfaces.IConexionBD;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -72,5 +78,60 @@ public class AbonoDAO implements IAbonoDAO {
             em.getTransaction().rollback();
             throw new PersistenciaException("Error al guardar el abono con relación al pago", e);
         }
+    }
+
+    @Override
+    public AbonoEntidad buscarAbono(AbonoEntidad abono) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbonoEntidad> criteria = cb.createQuery(AbonoEntidad.class);
+        Root<AbonoEntidad> root = criteria.from(AbonoEntidad.class);
+        criteria.select(root).where(cb.equal(root.get("idAbono"), abono.getId()));
+        TypedQuery<AbonoEntidad> query = em.createQuery(criteria);
+        AbonoEntidad abonos;
+        try {
+            abonos = (AbonoEntidad) query.getSingleResult();
+
+        } catch (NoResultException nre) {
+            throw new PersistenciaException("Número de placa inexistente");
+        }
+
+        return abonos;
+    }
+
+    @Override
+    public AbonoEntidad buscarAbonoPorId(Long idAbono) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbonoEntidad> criteria = cb.createQuery(AbonoEntidad.class);
+        Root<AbonoEntidad> root = criteria.from(AbonoEntidad.class);
+        criteria.select(root).where(cb.equal(root.get("id"), idAbono));
+        TypedQuery<AbonoEntidad> query = em.createQuery(criteria);
+        AbonoEntidad abonos;
+        try {
+            abonos = query.getSingleResult();
+        } catch (NoResultException nre) {
+            throw new PersistenciaException("Abono no encontrado con id: " + idAbono);
+        }
+        return abonos;
+    }
+
+    @Override
+    public List<AbonoEntidad> buscarAbonos() throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AbonoEntidad> criteria = cb.createQuery(AbonoEntidad.class);
+        Root<AbonoEntidad> root = criteria.from(AbonoEntidad.class);
+        criteria.select(root);
+
+        TypedQuery<AbonoEntidad> query = em.createQuery(criteria);
+        List<AbonoEntidad> abonos;
+        try {
+            abonos = query.getResultList();
+        } catch (PersistenceException e) {
+            throw new PersistenciaException("Error al buscar los abonos", e);
+        }
+
+        return abonos;
     }
 }
