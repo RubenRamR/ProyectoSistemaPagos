@@ -22,28 +22,28 @@ public class PruebaPagoDAO {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws PersistenciaException {
-      IConexionBD conexion = new ConexionBD();
+        IConexionBD conexion = new ConexionBD();
         PagoDAO pagoDAO = new PagoDAO(conexion);
 
         // Prueba de buscar todos los pagos
-        List<PagoEntidad> pagos = pagoDAO.buscarTodosPagos();
-        System.out.println("Todos los pagos:");
-        for (PagoEntidad pago : pagos) {
-            System.out.println(pago);
-        }
+//        List<PagoEntidad> pagos = pagoDAO.buscarTodosPagos();
+//        System.out.println("Todos los pagos:");
+//        for (PagoEntidad pago : pagos) {
+//            System.out.println(pago);
+//        }
 
         // Prueba de buscar pago por ID
-        Long idPagoBuscar = 1L;
-        PagoEntidad pagoBuscado = pagoDAO.buscarPagoPorId(idPagoBuscar);
-        System.out.println("\nPago buscado por ID " + idPagoBuscar + ": " + pagoBuscado);
+//        Long idPagoBuscar = 1L;
+//        PagoEntidad pagoBuscado = pagoDAO.buscarPagoPorId(idPagoBuscar);
+//        System.out.println("\nPago buscado por ID " + idPagoBuscar + ": " + pagoBuscado);
 
         // Prueba de buscar pagos por beneficiario
-        Long idBeneficiario = 1L;
-        List<PagoEntidad> pagosPorBeneficiario = pagoDAO.buscarPagosPorBeneficiario(idBeneficiario);
-        System.out.println("\nPagos del beneficiario con ID " + idBeneficiario + ":");
-        for (PagoEntidad pago : pagosPorBeneficiario) {
-            System.out.println(pago);
-        }
+//        Long idBeneficiario = 1L;
+//        List<PagoEntidad> pagosPorBeneficiario = pagoDAO.buscarPagosPorBeneficiario(idBeneficiario);
+//        System.out.println("\nPagos del beneficiario con ID " + idBeneficiario + ":");
+//        for (PagoEntidad pago : pagosPorBeneficiario) {
+//            System.out.println(pago);
+//        }
 
         // Prueba de buscar pagos por rango de fechas
         Calendar fechaInicio = Calendar.getInstance();
@@ -57,13 +57,11 @@ public class PruebaPagoDAO {
         }
 
         // Prueba de buscar pagos por tipo de pago
-        Long idTipoPago = 1L;
-        List<PagoEntidad> pagosPorTipo = pagoDAO.buscarPagosPorTipoPago(idTipoPago);
-        System.out.println("\nPagos del tipo de pago con ID " + idTipoPago + ":");
-        for (PagoEntidad pago : pagosPorTipo) {
-            System.out.println(pago);
-        }
+//        Long idTipoPago = 1L;
+//        List<PagoEntidad> pagosPorTipo = pagoDAO.buscarPagosPorTipoPago(idTipoPago);
+//        System.out.println("\nPagos del tipo de pago con ID " + idTipoPago + ":");
+//        for (PagoEntidad pago : pagosPorTipo) {
+//            System.out.println(pago);
+//        }
     }
 }
-    
-

@@ -4,7 +4,6 @@
  */
 package daos;
 
-
 import entidades.PagoEntidad;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
@@ -20,6 +19,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Predicate;
 
 public class PagoDAO implements IPagoDAO {
+
     final IConexionBD conexion;
 
     public PagoDAO(IConexionBD conexion) {
