@@ -27,12 +27,14 @@ public class AbonoDAO implements IAbonoDAO {
     @Override
     public void guardarAbono(AbonoEntidad abono) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try {
+        try
+        {
             em.getTransaction().begin();
             em.persist(abono);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e) {
+        } catch (PersistenceException e)
+        {
             em.getTransaction().rollback();
             throw new PersistenciaException("Error al guardar el abono", e);
         }
@@ -41,10 +43,12 @@ public class AbonoDAO implements IAbonoDAO {
     @Override
     public void modificarAbono(Long id, AbonoEntidad abono) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try {
+        try
+        {
             em.getTransaction().begin();
             AbonoEntidad abonoExistente = em.find(AbonoEntidad.class, id);
-            if (abonoExistente == null) {
+            if (abonoExistente == null)
+            {
                 throw new PersistenciaException("El abono con ID " + id + " no existe");
             }
             abonoExistente.setFechaHora(abono.getFechaHora());
@@ -53,7 +57,8 @@ public class AbonoDAO implements IAbonoDAO {
             em.persist(abonoExistente);
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
-        } catch (PersistenceException e) {
+        } catch (PersistenceException e)
+        {
             em.getTransaction().rollback();
             throw new PersistenciaException("Error al modificar el abono", e);
         }
@@ -62,13 +67,15 @@ public class AbonoDAO implements IAbonoDAO {
     @Override
     public void guardarAbonoConRelacion(AbonoEntidad abono, PagoEntidad pago) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try {
+        try
+        {
             em.getTransaction().begin();
             abono.setPago(pago);
             em.persist(abono);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e) {
+        } catch (PersistenceException e)
+        {
             em.getTransaction().rollback();
             throw new PersistenciaException("Error al guardar el abono con relación al pago", e);
         }

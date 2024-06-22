@@ -68,7 +68,8 @@ public class CuentaBancariaEntidad implements Serializable {
         this.pagos = new ArrayList<>();
     }
 
-    public CuentaBancariaEntidad(long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioEntidad beneficiario, List<PagoEntidad> pagos) {
+    public CuentaBancariaEntidad(Long id, long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioEntidad beneficiario, List<PagoEntidad> pagos) {
+        this.id = id;
         this.numeroCuenta = numeroCuenta;
         this.clave = clave;
         this.banco = banco;

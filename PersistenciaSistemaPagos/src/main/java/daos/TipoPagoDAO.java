@@ -26,13 +26,16 @@ public class TipoPagoDAO implements ITipoPagoDAO {
     @Override
     public void guardarTipoPago(TipoPagoEntidad tipo) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try {
+        try
+        {
             em.getTransaction().begin();
             em.persist(tipo);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e) {
-            if (em.getTransaction().isActive()) {
+        } catch (PersistenceException e)
+        {
+            if (em.getTransaction().isActive())
+            {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al guardar el beneficiario", e);
@@ -42,10 +45,12 @@ public class TipoPagoDAO implements ITipoPagoDAO {
     @Override
     public void modificarBeneficiario(Long id, TipoPagoEntidad tipo) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try {
+        try
+        {
             em.getTransaction().begin();
             TipoPagoEntidad tipoPago = em.find(TipoPagoEntidad.class, id);
-            if (tipoPago == null) {
+            if (tipoPago == null)
+            {
                 throw new PersistenciaException("La cuenta bancaria con ID " + id + " no existe");
             }
             tipoPago.setNombre(tipoPago.getNombre());
@@ -54,8 +59,10 @@ public class TipoPagoDAO implements ITipoPagoDAO {
 
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
-        } catch (PersistenceException e) {
-            if (em.getTransaction().isActive()) {
+        } catch (PersistenceException e)
+        {
+            if (em.getTransaction().isActive())
+            {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al modificar la cuenta bancaria", e);

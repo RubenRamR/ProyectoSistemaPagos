@@ -26,13 +26,16 @@ public class EstatusDAO implements IEstatusDAO {
     @Override
     public void guardarEstatus(EstatusEntidad estatus) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try {
+        try
+        {
             em.getTransaction().begin();
             em.persist(estatus);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e) {
-            if (em.getTransaction().isActive()) {
+        } catch (PersistenceException e)
+        {
+            if (em.getTransaction().isActive())
+            {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al guardar el estatus", e);
@@ -42,17 +45,21 @@ public class EstatusDAO implements IEstatusDAO {
     @Override
     public void modificarEstatus(Long id, EstatusEntidad estatus) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try {
+        try
+        {
             em.getTransaction().begin();
             EstatusEntidad estatusExistente = em.find(EstatusEntidad.class, id);
-            if (estatusExistente == null) {
+            if (estatusExistente == null)
+            {
                 throw new PersistenciaException("El estatus con ID " + id + " no existe");
             }
             estatusExistente.setNombre(estatus.getNombre());
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
-        } catch (PersistenceException e) {
-            if (em.getTransaction().isActive()) {
+        } catch (PersistenceException e)
+        {
+            if (em.getTransaction().isActive())
+            {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al modificar el estatus", e);
