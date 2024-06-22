@@ -4,16 +4,16 @@
  */
 package InterfacesNegocio;
 
-import DTOs.EstatusDTO;
+import DTOs.PagoDTO;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
+import java.util.List;
 
 /**
  *
  * @author rramirez
  */
-public interface IEstatusNegocio {
-    
-    public void guardarEstatus(EstatusDTO estatus) throws NegocioException;
-
-    public void modificarEstatus(Long id, EstatusDTO estatus) throws NegocioException;
+public interface IPagoBO {
+    void guardarPago(PagoDTO pago) throws PersistenciaException;
+    PagoDTO buscarPagoPorId(Long idPago) throws PersistenciaException;
 }
