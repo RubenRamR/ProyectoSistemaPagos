@@ -5,9 +5,7 @@
 package InterfacesNegocio;
 
 import DTOs.TipoPagoDTO;
-import excepciones.NegocioException;
 import excepciones.PersistenciaException;
-import java.util.List;
 
 /**
  *
