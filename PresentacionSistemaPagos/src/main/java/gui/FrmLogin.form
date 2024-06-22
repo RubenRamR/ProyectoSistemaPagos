@@ -182,13 +182,13 @@
             <Component class="javax.swing.JLabel" name="lblLogo">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/logo_banco.png"/>
+                  <Image iconType="3" name="/_462c42c0-41a2-4879-b0f6-f7fac933a304.jpg"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="logo aqui"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="110" y="70" width="220" height="170"/>
+                  <AbsoluteConstraints x="110" y="70" width="190" height="150"/>
                 </Constraint>
               </Constraints>
             </Component>

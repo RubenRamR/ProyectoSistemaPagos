@@ -20,9 +20,9 @@ import utilerias.JButtonRenderer;
  *
  * @author crazy
  */
-public class FrmAdminPagarRechazar extends javax.swing.JFrame {
+public class FrmReportePagos extends javax.swing.JFrame {
     
-    public FrmAdminPagarRechazar() {
+    public FrmReportePagos() {
         initComponents();
         cargarMetodosIniciales();
     }
