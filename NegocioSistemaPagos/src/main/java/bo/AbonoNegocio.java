@@ -9,14 +9,22 @@ import DTOs.PagoDTO;
 import InterfacesNegocio.IAbonoNegocio;
 import conexion.ConexionBD;
 import daos.AbonoDAO;
+import daos.BeneficiarioDAO;
+import daos.CuentaBancariaDAO;
 import daos.PagoDAO;
+import daos.TipoPagoDAO;
 import entidades.AbonoEntidad;
+import entidades.BeneficiarioEntidad;
+import entidades.CuentaBancariaEntidad;
 import entidades.PagoEntidad;
+import entidades.TipoPagoEntidad;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IAbonoDAO;
 import interfaces.IBeneficiarioDAO;
 import interfaces.IConexionBD;
+import interfaces.ICuentaBancariaDAO;
+import interfaces.ITipoPagoDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +36,8 @@ public class AbonoNegocio implements IAbonoNegocio {
 
     private IAbonoDAO abonoDAO;
     private IBeneficiarioDAO beneficiarioDAO;
+    private ICuentaBancariaDAO cuentaBancariaDAO;
+    private ITipoPagoDAO tipoDAO;
     private static final Logger LOGGER = Logger.getLogger(AbonoNegocio.class.getName());
     IConexionBD conexion;
 
@@ -48,10 +58,23 @@ public class AbonoNegocio implements IAbonoNegocio {
     @Override
     public void guardarAbonoConRelacion(AbonoDTO abonoDTO, PagoDTO pagoDTO) throws NegocioException {
         try {
+            beneficiarioDAO = new BeneficiarioDAO(conexion);
+            cuentaBancariaDAO = new CuentaBancariaDAO(conexion);
+            tipoDAO = new TipoPagoDAO(conexion);
+
+            BeneficiarioEntidad beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(pagoDTO.getBeneficiario().getId());
+
+            CuentaBancariaEntidad cuentaBancaria = cuentaBancariaDAO.buscarCuentaBancariaPorId(pagoDTO.getCuentaBancaria().getId());
+
+            TipoPagoEntidad tipo = tipoDAO.buscarTipoPagoPorId(pagoDTO.getTipoPago().getId());
+
             PagoEntidad pago = new PagoEntidad(
                     pagoDTO.getMonto(),
                     pagoDTO.getComprobante(),
-                    pagoDTO.getFechaHora()
+                    pagoDTO.getFechaHora(),
+                    beneficiario,
+                    cuentaBancaria,
+                    tipo
             );
 
             PagoDAO pagodao = new PagoDAO(conexion);

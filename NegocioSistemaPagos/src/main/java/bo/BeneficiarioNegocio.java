@@ -8,9 +8,14 @@ import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import DTOs.PagoDTO;
 import InterfacesNegocio.IBeneficiarioNegocio;
+import conexion.ConexionBD;
+import entidades.BeneficiarioEntidad;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
 import interfaces.IBeneficiarioDAO;
+import interfaces.IConexionBD;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -18,27 +23,44 @@ import java.util.logging.Logger;
  * @author rramirez
  */
 public class BeneficiarioNegocio implements IBeneficiarioNegocio {
-
+    
     private IBeneficiarioDAO beneficiarioDAO;
+    IConexionBD conexion;
     private static final Logger LOGGER = Logger.getLogger(BeneficiarioNegocio.class.getName());
-
+    
     public BeneficiarioNegocio(IBeneficiarioDAO beneficiarioDAO) {
         this.beneficiarioDAO = beneficiarioDAO;
+        this.conexion = new ConexionBD();
     }
-
+    
     @Override
-    public void guardarBeneficiario(BeneficiarioDTO beneficiario) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void guardarBeneficiario(BeneficiarioDTO beneficiarioDTO) throws NegocioException {
+        try {
+            BeneficiarioEntidad beneficiario = new BeneficiarioEntidad(
+                    beneficiarioDTO.getNombres(),
+                    beneficiarioDTO.getApellidoPaterno(),
+                    beneficiarioDTO.getApellidoMaterno(),
+                    beneficiarioDTO.getUsuario(),
+                    beneficiarioDTO.getContrasena(),
+                    beneficiarioDTO.getClaveContrato(),
+                    beneficiarioDTO.getSaldo()
+            );
+            beneficiarioDAO.guardarBeneficiario(beneficiario);
+            
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(BeneficiarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
-
+    
     @Override
     public void modificarBeneficiario(Long id, BeneficiarioDTO beneficiario) throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void guardarBeneficiarioConRelaciones(BeneficiarioDTO beneficiario, List<CuentaBancariaDTO> cuentas, List<PagoDTO> pagos) throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
 }
