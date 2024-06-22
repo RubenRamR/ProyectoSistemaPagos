@@ -149,10 +149,11 @@ public class FrmMainBeneficiario extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblPagos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 710, 410));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 750, 380));
 
-        jLabel1.setText("Su lista de pagos:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 130, -1));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Su lista de pagos");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, 160, -1));
 
         menuCuenta.setText("Cuenta");
 

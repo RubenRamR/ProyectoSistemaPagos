@@ -164,12 +164,12 @@ public class FrmAdminPagarRechazar extends javax.swing.JFrame {
         jPanel1.add(txtCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 110, -1));
 
         jLabel2.setText("Entre fechas:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
-        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 110, -1));
-        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 110, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
+        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 110, -1));
+        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 110, -1));
 
         btnFiltrar.setText("Filtrar");
-        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, -1, -1));
+        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

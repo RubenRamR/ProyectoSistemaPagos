@@ -77,42 +77,9 @@ public class FrmReportePagos extends javax.swing.JFrame {
     }
 
     protected void cargarMetodosIniciales() {
-        this.cargarConfiguracionInicialTablaPagos();
         this.cargarPagosEnTabla();
 
     }
-
-    private void cargarConfiguracionInicialTablaPagos() {
-        ActionListener onPagarPagoClickListener = (ActionEvent e) ->
-        {
-            pagarPago();
-        };
-        ActionListener onRechazarPagoClickListener = (ActionEvent e) ->
-        {
-            rechazarPago();
-        };
-        
-        int indiceColumnaPagars = 7;
-        int indiceColumnaRechazar = 8;
-        TableColumnModel modeloColumnas = this.tblPagos.getColumnModel();
-        
-        modeloColumnas.getColumn(indiceColumnaPagars).setCellRenderer(new JButtonRenderer("Pagar"));
-        modeloColumnas.getColumn(indiceColumnaPagars).setCellEditor(new JButtonCellEditor("Pagar", onPagarPagoClickListener));
-        
-        modeloColumnas.getColumn(indiceColumnaRechazar).setCellRenderer(new JButtonRenderer("Rechazar"));
-        modeloColumnas.getColumn(indiceColumnaRechazar).setCellEditor(new JButtonCellEditor("Rechazar", onRechazarPagoClickListener));
-        
-    }
-
-    public void pagarPago() {
-        JOptionPane.showMessageDialog(this, "se pagó el pago");
-    }
-    
-    public void rechazarPago(){
-        JOptionPane.showMessageDialog(this, "se rechazó el pago");
-    }
-    
-    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -127,6 +94,10 @@ public class FrmReportePagos extends javax.swing.JFrame {
         txtFechaInicio = new javax.swing.JTextField();
         txtFechaFin = new javax.swing.JTextField();
         btnFiltrar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        btnGenerarPDF = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
@@ -138,17 +109,17 @@ public class FrmReportePagos extends javax.swing.JFrame {
 
         tblPagos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Monto", "FechaHora", "Tipo", "Beneficiario", "Cuenta", "Terminado", "Pagar", "Rechazar"
+                "ID", "Monto", "FechaHora", "Tipo", "Beneficiario", "Cuenta", "Terminado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true, true
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -157,19 +128,32 @@ public class FrmReportePagos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblPagos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 600, 440));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 600, 370));
 
         jLabel1.setText("Cliente");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, -1, -1));
-        jPanel1.add(txtCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 110, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
+        jPanel1.add(txtCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 110, -1));
 
         jLabel2.setText("Entre fechas:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
-        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 110, -1));
-        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 110, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
+        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 110, -1));
+        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 110, -1));
 
         btnFiltrar.setText("Filtrar");
-        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, -1, -1));
+        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Lista de todos los pagos");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 30, -1, -1));
+
+        btnGenerarPDF.setText("Generar reporte PDF");
+        jPanel1.add(btnGenerarPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, -1, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Creado", "Modificado", "Autorizado", "Rechazado", "Pagado", "Completado", " " }));
+        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
+
+        jLabel4.setText("Estatus");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -189,8 +173,12 @@ public class FrmReportePagos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFiltrar;
+    private javax.swing.JButton btnGenerarPDF;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblPagos;

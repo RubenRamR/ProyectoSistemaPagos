@@ -34,7 +34,7 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        lblLogo = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio de sesión al sistema de pagos");
@@ -90,11 +90,11 @@ public class FrmLogin extends javax.swing.JFrame {
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 470, -1, -1));
 
         jLabel4.setText("Sistema de Pagos");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, -1, -1));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, -1, -1));
 
-        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/_462c42c0-41a2-4879-b0f6-f7fac933a304.jpg"))); // NOI18N
-        lblLogo.setText("logo aqui");
-        jPanel2.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 190, 150));
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Screenshot 2024-06-22 141838.png"))); // NOI18N
+        jLabel5.setText("jLabel5");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 160, 110, 90));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 500));
 
@@ -139,10 +139,10 @@ public class FrmLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblContrasena;
-    private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTextField txtContrasena;
     private javax.swing.JTextField txtUsuario;

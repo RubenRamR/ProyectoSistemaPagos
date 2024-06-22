@@ -177,7 +177,7 @@ public class FrmMainAdmin extends javax.swing.JFrame {
         jPanel1.add(lblCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         lblFechas.setText("Entre fechas:");
-        jPanel1.add(lblFechas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, 20));
+        jPanel1.add(lblFechas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, 20));
 
         txtNombreCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,15 +185,15 @@ public class FrmMainAdmin extends javax.swing.JFrame {
             }
         });
         jPanel1.add(txtNombreCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, -1));
-        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 110, -1));
-        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 110, -1));
+        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 110, -1));
+        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 110, -1));
 
         btnFiltrar.setText("Filtrar");
-        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, -1, -1));
+        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Autorización de pagos");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, -1, -1));
 
         menuCatalogoBeneficiarios.setText("Catalogo beneficiarios");
 
@@ -299,6 +299,8 @@ public class FrmMainAdmin extends javax.swing.JFrame {
 
     private void itemReportePagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemReportePagosActionPerformed
         // TODO add your handling code here:
+        FrmReportePagos frame = new FrmReportePagos();
+        frame.setVisible(true);
     }//GEN-LAST:event_itemReportePagosActionPerformed
 
 
