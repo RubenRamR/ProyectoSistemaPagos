@@ -8,6 +8,7 @@ import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import DTOs.PagoDTO;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
 import java.util.List;
 
 /**
@@ -23,4 +24,6 @@ public interface IBeneficiarioNegocio {
     public void guardarBeneficiarioConRelaciones(BeneficiarioDTO beneficiario, List<CuentaBancariaDTO> cuentas, List<PagoDTO> pagos) throws NegocioException;
 
     void eliminarBeneficiario(Long id) throws NegocioException;
+    
+    BeneficiarioDTO buscarBeneficiarioPorId(Long id) throws PersistenciaException;
 }

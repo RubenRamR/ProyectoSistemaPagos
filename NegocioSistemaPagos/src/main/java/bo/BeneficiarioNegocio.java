@@ -10,6 +10,8 @@ import DTOs.PagoDTO;
 import InterfacesNegocio.IBeneficiarioNegocio;
 import conexion.ConexionBD;
 import entidades.BeneficiarioEntidad;
+import static entidades.BeneficiarioEntidad_.id;
+import entidades.PagoEntidad;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IBeneficiarioDAO;
@@ -17,6 +19,12 @@ import interfaces.IConexionBD;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -32,6 +40,9 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
         this.beneficiarioDAO = beneficiarioDAO;
         this.conexion = new ConexionBD();
     }
+    
+
+
     
     @Override
     public void eliminarBeneficiario(Long id) throws NegocioException {
@@ -121,5 +132,33 @@ public void guardarBeneficiarioConRelaciones(BeneficiarioDTO beneficiario, List<
         throw new NegocioException("Error al guardar el beneficiario con relaciones.", ex);
     }
 }
+
+    @Override
+public BeneficiarioDTO buscarBeneficiarioPorId(Long id) throws PersistenciaException {
+    BeneficiarioEntidad beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(id);
+    return convertirADTO(beneficiario);
 }
 
+private BeneficiarioEntidad convertirADominio(BeneficiarioDTO beneficiarioDTO) {
+    // Convert DTO to Entity
+    BeneficiarioEntidad beneficiario = new BeneficiarioEntidad();
+    beneficiario.setId(beneficiarioDTO.getId());
+    beneficiario.setNombres(beneficiarioDTO.getNombres());
+    beneficiario.setApellidoPaterno(beneficiarioDTO.getApellidoPaterno());
+    // Set other fields
+    return beneficiario;
+}
+
+private BeneficiarioDTO convertirADTO(BeneficiarioEntidad beneficiario) {
+    // Convert Entity to DTO
+    BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
+    beneficiarioDTO.setId(beneficiario.getId());
+    beneficiarioDTO.setNombres(beneficiario.getNombres());
+    beneficiarioDTO.setApellidoPaterno(beneficiario.getApellidoPaterno());
+    // Set other fields
+    return beneficiarioDTO;
+}
+}
+
+   
+    

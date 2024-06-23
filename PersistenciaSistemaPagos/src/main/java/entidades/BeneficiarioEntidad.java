@@ -55,6 +55,9 @@ public class BeneficiarioEntidad implements Serializable {
     @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.PERSIST)
     private List<PagoEntidad> pagos;
 
+    public BeneficiarioEntidad() {
+    }
+
     public BeneficiarioEntidad(String nombres1, String apellidoPaterno1, String apellidoMaterno1, String usuario1, String contrasena1, String claveContrato1, float saldo1) {
         this.cuentas = new ArrayList<>();
         this.pagos = new ArrayList<>();
