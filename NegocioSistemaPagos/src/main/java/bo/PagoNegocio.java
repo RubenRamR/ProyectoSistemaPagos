@@ -7,9 +7,11 @@ package bo;
 import DTOs.PagoDTO;
 import InterfacesNegocio.IPagoBO;
 import entidades.PagoEntidad;
+import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
 import interfaces.IPagoDAO;
+import java.util.logging.Level;
 
 import java.util.logging.Logger;
 
@@ -27,6 +29,36 @@ public class PagoNegocio implements IPagoBO {
         this.conexion = conexion;
         this.pagoDAO = pagoDAO;
     }
+    
+    
+    @Override
+public void eliminarPago(Long id)  {
+    try {
+        // Buscar el pago existente por su ID
+        PagoEntidad pagoExistente = pagoDAO.buscarPagoPorId(id);
+        if (pagoExistente == null) {
+            try {
+                throw new NegocioException("El pago con ID " + id + " no existe.");
+            } catch (NegocioException ex) {
+                Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        // Cambiar la columna "eliminado" a true
+        pagoExistente.setEliminado(true);
+
+        // Guardar los cambios en la base de datos
+        pagoDAO.guardarPago(pagoExistente);
+    } catch (PersistenciaException ex) {
+        LOGGER.log(Level.SEVERE, "Error al eliminar el pago.", ex);
+        try {
+            throw new NegocioException("Error al eliminar el pago.", ex);
+        } catch (NegocioException ex1) {
+            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+    }
+}
+
 
     @Override
     public void guardarPago(PagoDTO pagoDTO) throws PersistenciaException {
@@ -45,7 +77,7 @@ public class PagoNegocio implements IPagoBO {
 
     private PagoEntidad convertirADominio(PagoDTO pagoDTO) {
         // Convert DTO to Entity
-        PagoEntidad pago = new PagoEntidad();
+        PagoEntidad pago = new PagoEntidad(pagoDTO.getMonto(), pagoDTO.getComprobante(), pagoDTO.getFechaHora());
         pago.setId(pagoDTO.getId());
         pago.setMonto(pagoDTO.getMonto());
         // Set other fields

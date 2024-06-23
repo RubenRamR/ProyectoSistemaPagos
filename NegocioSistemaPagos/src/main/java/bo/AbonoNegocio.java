@@ -45,6 +45,26 @@ public class AbonoNegocio implements IAbonoNegocio {
         this.conexion = new ConexionBD();
         this.abonoDAO = new AbonoDAO(conexion);
     }
+    
+    @Override
+    public void eliminarAbono(Long id) throws NegocioException {
+        try {
+            // Buscar el abono existente por su ID
+            AbonoEntidad abonoExistente = abonoDAO.buscarAbonoPorId(id);
+            if (abonoExistente == null) {
+                throw new NegocioException("El abono con ID " + id + " no existe.");
+            }
+
+            // Cambiar la columna "eliminado" a true
+            abonoExistente.setEliminado(true);
+
+            // Guardar los cambios en la base de datos
+            abonoDAO.guardarAbono(abonoExistente);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(AbonoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Error al eliminar el abono.", ex);
+        }
+    }
 
     @Override
     public void guardarAbono(AbonoDTO abonoDTO) throws NegocioException {
@@ -89,11 +109,7 @@ public class AbonoNegocio implements IAbonoNegocio {
             PagoEntidad pago = new PagoEntidad(
                     pagoDTO.getMonto(),
                     pagoDTO.getComprobante(),
-                    pagoDTO.getFechaHora(),
-                    beneficiario,
-                    cuentaBancaria,
-                    tipo
-            );
+                    pagoDTO.getFechaHora());
 
             PagoDAO pagodao = new PagoDAO(conexion);
             if (pagoDTO.getId() == null) {

@@ -25,6 +25,27 @@ public class PagoDAO implements IPagoDAO {
     public PagoDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
+    
+    @Override
+    public void eliminarPago(Long id) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            PagoEntidad pagoExistente = em.find(PagoEntidad.class, id);
+            if (pagoExistente == null) {
+                throw new PersistenciaException("El pago con ID " + id + " no existe");
+            }
+            pagoExistente.setEliminado(true); // Cambiar la columna "eliminado" a true
+            em.persist(pagoExistente);
+            em.getTransaction().commit();
+            System.out.println("Operación de eliminación terminada correctamente");
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al eliminar el pago", e);
+        }
+    }
 
     @Override
     public void guardarPago(PagoEntidad pago) throws PersistenciaException {
@@ -68,24 +89,7 @@ public class PagoDAO implements IPagoDAO {
         }
     }
 
-    @Override
-    public void eliminarPago(Long id) throws PersistenciaException {
-        EntityManager em = conexion.crearConexion();
-        try {
-            em.getTransaction().begin();
-            PagoEntidad pago = em.find(PagoEntidad.class, id);
-            if (pago != null) {
-                em.remove(pago);
-            }
-            em.getTransaction().commit();
-            System.out.println("Operación de eliminación terminada exitosamente");
-        } catch (PersistenceException e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw new PersistenciaException("Error al eliminar el pago", e);
-        }
-    }
+
 
     @Override
     public List<PagoEntidad> buscarTodosPagos() throws PersistenciaException {

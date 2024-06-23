@@ -16,4 +16,6 @@ import java.util.List;
 public interface IPagoBO {
     void guardarPago(PagoDTO pago) throws PersistenciaException;
     PagoDTO buscarPagoPorId(Long idPago) throws PersistenciaException;
+    void eliminarPago(Long id) throws PersistenciaException;
+    
 }

@@ -22,4 +22,5 @@ public interface IBeneficiarioNegocio {
 
     public void guardarBeneficiarioConRelaciones(BeneficiarioDTO beneficiario, List<CuentaBancariaDTO> cuentas, List<PagoDTO> pagos) throws NegocioException;
 
+    void eliminarBeneficiario(Long id) throws NegocioException;
 }

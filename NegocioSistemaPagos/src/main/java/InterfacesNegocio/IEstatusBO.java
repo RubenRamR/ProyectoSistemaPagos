@@ -14,7 +14,14 @@ import java.util.List;
  * @author rramirez
  */
 public interface IEstatusBO {
-    void guardarEstatus(EstatusDTO estatus) throws PersistenciaException;
-    void modificarEstatus(Long id, EstatusDTO estatus) throws PersistenciaException;
-    EstatusDTO buscarEstatusPorId(Long idEstatus) throws PersistenciaException;
+
+    void guardarEstatus(EstatusDTO estatusDTO) throws PersistenciaException;
+
+    void modificarEstatus(Long id, EstatusDTO estatusDTO) throws PersistenciaException;
+
+    EstatusDTO buscarEstatusPorId(Long id) throws PersistenciaException;
+
+     void eliminarEstatus(Long id) throws PersistenciaException;
+    
+   
 }
