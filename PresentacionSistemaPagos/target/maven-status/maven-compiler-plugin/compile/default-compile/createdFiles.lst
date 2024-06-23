@@ -2,6 +2,7 @@ gui\DlgModificarCuenta$3.class
 gui\DlgRegistrarBeneficiario.class
 gui\DlgModificarBeneficiario$2.class
 gui\FrmAdminPagarRechazar$1.class
+gui\FrmCatalogoBeneficiarios$4.class
 utilerias\ComboItems.class
 gui\FrmMainBeneficiario$1.class
 main\Main.class
@@ -25,6 +26,7 @@ gui\DlgModificarPago$4.class
 gui\DlgNuevoPago.class
 gui\DlgNuevoPago$1.class
 gui\FrmMainBeneficiario.class
+gui\FrmCatalogoBeneficiarios$3.class
 gui\FrmMainBeneficiario$4.class
 gui\DlgAbonar$1.class
 gui\FrmMisCuentas$2.class

@@ -151,20 +151,15 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     }
 
     @Override
-    public List<BeneficiarioEntidad> buscarBeneficiarios(int limite, int pagina) throws PersistenciaException {
+    public List<BeneficiarioEntidad> buscarBeneficiarios(int limite, int offset) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
         Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
         criteria.select(root).where(cb.equal(root.get("eliminado"), false));
         
-        
-        
         TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
         
-        
-        
-        int offset = RegresarOFFSETMySQL(limite, pagina);
         query.setFirstResult(offset);
         query.setMaxResults(limite);
 

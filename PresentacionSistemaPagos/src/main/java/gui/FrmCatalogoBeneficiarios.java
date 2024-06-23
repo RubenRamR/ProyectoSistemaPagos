@@ -25,6 +25,7 @@ import daos.BeneficiarioDAO;
 import interfaces.IBeneficiarioDAO;
 import interfaces.IConexionBD;
 import entidades.BeneficiarioEntidad;
+import excepciones.NegocioException;
 
 
 /**
@@ -33,10 +34,16 @@ import entidades.BeneficiarioEntidad;
  */
 public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
     private IBeneficiarioNegocio beneficiarioNegocio;
+    private int pagina;
+    private int limite;
+    private int offset;
     
 
     public FrmCatalogoBeneficiarios() {
         beneficiarioNegocio = new BeneficiarioNegocio();
+        pagina = 1;
+        limite = 5;
+        
         initComponents();
         cargarMetodosIniciales();
     }
@@ -70,11 +77,10 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         try
         {
             List<BeneficiarioDTO> beneficiarios = new ArrayList<>();
-            beneficiarios = beneficiarioNegocio.buscarBeneficiarios(1000,0);
-      
+            beneficiarios = beneficiarioNegocio.buscarBeneficiarios(limite, pagina);
+            
             this.llenarTablaBeneficiarios(beneficiarios);
-        } catch (Exception ex)
-        {
+        } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -115,6 +121,9 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblBeneficiarios = new javax.swing.JTable();
         btnRegistrarBeneficiario = new javax.swing.JButton();
+        btnAdelante = new javax.swing.JButton();
+        btnAtras = new javax.swing.JButton();
+        lblPagina = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
@@ -144,7 +153,7 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblBeneficiarios);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 77, 750, 400));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 77, 750, 320));
 
         btnRegistrarBeneficiario.setText("Registrar un beneficiario");
         btnRegistrarBeneficiario.addActionListener(new java.awt.event.ActionListener() {
@@ -153,6 +162,25 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnRegistrarBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+
+        btnAdelante.setText("Adelante >>");
+        btnAdelante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdelanteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAdelante, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 440, -1, -1));
+
+        btnAtras.setText("<< Atras");
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, -1, -1));
+
+        lblPagina.setText(String.valueOf(pagina));
+        jPanel1.add(lblPagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 450, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,12 +205,34 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         cargarMetodosIniciales();
     }//GEN-LAST:event_btnRegistrarBeneficiarioActionPerformed
 
+    private void btnAdelanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdelanteActionPerformed
+        // TODO add your handling code here:
+        pagina++;
+        lblPagina.setText(String.valueOf(pagina));
+        cargarBeneficiariosEnTabla();
+    }//GEN-LAST:event_btnAdelanteActionPerformed
+
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        // TODO add your handling code here:
+        if (pagina == 1){
+            JOptionPane.showMessageDialog(this, "Ya estás en la primera pagina");
+        } else {
+            pagina--;
+            lblPagina.setText(String.valueOf(pagina));
+            cargarBeneficiariosEnTabla();
+        }
+
+    }//GEN-LAST:event_btnAtrasActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdelante;
+    private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnRegistrarBeneficiario;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPagina;
     private javax.swing.JTable tblBeneficiarios;
     // End of variables declaration//GEN-END:variables
 }
