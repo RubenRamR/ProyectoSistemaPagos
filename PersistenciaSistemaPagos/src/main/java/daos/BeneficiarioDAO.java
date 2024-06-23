@@ -171,4 +171,9 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         return beneficiarios;
     }
 
+    @Override
+    public List<BeneficiarioEntidad> buscarBeneficiarios() throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
