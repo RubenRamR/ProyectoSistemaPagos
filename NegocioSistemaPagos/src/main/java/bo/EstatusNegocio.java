@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class EstatusNegocio implements IEstatusBO {
 
-    private IEstatusDAO estatusDAO;
+    private final IEstatusDAO estatusDAO;
     private static final Logger LOGGER = Logger.getLogger(EstatusNegocio.class.getName());
     IConexionBD conexion;
 
