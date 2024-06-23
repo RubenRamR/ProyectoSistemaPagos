@@ -4,7 +4,7 @@
  */
 package daos;
 
-import entidades.AbonoEntidad;
+import static Utileria.Utilidades.RegresarOFFSETMySQL;
 import entidades.BeneficiarioEntidad;
 import entidades.CuentaBancariaEntidad;
 import entidades.PagoEntidad;
@@ -64,6 +64,7 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
             beneficiarioExistente.setContrasena(beneficiario.getContrasena());
             beneficiarioExistente.setClaveContrato(beneficiario.getClaveContrato());
             beneficiarioExistente.setSaldo(beneficiario.getSaldo());
+
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
         } catch (PersistenceException e) {
@@ -128,13 +129,18 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     }
 
     @Override
-    public List<BeneficiarioEntidad> buscarBeneficiarios() throws PersistenciaException {
+    public List<BeneficiarioEntidad> buscarBeneficiarios(int limite, int pagina) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
         Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
         criteria.select(root);
         TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
+
+        int offset = RegresarOFFSETMySQL(limite, pagina);
+        query.setFirstResult(offset);
+        query.setMaxResults(limite);
+
         List<BeneficiarioEntidad> beneficiarios;
         try {
             beneficiarios = query.getResultList();
