@@ -50,7 +50,6 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        boton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio de sesión al sistema de pagos");
@@ -114,14 +113,6 @@ public class FrmLogin extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 500));
 
-        boton.setText("boton");
-        boton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonActionPerformed(evt);
-            }
-        });
-        jPanel1.add(boton, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 430, -1, -1));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -161,13 +152,8 @@ public class FrmLogin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnAdminActionPerformed
 
-    private void botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActionPerformed
-
-    }//GEN-LAST:event_botonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton boton;
     private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
