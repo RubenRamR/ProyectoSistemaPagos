@@ -14,6 +14,8 @@ import java.util.logging.Level;
 
 import java.util.logging.Logger;
 import InterfacesNegocio.IPagoNegocio;
+import conexion.ConexionBD;
+import daos.PagoDAO;
 
 /**
  *
@@ -25,9 +27,9 @@ public class PagoNegocio implements IPagoNegocio {
     private static final Logger LOGGER = Logger.getLogger(PagoNegocio.class.getName());
     IConexionBD conexion;
 
-    public PagoNegocio(IConexionBD conexion, IPagoDAO pagoDAO) {
-        this.conexion = conexion;
-        this.pagoDAO = pagoDAO;
+    public PagoNegocio() {
+        this.conexion =  new ConexionBD();
+        this.pagoDAO = new PagoDAO(conexion);
     }
     
     
