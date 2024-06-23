@@ -17,19 +17,34 @@ import javax.swing.table.TableColumnModel;
 import utilerias.JButtonCellEditor;
 import utilerias.JButtonRenderer;
 
+import InterfacesNegocio.IBeneficiarioNegocio;
+import bo.BeneficiarioNegocio;
+import conexion.ConexionBD;
+import daos.BeneficiarioDAO;
+import interfaces.IBeneficiarioDAO;
+import interfaces.IConexionBD;
+import entidades.BeneficiarioEntidad;
+
+
 /**
  *
  * @author crazy
  */
 public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
-
+    private IBeneficiarioDAO beneficiarioDAO;
+    private IConexionBD conexionBD;
+    
 
     public FrmCatalogoBeneficiarios() {
+        conexionBD = new ConexionBD();
+        
+        
+        beneficiarioDAO = new BeneficiarioDAO(conexionBD);
         initComponents();
         cargarMetodosIniciales();
     }
 
-    private void llenarTablaBeneficiarios(List<Beneficiario> listaBeneficiarios) {
+    private void llenarTablaBeneficiarios(List<BeneficiarioEntidad> listaBeneficiarios) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblBeneficiarios.getModel();
         if (modeloTabla.getRowCount() > 0)
         {
@@ -44,10 +59,10 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
             {
                 Object[] fila = new Object[6];
                 fila[0] = row.getId();
-                fila[1] = row.getClave();
+                fila[1] = row.getClaveContrato();
                 fila[2] = row.getNombres();
-                fila[3] = row.getApellidoP();
-                fila[4] = row.getApellidoM();
+                fila[3] = row.getApellidoPaterno();
+                fila[4] = row.getApellidoMaterno();
                 fila[5] = row.getUsuario();
                 modeloTabla.addRow(fila);
             });
@@ -57,18 +72,8 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
     public void cargarBeneficiariosEnTabla() {
         try
         {
-            List<Beneficiario> beneficiarios = new ArrayList<>();
-            beneficiarios.add(new Beneficiario("1", "001", "Juan", "Perez", "Garcia", "jperez", "password1"));
-            beneficiarios.add(new Beneficiario("2", "002", "Maria", "Gomez", "Lopez", "mgomez", "password2"));
-            beneficiarios.add(new Beneficiario("3", "003", "Carlos", "Lopez", "Martinez", "clopez", "password3"));
-            beneficiarios.add(new Beneficiario("4", "004", "Ana", "Martinez", "Rodriguez", "amartinez", "password4"));
-            beneficiarios.add(new Beneficiario("5", "005", "Luis", "Fernandez", "Hernandez", "lfernandez", "password5"));
-            beneficiarios.add(new Beneficiario("6", "006", "Laura", "Sanchez", "Morales", "lsanchez", "password6"));
-            beneficiarios.add(new Beneficiario("7", "007", "Pedro", "Ramirez", "Torres", "pramirez", "password7"));
-            beneficiarios.add(new Beneficiario("8", "008", "Sofia", "Torres", "Gonzalez", "storres", "password8"));
-            beneficiarios.add(new Beneficiario("9", "009", "Marta", "Ruiz", "Diaz", "mruiz", "password9"));
-            beneficiarios.add(new Beneficiario("10", "010", "Alberto", "Mendoza", "Santos", "amendoza", "password10"));
-
+            List<BeneficiarioEntidad> beneficiarios = new ArrayList<>();
+            beneficiarios = beneficiarioDAO.buscarBeneficiarios();
       
             this.llenarTablaBeneficiarios(beneficiarios);
         } catch (Exception ex)

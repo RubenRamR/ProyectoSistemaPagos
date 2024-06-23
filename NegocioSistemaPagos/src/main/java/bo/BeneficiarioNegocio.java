@@ -9,6 +9,7 @@ import DTOs.CuentaBancariaDTO;
 import DTOs.PagoDTO;
 import InterfacesNegocio.IBeneficiarioNegocio;
 import conexion.ConexionBD;
+import daos.BeneficiarioDAO;
 import entidades.BeneficiarioEntidad;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
@@ -28,9 +29,9 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
     IConexionBD conexion;
     private static final Logger LOGGER = Logger.getLogger(BeneficiarioNegocio.class.getName());
     
-    public BeneficiarioNegocio(IBeneficiarioDAO beneficiarioDAO) {
-        this.beneficiarioDAO = beneficiarioDAO;
+    public BeneficiarioNegocio() {
         this.conexion = new ConexionBD();
+        this.beneficiarioDAO = new BeneficiarioDAO(conexion);
     }
     
     @Override
