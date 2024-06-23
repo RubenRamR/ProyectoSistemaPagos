@@ -4,18 +4,27 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
+import DTOs.CuentaBancariaDTO;
+import DTOs.EstatusDTO;
+import DTOs.Estatus_pagoDTO;
+import DTOs.PagoDTO;
 import java.awt.image.BufferedImage;
-import InterfacesNegocio.IPagoNegocio;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  *
  * @author crazy
  */
 public class DlgNuevoPago extends javax.swing.JDialog {
-    private IPagoNegocio pagoNegocio;
+    private BeneficiarioDTO beneficiarioLogeado;
+    private CuentaBancariaDTO cuentaBancaria;
     
-    public DlgNuevoPago(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public DlgNuevoPago(BeneficiarioDTO beneficiarioLogeado) {
+        super();
+        this.beneficiarioLogeado = beneficiarioLogeado;
         initComponents();
     }
     
@@ -130,7 +139,21 @@ public class DlgNuevoPago extends javax.swing.JDialog {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
+        PagoDTO pago = new PagoDTO();
         
+        
+        List<Estatus_pagoDTO> estatusPagos = new ArrayList<>();
+        
+        
+        EstatusDTO estatus = new EstatusDTO();
+        estatus.setEstatusPagos(estatusPagos);
+        
+        pago.setBeneficiario(beneficiarioLogeado);
+        pago.setMonto(Float.parseFloat(txtMonto.getText()));
+        pago.setFechaHora(Calendar.getInstance());
+        
+        
+        pago.setEliminado(false);
         
         
         this.dispose(); 

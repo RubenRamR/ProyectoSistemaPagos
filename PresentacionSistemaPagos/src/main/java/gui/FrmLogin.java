@@ -136,7 +136,7 @@ public class FrmLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             BeneficiarioDTO beneficiario = beneficiarioNegocio.loginBeneficiario(txtUsuario.getText(), txtContrasena.getText());
-            FrmMainBeneficiario fb = new FrmMainBeneficiario();
+            FrmMainBeneficiario fb = new FrmMainBeneficiario(beneficiario);
             fb.setVisible(true);
             this.dispose();
         } catch (NegocioException ex) {

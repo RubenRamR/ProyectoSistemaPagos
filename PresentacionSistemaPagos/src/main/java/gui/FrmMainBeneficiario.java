@@ -4,6 +4,7 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
 import entidadestemporales.Pago;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,9 +22,10 @@ import utilerias.JButtonRenderer;
  * @author crazy
  */
 public class FrmMainBeneficiario extends javax.swing.JFrame {
+    private BeneficiarioDTO beneficiarioLogeado;
 
-
-    public FrmMainBeneficiario() {
+    public FrmMainBeneficiario(BeneficiarioDTO beneficiarioLogeado) {
+        this.beneficiarioLogeado = beneficiarioLogeado;
         initComponents();
         cargarMetodosIniciales();
     }
@@ -236,7 +238,7 @@ public class FrmMainBeneficiario extends javax.swing.JFrame {
 
     private void itemNuevoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoPagoActionPerformed
         // TODO add your handling code here:
-        DlgNuevoPago fnp = new DlgNuevoPago(this, false);
+        DlgNuevoPago fnp = new DlgNuevoPago(beneficiarioLogeado);
         fnp.setVisible(true);
     }//GEN-LAST:event_itemNuevoPagoActionPerformed
 
