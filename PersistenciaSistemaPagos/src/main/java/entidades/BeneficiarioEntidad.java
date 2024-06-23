@@ -54,10 +54,22 @@ public class BeneficiarioEntidad implements Serializable {
 
     @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.PERSIST)
     private List<PagoEntidad> pagos;
+    
+    public BeneficiarioEntidad(){
+        
+    }
 
-    public BeneficiarioEntidad(String nombres1, String apellidoPaterno1, String apellidoMaterno1, String usuario1, String contrasena1, String claveContrato1, float saldo1) {
+    public BeneficiarioEntidad(String nombres, String apellidoPaterno, String apellidoMaterno, String usuario, String contrasena, String claveContrato, float saldo) {
         this.cuentas = new ArrayList<>();
         this.pagos = new ArrayList<>();
+        
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.usuario = usuario;
+        this.contrasena = contrasena;
+        this.claveContrato = claveContrato;
+        this.saldo = saldo;
     }
 
     public BeneficiarioEntidad(Long id, String nombres, String apellidoPaterno, String apellidoMaterno, String usuario, String contrasena, String claveContrato, float saldo, boolean eliminado, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) {

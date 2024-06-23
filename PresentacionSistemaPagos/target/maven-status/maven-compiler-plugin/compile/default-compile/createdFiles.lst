@@ -2,7 +2,6 @@ gui\DlgModificarCuenta$3.class
 gui\DlgRegistrarBeneficiario.class
 gui\DlgModificarBeneficiario$2.class
 gui\FrmAdminPagarRechazar$1.class
-utilerias\Utilidades.class
 utilerias\ComboItems.class
 gui\FrmMainBeneficiario$1.class
 main\Main.class

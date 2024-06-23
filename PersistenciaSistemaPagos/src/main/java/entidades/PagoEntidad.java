@@ -65,9 +65,17 @@ public class PagoEntidad implements Serializable {
     @OneToMany(mappedBy = "pago", cascade = CascadeType.PERSIST)
     private List<Estatus_pagoEntidad> estatusPagos;
 
-    public PagoEntidad(float monto1, String comprobante1, Calendar fechaHora1) {
+    public PagoEntidad(){
+        
+    }
+    
+    public PagoEntidad(float monto, String comprobante, Calendar fechaHora) {
         this.abono = new ArrayList<>();
         this.estatusPagos = new ArrayList<>();
+        
+        this.monto = monto;
+        this.comprobante = comprobante;
+        this.fechaHora = fechaHora;
     }
 
     public PagoEntidad(Long id, float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, CuentaBancariaEntidad cuentaBancaria, TipoPagoEntidad tipoPago, boolean eliminado, List<AbonoEntidad> abono, List<Estatus_pagoEntidad> estatusPagos) {

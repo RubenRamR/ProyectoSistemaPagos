@@ -25,4 +25,7 @@ public interface IBeneficiarioNegocio {
     public List<BeneficiarioDTO> buscarBeneficiarios(int limit, int pagina) throws NegocioException;
 
     void eliminarBeneficiario(Long id) throws NegocioException;
+    
+    public BeneficiarioDTO buscarBeneficiarioPorId(Long idBo) throws NegocioException;
+    
 }

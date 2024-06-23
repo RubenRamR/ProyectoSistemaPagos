@@ -69,8 +69,9 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
                     beneficiarioDTO.getClaveContrato(),
                     beneficiarioDTO.getSaldo()
             );
+            beneficiario.setEliminado(beneficiarioDTO.isEliminado());
+            
             beneficiarioDAO.guardarBeneficiario(beneficiario);
-
         } catch (PersistenciaException ex) {
             Logger.getLogger(BeneficiarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,5 +174,32 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
         this.esNumeroNegativo(offset);
         return offset;
     }
+
+    
+    private BeneficiarioDTO convertirEntidadADTO(BeneficiarioEntidad beneficiarioEntidad){
+        BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
+        beneficiarioDTO.setApellidoMaterno(beneficiarioEntidad.getApellidoMaterno());
+        beneficiarioDTO.setApellidoPaterno(beneficiarioEntidad.getApellidoPaterno());
+        beneficiarioDTO.setClaveContrato(beneficiarioEntidad.getClaveContrato());
+        beneficiarioDTO.setContrasena(beneficiarioEntidad.getContrasena());
+        beneficiarioDTO.setNombres(beneficiarioEntidad.getNombres());
+        beneficiarioDTO.setUsuario(beneficiarioEntidad.getUsuario());
+        
+        return beneficiarioDTO;
+        
+    }
+    
+    @Override
+    public BeneficiarioDTO buscarBeneficiarioPorId(Long idBeneficiario) throws NegocioException {
+        try {
+            BeneficiarioEntidad beneficiarioEntidad = beneficiarioDAO.buscarBeneficiarioPorId(idBeneficiario);
+            return convertirEntidadADTO(beneficiarioEntidad);
+        } catch (PersistenciaException ex) {
+            System.out.println("Error");
+        }
+        return null;
+    }
+    
+    
 
 }

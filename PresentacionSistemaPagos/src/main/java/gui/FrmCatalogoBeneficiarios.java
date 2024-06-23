@@ -4,6 +4,7 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
 import entidadestemporales.Beneficiario;
 import entidadestemporales.Pago;
 import java.awt.event.ActionEvent;
@@ -31,20 +32,16 @@ import entidades.BeneficiarioEntidad;
  * @author crazy
  */
 public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
-    private IBeneficiarioDAO beneficiarioDAO;
-    private IConexionBD conexionBD;
+    private IBeneficiarioNegocio beneficiarioNegocio;
     
 
     public FrmCatalogoBeneficiarios() {
-        conexionBD = new ConexionBD();
-        
-        
-        beneficiarioDAO = new BeneficiarioDAO(conexionBD);
+        beneficiarioNegocio = new BeneficiarioNegocio();
         initComponents();
         cargarMetodosIniciales();
     }
 
-    private void llenarTablaBeneficiarios(List<BeneficiarioEntidad> listaBeneficiarios) {
+    private void llenarTablaBeneficiarios(List<BeneficiarioDTO> listaBeneficiarios) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblBeneficiarios.getModel();
         if (modeloTabla.getRowCount() > 0)
         {
@@ -72,8 +69,8 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
     public void cargarBeneficiariosEnTabla() {
         try
         {
-            List<BeneficiarioEntidad> beneficiarios = new ArrayList<>();
-            beneficiarios = beneficiarioDAO.buscarBeneficiarios();
+            List<BeneficiarioDTO> beneficiarios = new ArrayList<>();
+            beneficiarios = beneficiarioNegocio.buscarBeneficiarios(1000,0);
       
             this.llenarTablaBeneficiarios(beneficiarios);
         } catch (Exception ex)
@@ -102,7 +99,8 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
     }
 
     public void modificarBeneficiario() {
-        DlgModificarBeneficiario frame = new DlgModificarBeneficiario(this, false);
+        long idBeneficiario = (long) tblBeneficiarios.getValueAt(tblBeneficiarios.getSelectedRow(), 0);
+        DlgModificarBeneficiario frame = new DlgModificarBeneficiario(this, false, idBeneficiario);
         frame.setVisible(true);
     }
 

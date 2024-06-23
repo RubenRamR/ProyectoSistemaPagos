@@ -139,6 +139,8 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
         beneficiario.setUsuario(txtUsuario.getText());
         beneficiario.setContrasena(txtContrasena.getText());
         beneficiario.setClaveContrato(txtClaveDeContrato.getText());
+        beneficiario.setSaldo(1000);
+        beneficiario.setEliminado(false);
         
         try {
             beneficiarioNegocio.guardarBeneficiario(beneficiario);
