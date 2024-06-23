@@ -110,7 +110,32 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         frame.setModal(true);
         frame.setVisible(true);
         cargarMetodosIniciales();
+        actualizarTabla();
     }
+    
+    private void actualizarTabla() {
+        try {
+            List<BeneficiarioDTO> listaBeneficiarios = beneficiarioNegocio.buscarBeneficiarios(limite, pagina);
+            DefaultTableModel model = (DefaultTableModel) this.tblBeneficiarios.getModel();
+            model.setRowCount(0);
+
+            for (BeneficiarioDTO beneficiario : listaBeneficiarios) {
+                Object[] fila = {
+                    beneficiario.getId(),
+                    beneficiario.getClaveContrato(),
+                    beneficiario.getNombres(),
+                    beneficiario.getApellidoPaterno(),
+                    beneficiario.getApellidoMaterno(),
+                    beneficiario.getUsuario()
+                };
+                model.addRow(fila);
+            }
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
 
 
     @SuppressWarnings("unchecked")
@@ -203,6 +228,7 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         frame.setModal(true);
         frame.setVisible(true);
         cargarMetodosIniciales();
+        actualizarTabla();
     }//GEN-LAST:event_btnRegistrarBeneficiarioActionPerformed
 
     private void btnAdelanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdelanteActionPerformed
@@ -210,6 +236,7 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         pagina++;
         lblPagina.setText(String.valueOf(pagina));
         cargarBeneficiariosEnTabla();
+        actualizarTabla();
     }//GEN-LAST:event_btnAdelanteActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
@@ -220,6 +247,7 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
             pagina--;
             lblPagina.setText(String.valueOf(pagina));
             cargarBeneficiariosEnTabla();
+            actualizarTabla();
         }
 
     }//GEN-LAST:event_btnAtrasActionPerformed
