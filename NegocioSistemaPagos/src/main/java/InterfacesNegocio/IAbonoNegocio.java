@@ -19,4 +19,6 @@ public interface IAbonoNegocio {
     public void modificarAbono(Long id, AbonoDTO abono) throws NegocioException;
 
     public void guardarAbonoConRelacion(AbonoDTO abono, PagoDTO pago) throws NegocioException;
+    
+    void eliminarAbono(Long id) throws NegocioException;
 }

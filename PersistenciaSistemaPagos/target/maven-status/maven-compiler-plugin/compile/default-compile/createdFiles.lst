@@ -12,6 +12,7 @@ excepciones\PersistenciaException.class
 entidades\AbonoEntidad_.class
 entidades\CuentaBancariaEntidad_.class
 entidades\PagoEntidad_.class
+Utileria\Utilidades.class
 pruebasDAO\PruebaTipoPagoDAO.class
 interfaces\IEstatusDAO.class
 daos\EstatusDAO.class

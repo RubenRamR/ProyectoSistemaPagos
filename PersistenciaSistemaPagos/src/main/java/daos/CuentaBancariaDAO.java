@@ -30,6 +30,27 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
     public CuentaBancariaDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
+    
+    @Override
+    public void eliminarCuentaBancaria(Long id) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            CuentaBancariaEntidad cuentaBancariaExistente = em.find(CuentaBancariaEntidad.class, id);
+            if (cuentaBancariaExistente == null) {
+                throw new PersistenciaException("La cuenta bancaria con ID " + id + " no existe");
+            }
+            cuentaBancariaExistente.setEliminado(true); // Cambiar la columna "eliminado" a true
+            em.persist(cuentaBancariaExistente);
+            em.getTransaction().commit();
+            System.out.println("Operación de eliminación terminada correctamente");
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al eliminar la cuenta bancaria", e);
+        }
+    }
 
     @Override
     public void guardarCuentaBancaria(CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException {

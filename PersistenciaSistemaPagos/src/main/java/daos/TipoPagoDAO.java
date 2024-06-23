@@ -21,6 +21,9 @@ public class TipoPagoDAO implements ITipoPagoDAO {
     public TipoPagoDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
+    
+    
+
 
     @Override
     public void guardarTipoPago(TipoPagoEntidad tipo) throws PersistenciaException {

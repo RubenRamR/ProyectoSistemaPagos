@@ -4,7 +4,7 @@
  */
 package daos;
 
-import entidades.AbonoEntidad;
+import static Utileria.Utilidades.RegresarOFFSETMySQL;
 import entidades.BeneficiarioEntidad;
 import entidades.CuentaBancariaEntidad;
 import entidades.PagoEntidad;
@@ -30,6 +30,27 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
 
     public BeneficiarioDAO(IConexionBD conexion) {
         this.conexion = conexion;
+    }
+    
+        @Override
+    public void eliminarBeneficiario(Long id) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            BeneficiarioEntidad beneficiarioExistente = em.find(BeneficiarioEntidad.class, id);
+            if (beneficiarioExistente == null) {
+                throw new PersistenciaException("El beneficiario con ID " + id + " no existe");
+            }
+            beneficiarioExistente.setEliminado(true); // Cambiar la columna "eliminado" a true
+            em.persist(beneficiarioExistente);
+            em.getTransaction().commit();
+            System.out.println("Operación de eliminación terminada correctamente");
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al eliminar el beneficiario", e);
+        }
     }
 
     @Override
@@ -64,6 +85,7 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
             beneficiarioExistente.setContrasena(beneficiario.getContrasena());
             beneficiarioExistente.setClaveContrato(beneficiario.getClaveContrato());
             beneficiarioExistente.setSaldo(beneficiario.getSaldo());
+
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
         } catch (PersistenceException e) {
@@ -128,13 +150,18 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     }
 
     @Override
-    public List<BeneficiarioEntidad> buscarBeneficiarios() throws PersistenciaException {
+    public List<BeneficiarioEntidad> buscarBeneficiarios(int limite, int pagina) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
         Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
         criteria.select(root);
         TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
+
+        int offset = RegresarOFFSETMySQL(limite, pagina);
+        query.setFirstResult(offset);
+        query.setMaxResults(limite);
+
         List<BeneficiarioEntidad> beneficiarios;
         try {
             beneficiarios = query.getResultList();
@@ -142,6 +169,11 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
             throw new PersistenciaException("Error al buscar beneficiarios", e);
         }
         return beneficiarios;
+    }
+
+    @Override
+    public List<BeneficiarioEntidad> buscarBeneficiarios() throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

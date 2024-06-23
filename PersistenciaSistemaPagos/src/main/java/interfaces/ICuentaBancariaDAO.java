@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author caarl
+ * @author Chris
  */
 public interface ICuentaBancariaDAO {
 
@@ -27,4 +27,6 @@ public interface ICuentaBancariaDAO {
     public CuentaBancariaEntidad buscarCuentaBancariaPorId(Long idCuentaBancaria) throws PersistenciaException;
 
     public List<CuentaBancariaEntidad> buscarCuentasBancarias() throws PersistenciaException;
+
+    void eliminarCuentaBancaria(Long id) throws PersistenciaException;
 }
