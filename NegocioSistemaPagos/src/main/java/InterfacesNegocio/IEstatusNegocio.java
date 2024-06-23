@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author rramirez
  */
-public interface IEstatusBO {
+public interface IEstatusNegocio {
 
     void guardarEstatus(EstatusDTO estatusDTO) throws PersistenciaException;
 

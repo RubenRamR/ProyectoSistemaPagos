@@ -11,7 +11,7 @@ import excepciones.PersistenciaException;
  *
  * @author rramirez
  */
-public interface ITipoPagoBO {
+public interface ITipoPagoNegocio {
     void guardarTipoPago(TipoPagoDTO tipoPago) throws PersistenciaException;
     void modificarTipoPago(Long id, TipoPagoDTO tipoPago) throws PersistenciaException;
     TipoPagoDTO buscarTipoPagoPorId(Long idTipoPago) throws PersistenciaException;

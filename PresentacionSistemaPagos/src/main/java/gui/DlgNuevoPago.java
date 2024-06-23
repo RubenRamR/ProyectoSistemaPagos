@@ -5,13 +5,14 @@
 package gui;
 
 import java.awt.image.BufferedImage;
+import InterfacesNegocio.IPagoNegocio;
 
 /**
  *
  * @author crazy
  */
 public class DlgNuevoPago extends javax.swing.JDialog {
-    
+    private IPagoNegocio pagoNegocio;
     
     public DlgNuevoPago(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -129,6 +130,9 @@ public class DlgNuevoPago extends javax.swing.JDialog {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
+        
+        
+        
         this.dispose(); 
     }//GEN-LAST:event_btnAceptarActionPerformed
 
