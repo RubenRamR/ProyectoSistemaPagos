@@ -5,7 +5,6 @@
 package bo;
 
 import DTOs.EstatusDTO;
-import InterfacesNegocio.IEstatusBO;
 import entidades.EstatusEntidad;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
@@ -13,8 +12,9 @@ import interfaces.IConexionBD;
 import interfaces.IEstatusDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import InterfacesNegocio.IEstatusNegocio;
 
-public class EstatusNegocio implements IEstatusBO {
+public class EstatusNegocio implements IEstatusNegocio {
 
     private final IEstatusDAO estatusDAO;
     private static final Logger LOGGER = Logger.getLogger(EstatusNegocio.class.getName());

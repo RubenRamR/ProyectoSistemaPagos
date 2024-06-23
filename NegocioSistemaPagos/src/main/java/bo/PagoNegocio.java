@@ -5,7 +5,6 @@
 package bo;
 
 import DTOs.PagoDTO;
-import InterfacesNegocio.IPagoBO;
 import entidades.PagoEntidad;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
@@ -14,12 +13,13 @@ import interfaces.IPagoDAO;
 import java.util.logging.Level;
 
 import java.util.logging.Logger;
+import InterfacesNegocio.IPagoNegocio;
 
 /**
  *
  * @author rramirez
  */
-public class PagoNegocio implements IPagoBO {
+public class PagoNegocio implements IPagoNegocio {
 
     private final IPagoDAO pagoDAO;
     private static final Logger LOGGER = Logger.getLogger(PagoNegocio.class.getName());

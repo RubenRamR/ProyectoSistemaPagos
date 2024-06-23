@@ -47,12 +47,10 @@ public class TipoPagoEntidad implements Serializable {
         this.eliminado = eliminado;
         this.pagos = pagos;
     }
-
+    
     public TipoPagoEntidad() {
     }
     
-    
-
     public Long getId() {
         return id;
     }
