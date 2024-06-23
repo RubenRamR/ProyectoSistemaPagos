@@ -7,8 +7,25 @@ package bo;
 import DTOs.AbonoDTO;
 import DTOs.PagoDTO;
 import InterfacesNegocio.IAbonoNegocio;
+import conexion.ConexionBD;
+import daos.AbonoDAO;
+import daos.BeneficiarioDAO;
+import daos.CuentaBancariaDAO;
+import daos.PagoDAO;
+import daos.TipoPagoDAO;
+import entidades.AbonoEntidad;
+import entidades.BeneficiarioEntidad;
+import entidades.CuentaBancariaEntidad;
+import entidades.PagoEntidad;
+import entidades.TipoPagoEntidad;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
 import interfaces.IAbonoDAO;
+import interfaces.IBeneficiarioDAO;
+import interfaces.IConexionBD;
+import interfaces.ICuentaBancariaDAO;
+import interfaces.ITipoPagoDAO;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -18,15 +35,19 @@ import java.util.logging.Logger;
 public class AbonoNegocio implements IAbonoNegocio {
 
     private IAbonoDAO abonoDAO;
+    private IBeneficiarioDAO beneficiarioDAO;
+    private ICuentaBancariaDAO cuentaBancariaDAO;
+    private ITipoPagoDAO tipoDAO;
     private static final Logger LOGGER = Logger.getLogger(AbonoNegocio.class.getName());
+    IConexionBD conexion;
 
-    public AbonoNegocio(IAbonoDAO abonoDAO) {
-        this.abonoDAO = abonoDAO;
+    public AbonoNegocio() {
+        this.conexion = new ConexionBD();
+        this.abonoDAO = new AbonoDAO(conexion);
     }
 
     @Override
-    public void guardarAbono(AbonoDTO abono) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void guardarAbono(AbonoDTO abonoDTO) throws NegocioException {
     }
 
     @Override
@@ -35,8 +56,45 @@ public class AbonoNegocio implements IAbonoNegocio {
     }
 
     @Override
-    public void guardarAbonoConRelacion(AbonoDTO abono, PagoDTO pago) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void guardarAbonoConRelacion(AbonoDTO abonoDTO, PagoDTO pagoDTO) throws NegocioException {
+        try {
+            beneficiarioDAO = new BeneficiarioDAO(conexion);
+            cuentaBancariaDAO = new CuentaBancariaDAO(conexion);
+            tipoDAO = new TipoPagoDAO(conexion);
+
+            BeneficiarioEntidad beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(pagoDTO.getBeneficiario().getId());
+
+            CuentaBancariaEntidad cuentaBancaria = cuentaBancariaDAO.buscarCuentaBancariaPorId(pagoDTO.getCuentaBancaria().getId());
+
+            TipoPagoEntidad tipo = tipoDAO.buscarTipoPagoPorId(pagoDTO.getTipoPago().getId());
+
+            PagoEntidad pago = new PagoEntidad(
+                    pagoDTO.getMonto(),
+                    pagoDTO.getComprobante(),
+                    pagoDTO.getFechaHora(),
+                    beneficiario,
+                    cuentaBancaria,
+                    tipo
+            );
+
+            PagoDAO pagodao = new PagoDAO(conexion);
+            if (pagoDTO.getId() == null) {
+                pagodao.guardarPago(pago);
+            } else {
+                pago = pagodao.buscarPagoPorId(pagoDTO.getId());
+            }
+
+            AbonoEntidad abonoE = new AbonoEntidad(
+                    abonoDTO.getFechaHora(),
+                    abonoDTO.getMonto(),
+                    pago);
+
+            abonoDAO.guardarAbono(abonoE);
+
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(AbonoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }
