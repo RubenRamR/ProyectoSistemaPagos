@@ -22,8 +22,9 @@ public class DlgModificarBeneficiario extends javax.swing.JDialog {
     private BeneficiarioDTO beneficiarioDTO;
     private long idBeneficiario;
 
-    public DlgModificarBeneficiario(java.awt.Frame parent, boolean modal, long idBeneficiario) {
-        super(parent, modal);
+    public DlgModificarBeneficiario(long idBeneficiario) {
+        super();
+        
         this.beneficiarioNegocio = new BeneficiarioNegocio();
         this.idBeneficiario = idBeneficiario;
         
@@ -176,11 +177,11 @@ public class DlgModificarBeneficiario extends javax.swing.JDialog {
 
         try {
             beneficiarioNegocio.modificarBeneficiario(idBeneficiario, beneficiario);
+            JOptionPane.showMessageDialog(this, "Beneficiario modificado correctamente");
+            this.dispose();
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, ex);
-        }
-        
-        this.dispose();
+        }    
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

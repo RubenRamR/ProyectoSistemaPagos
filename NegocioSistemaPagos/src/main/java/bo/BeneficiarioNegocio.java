@@ -49,7 +49,7 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
             beneficiarioExistente.setEliminado(true);
 
             // Guardar los cambios en la base de datos
-            beneficiarioDAO.guardarBeneficiario(beneficiarioExistente);
+            beneficiarioDAO.eliminarBeneficiario(id);
         } catch (PersistenciaException ex) {
             Logger.getLogger(BeneficiarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("Error al eliminar el beneficiario.", ex);

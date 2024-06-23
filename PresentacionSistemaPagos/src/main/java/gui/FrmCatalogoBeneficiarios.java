@@ -100,8 +100,10 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
 
     public void modificarBeneficiario() {
         long idBeneficiario = (long) tblBeneficiarios.getValueAt(tblBeneficiarios.getSelectedRow(), 0);
-        DlgModificarBeneficiario frame = new DlgModificarBeneficiario(this, false, idBeneficiario);
+        DlgModificarBeneficiario frame = new DlgModificarBeneficiario(idBeneficiario);
+        frame.setModal(true);
         frame.setVisible(true);
+        cargarMetodosIniciales();
     }
 
 
@@ -131,7 +133,15 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
             new String [] {
                 "ID", "Clave", "Nombres", "Apellido P", "Apellido M", "Usuario", "Modificar"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblBeneficiarios);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 77, 750, 400));
@@ -161,8 +171,10 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
 
     private void btnRegistrarBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarBeneficiarioActionPerformed
         // TODO add your handling code here:
-        DlgRegistrarBeneficiario drb = new DlgRegistrarBeneficiario(this, false);
-        drb.setVisible(true);
+        DlgRegistrarBeneficiario frame = new DlgRegistrarBeneficiario();
+        frame.setModal(true);
+        frame.setVisible(true);
+        cargarMetodosIniciales();
     }//GEN-LAST:event_btnRegistrarBeneficiarioActionPerformed
 
 

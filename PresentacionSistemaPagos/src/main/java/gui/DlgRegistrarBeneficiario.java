@@ -22,8 +22,8 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
     private IBeneficiarioNegocio beneficiarioNegocio;
     
 
-    public DlgRegistrarBeneficiario(java.awt.Frame parent, boolean modal) {        
-        super(parent, modal);
+    public DlgRegistrarBeneficiario() {        
+        super();
         this.beneficiarioNegocio = new BeneficiarioNegocio();
         initComponents();
     }
@@ -144,11 +144,11 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
         
         try {
             beneficiarioNegocio.guardarBeneficiario(beneficiario);
+            JOptionPane.showMessageDialog(this, "Beneficiario registrado correctamente");
+            this.dispose();
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, ex);
         }
-        
-        this.dispose();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
 

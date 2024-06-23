@@ -46,6 +46,7 @@ entidadestemporales\Beneficiario.class
 gui\FrmMainAdmin$3.class
 gui\FrmVerAbonos.class
 entidadestemporales\Cuenta.class
+gui\FrmCatalogoBeneficiarios$2.class
 gui\DlgModificarPago$3.class
 gui\DlgNuevoPago$2.class
 gui\DlgModificarCuenta$5.class

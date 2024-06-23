@@ -42,7 +42,7 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
                 throw new PersistenciaException("El beneficiario con ID " + id + " no existe");
             }
             beneficiarioExistente.setEliminado(true); // Cambiar la columna "eliminado" a true
-            em.persist(beneficiarioExistente);
+            em.merge(beneficiarioExistente);
             em.getTransaction().commit();
             System.out.println("Operación de eliminación terminada correctamente");
         } catch (PersistenceException e) {
@@ -85,7 +85,8 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
             beneficiarioExistente.setContrasena(beneficiario.getContrasena());
             beneficiarioExistente.setClaveContrato(beneficiario.getClaveContrato());
             beneficiarioExistente.setSaldo(beneficiario.getSaldo());
-
+            
+            em.merge(beneficiarioExistente);
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
         } catch (PersistenceException e) {
@@ -155,9 +156,14 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
         Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
-        criteria.select(root);
+        criteria.select(root).where(cb.equal(root.get("eliminado"), false));
+        
+        
+        
         TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
-
+        
+        
+        
         int offset = RegresarOFFSETMySQL(limite, pagina);
         query.setFirstResult(offset);
         query.setMaxResults(limite);
