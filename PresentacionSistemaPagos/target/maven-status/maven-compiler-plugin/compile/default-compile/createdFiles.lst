@@ -65,6 +65,7 @@ gui\FrmLogin.class
 gui\FrmMainBeneficiario$2.class
 gui\DlgModificarBeneficiario$1.class
 gui\DlgAnadirCuenta$3.class
+gui\FrmLogin$4.class
 gui\FrmVerAbonos$2.class
 gui\DlgModificarCuenta$1.class
 gui\FrmAdminPagarRechazar.class

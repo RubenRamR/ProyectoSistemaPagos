@@ -4,7 +4,20 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
+import InterfacesNegocio.IBeneficiarioNegocio;
+import bo.BeneficiarioNegocio;
+import conexion.ConexionBD;
+import daos.BeneficiarioDAO;
+import entidades.BeneficiarioEntidad;
+import excepciones.NegocioException;
+import excepciones.PersistenciaException;
+import interfaces.IBeneficiarioDAO;
+import interfaces.IConexionBD;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -13,8 +26,10 @@ import java.awt.image.BufferedImage;
  */
 public class FrmLogin extends javax.swing.JFrame {
     
+    private IBeneficiarioNegocio beneficiarioNegocio;
     
     public FrmLogin() {
+        this.beneficiarioNegocio = new BeneficiarioNegocio();
         initComponents();
     }
 
@@ -35,6 +50,7 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        boton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio de sesión al sistema de pagos");
@@ -98,6 +114,14 @@ public class FrmLogin extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 500));
 
+        boton.setText("boton");
+        boton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(boton, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 430, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -119,9 +143,15 @@ public class FrmLogin extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // TODO add your handling code here:
-        FrmMainBeneficiario fb = new FrmMainBeneficiario();
-        fb.setVisible(true);
-        this.dispose();
+        try {
+            BeneficiarioDTO beneficiario = beneficiarioNegocio.loginBeneficiario(txtUsuario.getText(), txtContrasena.getText());
+            FrmMainBeneficiario fb = new FrmMainBeneficiario();
+            fb.setVisible(true);
+            this.dispose();
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, "No se encontró el usuario");
+        }
+        
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
@@ -131,8 +161,13 @@ public class FrmLogin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnAdminActionPerformed
 
+    private void botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActionPerformed
+
+    }//GEN-LAST:event_botonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton boton;
     private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;

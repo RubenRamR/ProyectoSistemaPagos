@@ -28,4 +28,7 @@ public interface IBeneficiarioNegocio {
     
     public BeneficiarioDTO buscarBeneficiarioPorId(Long idBo) throws NegocioException;
     
+    public BeneficiarioDTO loginBeneficiario(String usuario, String contrasena) throws NegocioException;
+
+    
 }

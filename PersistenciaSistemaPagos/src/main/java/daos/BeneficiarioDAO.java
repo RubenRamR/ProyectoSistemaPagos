@@ -18,6 +18,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 /**
@@ -176,5 +177,36 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     public List<BeneficiarioEntidad> buscarBeneficiarios() throws PersistenciaException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    @Override
+    public BeneficiarioEntidad loginBeneficiario(String usuario, String contrasena) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
+            Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
 
+            // Create the conditions (predicates)
+            Predicate condition1 = cb.equal(root.get("usuario"), usuario);
+            Predicate condition2 = cb.equal(root.get("contrasena"), contrasena);
+
+            // Combine conditions with AND
+            criteria.select(root).where(cb.and(condition1, condition2));
+
+            // Execute the query
+            List<BeneficiarioEntidad> resultList = em.createQuery(criteria).getResultList();
+
+            // Check if a result is found
+            if (resultList.isEmpty()) {
+                throw new PersistenciaException("No se encontró el usuario");
+            }  else {
+                return resultList.get(0); // Return the first (and presumably only) result
+            }
+        } finally {
+            em.close();
+        }
+    }
+    
+    
+    
 }

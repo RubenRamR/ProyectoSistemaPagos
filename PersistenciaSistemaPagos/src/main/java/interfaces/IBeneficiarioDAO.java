@@ -32,5 +32,8 @@ public interface IBeneficiarioDAO {
     public List<BeneficiarioEntidad> buscarBeneficiarios() throws PersistenciaException;
     
     void eliminarBeneficiario(Long id) throws PersistenciaException;
+    
+    public BeneficiarioEntidad loginBeneficiario(String usuario, String contrasena) throws PersistenciaException;
+
 
 }

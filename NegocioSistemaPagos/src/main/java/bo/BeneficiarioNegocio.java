@@ -201,5 +201,17 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
     }
     
     
+    @Override
+    public BeneficiarioDTO loginBeneficiario(String usuario, String contrasena) throws NegocioException{
+        
+        try {
+            BeneficiarioEntidad beneficiarioEntidad = beneficiarioDAO.loginBeneficiario(usuario, contrasena);
+            return convertirEntidadADTO(beneficiarioEntidad);
+        } catch (PersistenciaException ex) {
+            throw new NegocioException(ex.getMessage());
+        } 
+        
+    }
+    
 
 }
