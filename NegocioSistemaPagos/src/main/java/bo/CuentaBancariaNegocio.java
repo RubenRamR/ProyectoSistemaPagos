@@ -37,6 +37,27 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
         this.cuentaBancariaDAO = new CuentaBancariaDAO(conexion);
         this.conexion = new ConexionBD();
     }
+    
+    @Override
+public void eliminarCuentaBancaria(Long id) throws NegocioException {
+    try {
+        // Buscar la cuenta bancaria existente por su ID
+        CuentaBancariaEntidad cuentaExistente = cuentaBancariaDAO.buscarCuentaBancariaPorId(id);
+        if (cuentaExistente == null) {
+            throw new NegocioException("La cuenta bancaria con ID " + id + " no existe.");
+        }
+
+        // Cambiar la columna "eliminado" a true
+        cuentaExistente.setEliminado(true);
+
+        // Guardar los cambios en la base de datos
+        cuentaBancariaDAO.guardarCuentaBancaria(cuentaExistente);
+    } catch (PersistenciaException ex) {
+        Logger.getLogger(CuentaBancariaNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        throw new NegocioException("Error al eliminar la cuenta bancaria.", ex);
+    }
+}
+
 
     @Override
     public void guardarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {

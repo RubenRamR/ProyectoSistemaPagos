@@ -20,6 +20,8 @@ import java.util.Calendar;
  * Interfaz que define las operaciones de acceso a datos para la entidad Pago.
  */
 public interface IPagoDAO {
+    
+    void eliminarPago(Long id) throws PersistenciaException;
 
     /**
      * Guarda un nuevo pago en la base de datos.
@@ -52,7 +54,7 @@ public interface IPagoDAO {
      * @param id El ID del pago a eliminar.
      * @throws PersistenciaException Si ocurre un error durante la eliminación.
      */
-    void eliminarPago(Long id) throws PersistenciaException;
+
 
     /**
      * Busca todos los pagos en la base de datos.
@@ -89,4 +91,6 @@ public interface IPagoDAO {
      * @throws PersistenciaException Si ocurre un error durante la búsqueda.
      */
     List<PagoEntidad> buscarPagosPorTipoPago(Long idTipoPago) throws PersistenciaException;
+    
+
 }

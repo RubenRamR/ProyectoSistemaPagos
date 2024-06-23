@@ -48,4 +48,6 @@ public interface IEstatusDAO {
      * @throws PersistenciaException Si ocurre un error durante la búsqueda.
      */
     List<EstatusEntidad> buscarTodosLosEstatus() throws PersistenciaException;
+    
+    void eliminarEstatus(Long id) throws PersistenciaException;
 }

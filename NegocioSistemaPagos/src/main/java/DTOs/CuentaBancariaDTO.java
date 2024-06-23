@@ -6,10 +6,6 @@ package DTOs;
 
 import java.util.List;
 
-/**
- *
- * @author rramirez
- */
 public class CuentaBancariaDTO {
 
     private Long id;
@@ -100,7 +96,14 @@ public class CuentaBancariaDTO {
 
     @Override
     public String toString() {
-        return "CuentaBancariaDTO{" + "id=" + id + ", numeroCuenta=" + numeroCuenta + ", clave=" + clave + ", banco=" + banco + ", eliminado=" + eliminado + ", beneficiario=" + beneficiario + ", pagos=" + pagos + '}';
+        return "CuentaBancariaDTO{" +
+                "id=" + id +
+                ", numeroCuenta=" + numeroCuenta +
+                ", clave='" + clave + '\'' +
+                ", banco='" + banco + '\'' +
+                ", eliminado=" + eliminado +
+                ", beneficiario=" + beneficiario +
+                ", pagos=" + pagos +
+                '}';
     }
-
 }

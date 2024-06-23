@@ -6,15 +6,12 @@ package DTOs;
 
 import java.util.List;
 
-/**
- *
- * @author rramirez
- */
 public class EstatusDTO {
 
     private Long id;
     private String nombre;
     private List<Estatus_pagoDTO> estatusPagos;
+    private boolean eliminado;
 
     public EstatusDTO() {
     }
@@ -54,9 +51,21 @@ public class EstatusDTO {
         this.estatusPagos = estatusPagos;
     }
 
-    @Override
-    public String toString() {
-        return "EstatusDTO{" + "id=" + id + ", nombre=" + nombre + ", estatusPagos=" + estatusPagos + '}';
+    public boolean isEliminado() {
+        return eliminado;
     }
 
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    @Override
+    public String toString() {
+        return "EstatusDTO{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", estatusPagos=" + estatusPagos +
+                ", eliminado=" + eliminado +
+                '}';
+    }
 }

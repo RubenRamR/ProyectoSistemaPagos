@@ -31,6 +31,27 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     public BeneficiarioDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
+    
+        @Override
+    public void eliminarBeneficiario(Long id) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            BeneficiarioEntidad beneficiarioExistente = em.find(BeneficiarioEntidad.class, id);
+            if (beneficiarioExistente == null) {
+                throw new PersistenciaException("El beneficiario con ID " + id + " no existe");
+            }
+            beneficiarioExistente.setEliminado(true); // Cambiar la columna "eliminado" a true
+            em.persist(beneficiarioExistente);
+            em.getTransaction().commit();
+            System.out.println("Operación de eliminación terminada correctamente");
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al eliminar el beneficiario", e);
+        }
+    }
 
     @Override
     public void guardarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException {

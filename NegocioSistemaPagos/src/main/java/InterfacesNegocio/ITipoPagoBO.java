@@ -15,4 +15,5 @@ public interface ITipoPagoBO {
     void guardarTipoPago(TipoPagoDTO tipoPago) throws PersistenciaException;
     void modificarTipoPago(Long id, TipoPagoDTO tipoPago) throws PersistenciaException;
     TipoPagoDTO buscarTipoPagoPorId(Long idTipoPago) throws PersistenciaException;
+     void eliminarTipoPago(Long id) throws PersistenciaException;
 }

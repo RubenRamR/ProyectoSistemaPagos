@@ -28,6 +28,27 @@ public class EstatusDAO implements IEstatusDAO {
     public EstatusDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
+    
+    @Override
+    public void eliminarEstatus(Long id) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            EstatusEntidad estatusExistente = em.find(EstatusEntidad.class, id);
+            if (estatusExistente == null) {
+                throw new PersistenciaException("El estatus con ID " + id + " no existe");
+            }
+            estatusExistente.setEliminado(true); // Cambiar la columna "eliminado" a true
+            em.persist(estatusExistente);
+            em.getTransaction().commit();
+            System.out.println("Operación de eliminación terminada correctamente");
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al eliminar el estatus", e);
+        }
+    }
 
     @Override
     public void guardarEstatus(EstatusEntidad estatus) throws PersistenciaException {

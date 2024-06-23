@@ -7,9 +7,11 @@ package bo;
 import DTOs.TipoPagoDTO;
 import InterfacesNegocio.ITipoPagoBO;
 import entidades.TipoPagoEntidad;
+import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
 import interfaces.ITipoPagoDAO;
+import java.util.logging.Level;
 
 import java.util.logging.Logger;
 
@@ -23,6 +25,35 @@ public class TipoPagoNegocio implements ITipoPagoBO {
     private final ITipoPagoDAO tipoPagoDAO;
     private static final Logger LOGGER = Logger.getLogger(TipoPagoNegocio.class.getName());
     IConexionBD conexion;
+    
+    @Override
+public void eliminarTipoPago(Long id)  {
+    try {
+        // Buscar el tipo de pago existente por su ID
+        TipoPagoEntidad tipoPagoExistente = tipoPagoDAO.buscarTipoPagoPorId(id);
+        if (tipoPagoExistente == null) {
+            try {
+                throw new NegocioException("El tipo de pago con ID " + id + " no existe.");
+            } catch (NegocioException ex) {
+                Logger.getLogger(TipoPagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        // Cambiar la columna "eliminado" a true
+        tipoPagoExistente.setEliminado(true);
+
+        // Guardar los cambios en la base de datos
+        tipoPagoDAO.guardarTipoPago(tipoPagoExistente);
+    } catch (PersistenciaException ex) {
+        try {
+            LOGGER.log(Level.SEVERE, "Error al eliminar el tipo de pago.", ex);
+            throw new NegocioException("Error al eliminar el tipo de pago.", ex);
+        } catch (NegocioException ex1) {
+            Logger.getLogger(TipoPagoNegocio.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+    }
+}
+
 
     public TipoPagoNegocio(IConexionBD conexion, ITipoPagoDAO tipoPagoDAO) {
         this.conexion = conexion;

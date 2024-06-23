@@ -29,6 +29,25 @@ public class AbonoDAO implements IAbonoDAO {
     public AbonoDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
+    
+    @Override
+    public void eliminarAbono(Long id) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            AbonoEntidad abonoExistente = em.find(AbonoEntidad.class, id);
+            if (abonoExistente == null) {
+                throw new PersistenciaException("El abono con ID " + id + " no existe");
+            }
+            abonoExistente.setEliminado(true); // Cambiar la columna "eliminado" a true
+            em.persist(abonoExistente);
+            em.getTransaction().commit();
+            System.out.println("Operación de eliminación terminada correctamente");
+        } catch (PersistenceException e) {
+            em.getTransaction().rollback();
+            throw new PersistenciaException("Error al eliminar el abono", e);
+        }
+    }
 
     @Override
     public void guardarAbono(AbonoEntidad abono) throws PersistenciaException {

@@ -15,16 +15,21 @@ import java.util.List;
  */
 public interface IAbonoDAO {
 
-    public void guardarAbono(AbonoEntidad abono) throws PersistenciaException;
 
-    public void modificarAbono(Long id, AbonoEntidad abono) throws PersistenciaException;
+    void guardarAbono(AbonoEntidad abono) throws PersistenciaException;
 
-    public void guardarAbonoConRelacion(AbonoEntidad abono, PagoEntidad pago) throws PersistenciaException;
+    void modificarAbono(Long id, AbonoEntidad abono) throws PersistenciaException;
 
-    public AbonoEntidad buscarAbono(AbonoEntidad abono) throws PersistenciaException;
-    
-    public AbonoEntidad buscarAbonoPorId(Long idAbono) throws PersistenciaException;
+    void guardarAbonoConRelacion(AbonoEntidad abono, PagoEntidad pago) throws PersistenciaException;
 
-    public List<AbonoEntidad> buscarAbonos() throws PersistenciaException;
+    AbonoEntidad buscarAbono(AbonoEntidad abono) throws PersistenciaException;
 
+    AbonoEntidad buscarAbonoPorId(Long idAbono) throws PersistenciaException;
+
+    void eliminarAbono(Long id) throws PersistenciaException;
+
+    List<AbonoEntidad> buscarAbonos() throws PersistenciaException;
 }
+
+
+

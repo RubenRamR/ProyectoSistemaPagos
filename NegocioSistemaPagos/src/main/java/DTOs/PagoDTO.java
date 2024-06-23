@@ -7,10 +7,6 @@ package DTOs;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- *
- * @author rramirez
- */
 public class PagoDTO {
 
     private Long id;
@@ -22,6 +18,7 @@ public class PagoDTO {
     private TipoPagoDTO tipoPago;
     private List<AbonoDTO> abono;
     private List<Estatus_pagoDTO> estatusPagos;
+    private boolean eliminado;
 
     public PagoDTO() {
     }
@@ -121,9 +118,27 @@ public class PagoDTO {
         this.estatusPagos = estatusPagos;
     }
 
-    @Override
-    public String toString() {
-        return "PagoDTO{" + "id=" + id + ", monto=" + monto + ", comprobante=" + comprobante + ", fechaHora=" + fechaHora + ", beneficiario=" + beneficiario + ", cuentaBancaria=" + cuentaBancaria + ", tipoPago=" + tipoPago + ", abono=" + abono + ", estatusPagos=" + estatusPagos + '}';
+    public boolean isEliminado() {
+        return eliminado;
     }
 
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    @Override
+    public String toString() {
+        return "PagoDTO{" +
+                "id=" + id +
+                ", monto=" + monto +
+                ", comprobante='" + comprobante + '\'' +
+                ", fechaHora=" + fechaHora +
+                ", beneficiario=" + beneficiario +
+                ", cuentaBancaria=" + cuentaBancaria +
+                ", tipoPago=" + tipoPago +
+                ", abono=" + abono +
+                ", estatusPagos=" + estatusPagos +
+                ", eliminado=" + eliminado +
+                '}';
+    }
 }

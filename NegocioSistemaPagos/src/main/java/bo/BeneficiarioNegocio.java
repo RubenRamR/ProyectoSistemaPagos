@@ -37,6 +37,26 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
     }
 
     @Override
+    public void eliminarBeneficiario(Long id) throws NegocioException {
+        try {
+            // Buscar el beneficiario existente por su ID
+            BeneficiarioEntidad beneficiarioExistente = beneficiarioDAO.buscarBeneficiarioPorId(id);
+            if (beneficiarioExistente == null) {
+                throw new NegocioException("El beneficiario con ID " + id + " no existe.");
+            }
+
+            // Cambiar la columna "eliminado" a true
+            beneficiarioExistente.setEliminado(true);
+
+            // Guardar los cambios en la base de datos
+            beneficiarioDAO.guardarBeneficiario(beneficiarioExistente);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(BeneficiarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Error al eliminar el beneficiario.", ex);
+        }
+    }
+    
+    @Override
     public void guardarBeneficiario(BeneficiarioDTO beneficiarioDTO) throws NegocioException {
         try {
             BeneficiarioEntidad beneficiario = new BeneficiarioEntidad(

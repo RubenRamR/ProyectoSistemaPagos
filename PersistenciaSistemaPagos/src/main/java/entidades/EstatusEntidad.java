@@ -32,10 +32,10 @@ public class EstatusEntidad implements Serializable {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "estatus", cascade =
-    {
-        CascadeType.PERSIST
-    })
+    @Column(name = "eliminado", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean eliminado;
+
+    @OneToMany(mappedBy = "estatus", cascade = CascadeType.PERSIST)
     private List<Estatus_pagoEntidad> estatusPagos;
 
     public EstatusEntidad() {
@@ -69,17 +69,29 @@ public class EstatusEntidad implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Estatus_pagoEntidad> getEstatus_pago() {
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    public List<Estatus_pagoEntidad> getEstatusPagos() {
         return estatusPagos;
     }
 
-    public void setEstatus_pago(List<Estatus_pagoEntidad> Estatus_pago) {
-        this.estatusPagos = Estatus_pago;
+    public void setEstatusPagos(List<Estatus_pagoEntidad> estatusPagos) {
+        this.estatusPagos = estatusPagos;
     }
 
     @Override
     public String toString() {
-        return "EstatusEntidad{" + "id=" + id + ", nombre=" + nombre + ", estatusPagos=" + estatusPagos + '}';
+        return "EstatusEntidad{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", eliminado=" + eliminado +
+                ", estatusPagos=" + estatusPagos +
+                '}';
     }
-
 }
