@@ -146,19 +146,32 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
     }
 
     @Override
-    public List<CuentaBancariaEntidad> buscarCuentasBancarias() throws PersistenciaException {
+    public List<CuentaBancariaEntidad> buscarCuentasBancarias(BeneficiarioEntidad beneficiario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CuentaBancariaEntidad> criteria = cb.createQuery(CuentaBancariaEntidad.class);
         Root<CuentaBancariaEntidad> root = criteria.from(CuentaBancariaEntidad.class);
-        criteria.select(root);
+
+        // Agregar condición para filtrar por idBeneficiario
+        criteria.select(root).where(cb.equal(root.get("beneficiario"), beneficiario));
+
         TypedQuery<CuentaBancariaEntidad> query = em.createQuery(criteria);
         List<CuentaBancariaEntidad> cuentasBancarias;
         try {
             cuentasBancarias = query.getResultList();
         } catch (Exception e) {
             throw new PersistenciaException("Error al buscar cuentas bancarias", e);
+        } finally {
+            em.close();
         }
         return cuentasBancarias;
     }
+
+    @Override
+    public List<CuentaBancariaEntidad> buscarCuentasBancarias() throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    
+    
 }

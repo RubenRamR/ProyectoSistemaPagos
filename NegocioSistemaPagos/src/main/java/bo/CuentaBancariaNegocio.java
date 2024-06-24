@@ -18,6 +18,7 @@ import excepciones.PersistenciaException;
 import interfaces.IBeneficiarioDAO;
 import interfaces.IConexionBD;
 import interfaces.ICuentaBancariaDAO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,31 +34,30 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
     private static final Logger LOGGER = Logger.getLogger(CuentaBancariaNegocio.class.getName());
     IConexionBD conexion;
 
-    public CuentaBancariaNegocio(ICuentaBancariaDAO cuentaBancariaDAO) {
-        this.cuentaBancariaDAO = new CuentaBancariaDAO(conexion);
+    public CuentaBancariaNegocio() {
         this.conexion = new ConexionBD();
+        this.cuentaBancariaDAO = new CuentaBancariaDAO(conexion);
     }
     
     @Override
-public void eliminarCuentaBancaria(Long id) throws NegocioException {
-    try {
-        // Buscar la cuenta bancaria existente por su ID
-        CuentaBancariaEntidad cuentaExistente = cuentaBancariaDAO.buscarCuentaBancariaPorId(id);
-        if (cuentaExistente == null) {
-            throw new NegocioException("La cuenta bancaria con ID " + id + " no existe.");
+    public void eliminarCuentaBancaria(Long id) throws NegocioException {
+        try {
+            // Buscar la cuenta bancaria existente por su ID
+            CuentaBancariaEntidad cuentaExistente = cuentaBancariaDAO.buscarCuentaBancariaPorId(id);
+            if (cuentaExistente == null) {
+                throw new NegocioException("La cuenta bancaria con ID " + id + " no existe.");
+            }
+
+            // Cambiar la columna "eliminado" a true
+            cuentaExistente.setEliminado(true);
+
+            // Guardar los cambios en la base de datos
+            cuentaBancariaDAO.guardarCuentaBancaria(cuentaExistente);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CuentaBancariaNegocio.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Error al eliminar la cuenta bancaria.", ex);
         }
-
-        // Cambiar la columna "eliminado" a true
-        cuentaExistente.setEliminado(true);
-
-        // Guardar los cambios en la base de datos
-        cuentaBancariaDAO.guardarCuentaBancaria(cuentaExistente);
-    } catch (PersistenciaException ex) {
-        Logger.getLogger(CuentaBancariaNegocio.class.getName()).log(Level.SEVERE, null, ex);
-        throw new NegocioException("Error al eliminar la cuenta bancaria.", ex);
     }
-}
-
 
     @Override
     public void guardarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {
@@ -84,7 +84,7 @@ public void eliminarCuentaBancaria(Long id) throws NegocioException {
     }
 
     @Override
-public void modificarCuentaBancaria(Long id, CuentaBancariaDTO cuentaBancaria) throws NegocioException {
+    public void modificarCuentaBancaria(Long id, CuentaBancariaDTO cuentaBancaria) throws NegocioException {
     try {
         // Buscar la cuenta bancaria existente por su ID
         CuentaBancariaEntidad cuentaExistente = cuentaBancariaDAO.buscarCuentaBancariaPorId(id);
@@ -106,32 +106,85 @@ public void modificarCuentaBancaria(Long id, CuentaBancariaDTO cuentaBancaria) t
     }
 }
 
-
     @Override
-public void guardarCuentaBancariaConRelaciones(CuentaBancariaDTO cuentaBancaria, BeneficiarioDTO beneficiario, List<PagoDTO> pagos) throws NegocioException {
-    try {
-        // Crear una instancia de CuentaBancariaEntidad con los datos del DTO
-        BeneficiarioEntidad beneficiarioEntidad = beneficiarioDAO.buscarBeneficiarioPorId(beneficiario.getId());
-        if (beneficiarioEntidad == null) {
-            throw new NegocioException("Beneficiario no encontrado con ID " + beneficiario.getId());
+    public void guardarCuentaBancariaConRelaciones(CuentaBancariaDTO cuentaBancaria, BeneficiarioDTO beneficiario, List<PagoDTO> pagos) throws NegocioException {
+        try {
+            // Crear una instancia de CuentaBancariaEntidad con los datos del DTO
+            BeneficiarioEntidad beneficiarioEntidad = beneficiarioDAO.buscarBeneficiarioPorId(beneficiario.getId());
+            if (beneficiarioEntidad == null) {
+                throw new NegocioException("Beneficiario no encontrado con ID " + beneficiario.getId());
+            }
+
+            CuentaBancariaEntidad cuentaBancariaEntidad = new CuentaBancariaEntidad(
+                cuentaBancaria.getNumeroCuenta(),
+                cuentaBancaria.getClave(),
+                cuentaBancaria.getBanco(),
+                cuentaBancaria.isEliminado(),
+                beneficiarioEntidad
+            );
+
+            // Guardar la cuenta bancaria en la base de datos
+            cuentaBancariaDAO.guardarCuentaBancaria(cuentaBancariaEntidad);
+
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CuentaBancariaNegocio.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Error al guardar la cuenta bancaria con relaciones.", ex);
+        }
+    }
+    
+    private BeneficiarioEntidad convertirBeneficiarioDTOaEntidad(BeneficiarioDTO beneficiarioDTO){
+        BeneficiarioEntidad beneficiarioEntidad = new BeneficiarioEntidad();
+        beneficiarioEntidad.setApellidoMaterno(beneficiarioDTO.getApellidoMaterno());
+        beneficiarioEntidad.setApellidoPaterno(beneficiarioDTO.getApellidoPaterno());
+        beneficiarioEntidad.setClaveContrato(beneficiarioDTO.getClaveContrato());
+        beneficiarioEntidad.setContrasena(beneficiarioDTO.getContrasena());
+        beneficiarioEntidad.setNombres(beneficiarioDTO.getNombres());
+        beneficiarioEntidad.setUsuario(beneficiarioDTO.getUsuario());
+        return beneficiarioEntidad;
+    }
+    
+    private BeneficiarioDTO convertirBeneficiarioDTOaEntidad(BeneficiarioEntidad beneficiarioEntidad){
+        BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
+        beneficiarioDTO.setApellidoMaterno(beneficiarioDTO.getApellidoMaterno());
+        beneficiarioDTO.setApellidoPaterno(beneficiarioDTO.getApellidoPaterno());
+        beneficiarioDTO.setClaveContrato(beneficiarioDTO.getClaveContrato());
+        beneficiarioDTO.setContrasena(beneficiarioDTO.getContrasena());
+        beneficiarioDTO.setNombres(beneficiarioDTO.getNombres());
+        beneficiarioDTO.setUsuario(beneficiarioDTO.getUsuario());
+        return beneficiarioDTO;
+    }
+    
+    private List<CuentaBancariaDTO> convertirCuentasEntidadADTO(List<CuentaBancariaEntidad> listaCuentasEntidad) {
+        List<CuentaBancariaDTO> listaCuentasDTO = new ArrayList<>();
+
+        for (CuentaBancariaEntidad entidad : listaCuentasEntidad) {
+            CuentaBancariaDTO dto = new CuentaBancariaDTO();
+            dto.setId(entidad.getId());
+            dto.setNumeroCuenta(entidad.getNumeroCuenta());
+            dto.setClave(entidad.getClave());
+            dto.setBanco(entidad.getBanco());
+            dto.setEliminado(entidad.isEliminado());
+            dto.setBeneficiario(convertirBeneficiarioDTOaEntidad(entidad.getBeneficiario()));
+            // Añadir otros campos que se necesiten
+            listaCuentasDTO.add(dto);
         }
 
-        CuentaBancariaEntidad cuentaBancariaEntidad = new CuentaBancariaEntidad(
-            cuentaBancaria.getNumeroCuenta(),
-            cuentaBancaria.getClave(),
-            cuentaBancaria.getBanco(),
-            cuentaBancaria.isEliminado(),
-            beneficiarioEntidad
-        );
-
-        // Guardar la cuenta bancaria en la base de datos
-        cuentaBancariaDAO.guardarCuentaBancaria(cuentaBancariaEntidad);
-
-    } catch (PersistenciaException ex) {
-        Logger.getLogger(CuentaBancariaNegocio.class.getName()).log(Level.SEVERE, null, ex);
-        throw new NegocioException("Error al guardar la cuenta bancaria con relaciones.", ex);
+        return listaCuentasDTO;
     }
-}
 
+    
+    @Override
+    public List<CuentaBancariaDTO> buscarCuentasBancarias(BeneficiarioDTO beneficiario) throws NegocioException {
+        BeneficiarioEntidad beneficiarioEntidad = convertirBeneficiarioDTOaEntidad(beneficiario);
+        
+        try {
+            List<CuentaBancariaEntidad> listaCuentas = cuentaBancariaDAO.buscarCuentasBancarias(beneficiarioEntidad);
+            return convertirCuentasEntidadADTO(listaCuentas);
+        } catch (PersistenciaException ex) {
+            throw new NegocioException(ex.getMessage());
+        }
+    }
+
+    
 
 }
