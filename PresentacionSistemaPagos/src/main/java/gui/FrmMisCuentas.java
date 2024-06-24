@@ -4,6 +4,10 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
+import DTOs.CuentaBancariaDTO;
+import InterfacesNegocio.ICuentaBancariaNegocio;
+import bo.CuentaBancariaNegocio;
 import entidadestemporales.Cuenta;
 import entidadestemporales.Pago;
 import java.awt.event.ActionEvent;
@@ -22,13 +26,17 @@ import utilerias.JButtonRenderer;
  * @author crazy
  */
 public class FrmMisCuentas extends javax.swing.JFrame {
+    private BeneficiarioDTO beneficiarioLogeado;
+    private ICuentaBancariaNegocio cuentasNegocio;
     
-    public FrmMisCuentas() {
+    public FrmMisCuentas(BeneficiarioDTO beneficiarioLogeado) {
+        this.beneficiarioLogeado = beneficiarioLogeado;
+        this.cuentasNegocio = new CuentaBancariaNegocio();
         initComponents();
         cargarMetodosIniciales();
     }
     
-        private void llenarTablaCuentas(List<Cuenta> listaCuentas) {
+    private void llenarTablaCuentas(List<CuentaBancariaDTO> listaCuentas) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblCuentas.getModel();
         if (modeloTabla.getRowCount() > 0)
         {
@@ -54,18 +62,7 @@ public class FrmMisCuentas extends javax.swing.JFrame {
     public void cargarCuentasEnTabla() {
         try
         {
-            List<Cuenta> cuentas = new ArrayList<>();
-            cuentas.add(new Cuenta("1", "001122334455", "clave1", "Banco A"));
-            cuentas.add(new Cuenta("2", "001122334466", "clave2", "Banco B"));
-            cuentas.add(new Cuenta("3", "001122334477", "clave3", "Banco C"));
-            cuentas.add(new Cuenta("4", "001122334488", "clave4", "Banco D"));
-            cuentas.add(new Cuenta("5", "001122334499", "clave5", "Banco E"));
-            cuentas.add(new Cuenta("6", "001122334500", "clave6", "Banco F"));
-            cuentas.add(new Cuenta("7", "001122334511", "clave7", "Banco G"));
-            cuentas.add(new Cuenta("8", "001122334522", "clave8", "Banco H"));
-            cuentas.add(new Cuenta("9", "001122334533", "clave9", "Banco I"));
-            cuentas.add( new Cuenta("10", "001122334544", "clave10", "Banco J"));
-            
+            List<CuentaBancariaDTO> cuentas = cuentasNegocio.buscarCuentasBancarias(beneficiarioLogeado);
             
             this.llenarTablaCuentas(cuentas);
         } catch (Exception ex)

@@ -23,7 +23,9 @@ public class PruebaCuentaBancariaDAO {
     public static void main(String[] args) throws PersistenciaException {
         IConexionBD conexion = new ConexionBD();
         CuentaBancariaDAO cuentaBancariaDAO = new CuentaBancariaDAO(conexion);
-
+        
+        
+        
         // Prueba de guardarCuentaBancaria
 //        BeneficiarioEntidad beneficiario = new BeneficiarioEntidad(); // Crear una instancia de BeneficiarioEntidad
 //        CuentaBancariaEntidad cuentaBancaria = new CuentaBancariaEntidad(1234567890L, "clave123", "Banco XYZ", false, beneficiario);

@@ -232,7 +232,7 @@ public class FrmMainBeneficiario extends javax.swing.JFrame {
 
     private void itemMisCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMisCuentasActionPerformed
         // TODO add your handling code here:}
-        FrmMisCuentas fmc = new FrmMisCuentas();
+        FrmMisCuentas fmc = new FrmMisCuentas(beneficiarioLogeado);
         fmc.setVisible(true);
     }//GEN-LAST:event_itemMisCuentasActionPerformed
 
