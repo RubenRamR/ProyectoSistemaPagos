@@ -28,39 +28,44 @@ public class PagoNegocio implements IPagoNegocio {
     IConexionBD conexion;
 
     public PagoNegocio() {
-        this.conexion =  new ConexionBD();
+        this.conexion = new ConexionBD();
         this.pagoDAO = new PagoDAO(conexion);
     }
-    
-    
+
     @Override
-public void eliminarPago(Long id)  {
-    try {
-        // Buscar el pago existente por su ID
-        PagoEntidad pagoExistente = pagoDAO.buscarPagoPorId(id);
-        if (pagoExistente == null) {
-            try {
-                throw new NegocioException("El pago con ID " + id + " no existe.");
-            } catch (NegocioException ex) {
-                Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+    public void eliminarPago(Long id) {
+        try
+        {
+            // Buscar el pago existente por su ID
+            PagoEntidad pagoExistente = pagoDAO.buscarPagoPorId(id);
+            if (pagoExistente == null)
+            {
+                try
+                {
+                    throw new NegocioException("El pago con ID " + id + " no existe.");
+                } catch (NegocioException ex)
+                {
+                    Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            // Cambiar la columna "eliminado" a true
+            pagoExistente.setEliminado(true);
+
+            // Guardar los cambios en la base de datos
+            pagoDAO.guardarPago(pagoExistente);
+        } catch (PersistenciaException ex)
+        {
+            LOGGER.log(Level.SEVERE, "Error al eliminar el pago.", ex);
+            try
+            {
+                throw new NegocioException("Error al eliminar el pago.", ex);
+            } catch (NegocioException ex1)
+            {
+                Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
-
-        // Cambiar la columna "eliminado" a true
-        pagoExistente.setEliminado(true);
-
-        // Guardar los cambios en la base de datos
-        pagoDAO.guardarPago(pagoExistente);
-    } catch (PersistenciaException ex) {
-        LOGGER.log(Level.SEVERE, "Error al eliminar el pago.", ex);
-        try {
-            throw new NegocioException("Error al eliminar el pago.", ex);
-        } catch (NegocioException ex1) {
-            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex1);
-        }
     }
-}
-
 
     @Override
     public void guardarPago(PagoDTO pagoDTO) throws PersistenciaException {
@@ -68,14 +73,11 @@ public void eliminarPago(Long id)  {
         pagoDAO.guardarPago(pago);
     }
 
-
-
     @Override
     public PagoDTO buscarPagoPorId(Long id) throws PersistenciaException {
         PagoEntidad pago = pagoDAO.buscarPagoPorId(id);
         return convertirADTO(pago);
     }
-
 
     private PagoEntidad convertirADominio(PagoDTO pagoDTO) {
         // Convert DTO to Entity
