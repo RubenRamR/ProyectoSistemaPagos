@@ -4,6 +4,7 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
 import entidadestemporales.Beneficiario;
 import entidadestemporales.Pago;
 import java.awt.event.ActionEvent;
@@ -17,19 +18,37 @@ import javax.swing.table.TableColumnModel;
 import utilerias.JButtonCellEditor;
 import utilerias.JButtonRenderer;
 
+import InterfacesNegocio.IBeneficiarioNegocio;
+import bo.BeneficiarioNegocio;
+import conexion.ConexionBD;
+import daos.BeneficiarioDAO;
+import interfaces.IBeneficiarioDAO;
+import interfaces.IConexionBD;
+import entidades.BeneficiarioEntidad;
+import excepciones.NegocioException;
+
+
 /**
  *
  * @author crazy
  */
 public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
-
+    private IBeneficiarioNegocio beneficiarioNegocio;
+    private int pagina;
+    private int limite;
+    private int offset;
+    
 
     public FrmCatalogoBeneficiarios() {
+        beneficiarioNegocio = new BeneficiarioNegocio();
+        pagina = 1;
+        limite = 5;
+        
         initComponents();
         cargarMetodosIniciales();
     }
 
-    private void llenarTablaBeneficiarios(List<Beneficiario> listaBeneficiarios) {
+    private void llenarTablaBeneficiarios(List<BeneficiarioDTO> listaBeneficiarios) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblBeneficiarios.getModel();
         if (modeloTabla.getRowCount() > 0)
         {
@@ -44,10 +63,10 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
             {
                 Object[] fila = new Object[6];
                 fila[0] = row.getId();
-                fila[1] = row.getClave();
+                fila[1] = row.getClaveContrato();
                 fila[2] = row.getNombres();
-                fila[3] = row.getApellidoP();
-                fila[4] = row.getApellidoM();
+                fila[3] = row.getApellidoPaterno();
+                fila[4] = row.getApellidoMaterno();
                 fila[5] = row.getUsuario();
                 modeloTabla.addRow(fila);
             });
@@ -57,22 +76,11 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
     public void cargarBeneficiariosEnTabla() {
         try
         {
-            List<Beneficiario> beneficiarios = new ArrayList<>();
-            beneficiarios.add(new Beneficiario("1", "001", "Juan", "Perez", "Garcia", "jperez", "password1"));
-            beneficiarios.add(new Beneficiario("2", "002", "Maria", "Gomez", "Lopez", "mgomez", "password2"));
-            beneficiarios.add(new Beneficiario("3", "003", "Carlos", "Lopez", "Martinez", "clopez", "password3"));
-            beneficiarios.add(new Beneficiario("4", "004", "Ana", "Martinez", "Rodriguez", "amartinez", "password4"));
-            beneficiarios.add(new Beneficiario("5", "005", "Luis", "Fernandez", "Hernandez", "lfernandez", "password5"));
-            beneficiarios.add(new Beneficiario("6", "006", "Laura", "Sanchez", "Morales", "lsanchez", "password6"));
-            beneficiarios.add(new Beneficiario("7", "007", "Pedro", "Ramirez", "Torres", "pramirez", "password7"));
-            beneficiarios.add(new Beneficiario("8", "008", "Sofia", "Torres", "Gonzalez", "storres", "password8"));
-            beneficiarios.add(new Beneficiario("9", "009", "Marta", "Ruiz", "Diaz", "mruiz", "password9"));
-            beneficiarios.add(new Beneficiario("10", "010", "Alberto", "Mendoza", "Santos", "amendoza", "password10"));
-
-      
+            List<BeneficiarioDTO> beneficiarios = new ArrayList<>();
+            beneficiarios = beneficiarioNegocio.buscarBeneficiarios(limite, pagina);
+            
             this.llenarTablaBeneficiarios(beneficiarios);
-        } catch (Exception ex)
-        {
+        } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -97,11 +105,36 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
     }
 
     public void modificarBeneficiario() {
-        DlgModificarBeneficiario frame = new DlgModificarBeneficiario(this, false);
+        long idBeneficiario = (long) tblBeneficiarios.getValueAt(tblBeneficiarios.getSelectedRow(), 0);
+        DlgModificarBeneficiario frame = new DlgModificarBeneficiario(idBeneficiario);
+        frame.setModal(true);
         frame.setVisible(true);
+        cargarMetodosIniciales();
+        actualizarTabla();
     }
+    
+    private void actualizarTabla() {
+        try {
+            List<BeneficiarioDTO> listaBeneficiarios = beneficiarioNegocio.buscarBeneficiarios(limite, pagina);
+            DefaultTableModel model = (DefaultTableModel) this.tblBeneficiarios.getModel();
+            model.setRowCount(0);
 
-
+            for (BeneficiarioDTO beneficiario : listaBeneficiarios) {
+                Object[] fila = {
+                    beneficiario.getId(),
+                    beneficiario.getClaveContrato(),
+                    beneficiario.getNombres(),
+                    beneficiario.getApellidoPaterno(),
+                    beneficiario.getApellidoMaterno(),
+                    beneficiario.getUsuario()
+                };
+                model.addRow(fila);
+            }
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -110,6 +143,9 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblBeneficiarios = new javax.swing.JTable();
         btnRegistrarBeneficiario = new javax.swing.JButton();
+        btnAdelante = new javax.swing.JButton();
+        btnAtras = new javax.swing.JButton();
+        lblPagina = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
@@ -128,10 +164,18 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
             new String [] {
                 "ID", "Clave", "Nombres", "Apellido P", "Apellido M", "Usuario", "Modificar"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblBeneficiarios);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 77, 750, 400));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 77, 750, 320));
 
         btnRegistrarBeneficiario.setText("Registrar un beneficiario");
         btnRegistrarBeneficiario.addActionListener(new java.awt.event.ActionListener() {
@@ -140,6 +184,25 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnRegistrarBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+
+        btnAdelante.setText("Adelante >>");
+        btnAdelante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdelanteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAdelante, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 440, -1, -1));
+
+        btnAtras.setText("<< Atras");
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, -1, -1));
+
+        lblPagina.setText(String.valueOf(pagina));
+        jPanel1.add(lblPagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 450, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,16 +221,43 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
 
     private void btnRegistrarBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarBeneficiarioActionPerformed
         // TODO add your handling code here:
-        DlgRegistrarBeneficiario drb = new DlgRegistrarBeneficiario(this, false);
-        drb.setVisible(true);
+        DlgRegistrarBeneficiario frame = new DlgRegistrarBeneficiario();
+        frame.setModal(true);
+        frame.setVisible(true);
+        cargarMetodosIniciales();
+        actualizarTabla();
     }//GEN-LAST:event_btnRegistrarBeneficiarioActionPerformed
+
+    private void btnAdelanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdelanteActionPerformed
+        // TODO add your handling code here:
+        pagina++;
+        lblPagina.setText(String.valueOf(pagina));
+        cargarBeneficiariosEnTabla();
+        actualizarTabla();
+    }//GEN-LAST:event_btnAdelanteActionPerformed
+
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        // TODO add your handling code here:
+        if (pagina == 1){
+            JOptionPane.showMessageDialog(this, "Ya estás en la primera pagina");
+        } else {
+            pagina--;
+            lblPagina.setText(String.valueOf(pagina));
+            cargarBeneficiariosEnTabla();
+            actualizarTabla();
+        }
+
+    }//GEN-LAST:event_btnAtrasActionPerformed
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdelante;
+    private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnRegistrarBeneficiario;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPagina;
     private javax.swing.JTable tblBeneficiarios;
     // End of variables declaration//GEN-END:variables
 }

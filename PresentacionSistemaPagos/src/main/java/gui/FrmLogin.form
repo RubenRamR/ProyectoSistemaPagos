@@ -175,20 +175,20 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="150" y="250" width="-1" height="-1"/>
+                  <AbsoluteConstraints x="150" y="270" width="-1" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblLogo">
+            <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/logo_banco.png"/>
+                  <Image iconType="3" name="/Screenshot 2024-06-22 141838.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="logo aqui"/>
+                <Property name="text" type="java.lang.String" value="jLabel5"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="110" y="70" width="220" height="170"/>
+                  <AbsoluteConstraints x="140" y="160" width="110" height="90"/>
                 </Constraint>
               </Constraints>
             </Component>

@@ -42,15 +42,14 @@ public class FrmMainAdmin extends javax.swing.JFrame {
         {
             listaPagos.forEach(row ->
             {
-                Object[] fila = new Object[8];
+                Object[] fila = new Object[7];
                 fila[0] = row.getId();
-                fila[1] = row.getMonto();
-                fila[2] = row.getFechaHora();
-                fila[3] = row.getEstatus();
-                fila[4] = row.getTipo();
-                fila[5] = row.getBeneficiario();
-                fila[6] = row.getCuenta();
-                fila[7] = row.getTerminado();
+                fila[1] = row.getTipo();
+                fila[2] = row.getMonto();
+                fila[3] = row.getFechaHora();
+                fila[4] = row.getBeneficiario();
+                fila[5] = row.getCuenta();
+                fila[6] = row.getTerminado();
                 modeloTabla.addRow(fila);
             });
         }
@@ -95,8 +94,8 @@ public class FrmMainAdmin extends javax.swing.JFrame {
             rechazarPago();
         };
         
-        int indiceColumnaAutorizar = 8;
-        int indiceColumnaRechazar = 9;
+        int indiceColumnaAutorizar = 7;
+        int indiceColumnaRechazar = 8;
         TableColumnModel modeloColumnas = this.tblPagos.getColumnModel();
         
         modeloColumnas.getColumn(indiceColumnaAutorizar).setCellRenderer(new JButtonRenderer("Autorizar"));
@@ -125,21 +124,19 @@ public class FrmMainAdmin extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPagos = new javax.swing.JTable();
-        lblEstatus = new javax.swing.JLabel();
         lblCliente = new javax.swing.JLabel();
-        lblAbonado = new javax.swing.JLabel();
         lblFechas = new javax.swing.JLabel();
         txtNombreCliente = new javax.swing.JTextField();
         txtFechaInicio = new javax.swing.JTextField();
         txtFechaFin = new javax.swing.JTextField();
-        comboEstatus = new javax.swing.JComboBox<>();
-        comboAbonado = new javax.swing.JComboBox<>();
         btnFiltrar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuCatalogoBeneficiarios = new javax.swing.JMenu();
         itemCatalogoBeneficiarios = new javax.swing.JMenuItem();
-        menuCatalogoPagos = new javax.swing.JMenu();
+        menuPagos = new javax.swing.JMenu();
         itemPagarlos = new javax.swing.JMenuItem();
+        itemReportePagos = new javax.swing.JMenuItem();
         menuCerrarSesion = new javax.swing.JMenu();
         itemCerrarSesion = new javax.swing.JMenuItem();
         menuAcercaDe = new javax.swing.JMenu();
@@ -155,17 +152,17 @@ public class FrmMainAdmin extends javax.swing.JFrame {
 
         tblPagos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Monto", "FechaHora", "Estatus", "Tipo", "Beneficiario", "Cuenta", "Terminado", "Autorizar", "Rechazar"
+                "ID", "Tipo", "Monto", "FechaHora", "Beneficiario", "Cuenta", "Terminado", "Autorizar", "Rechazar"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, true
+                false, false, false, false, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -176,29 +173,27 @@ public class FrmMainAdmin extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 590, 400));
 
-        lblEstatus.setText("Estatus:");
-        jPanel1.add(lblEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
-
         lblCliente.setText("Cliente:");
-        jPanel1.add(lblCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
-
-        lblAbonado.setText("Abonado");
-        jPanel1.add(lblAbonado, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, -1, -1));
+        jPanel1.add(lblCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         lblFechas.setText("Entre fechas:");
-        jPanel1.add(lblFechas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, 20));
-        jPanel1.add(txtNombreCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 110, -1));
-        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 110, -1));
-        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 110, -1));
+        jPanel1.add(lblFechas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, 20));
 
-        comboEstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Autorizado", "Pagado", "Cualquier estatus" }));
-        jPanel1.add(comboEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 110, -1));
-
-        comboAbonado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Terminado", "Abonado", "Ambas opciones" }));
-        jPanel1.add(comboAbonado, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, -1, -1));
+        txtNombreCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreClienteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtNombreCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, -1));
+        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 110, -1));
+        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 110, -1));
 
         btnFiltrar.setText("Filtrar");
-        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, -1, -1));
+        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Autorización de pagos");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, -1, -1));
 
         menuCatalogoBeneficiarios.setText("Catalogo beneficiarios");
 
@@ -212,7 +207,7 @@ public class FrmMainAdmin extends javax.swing.JFrame {
 
         jMenuBar1.add(menuCatalogoBeneficiarios);
 
-        menuCatalogoPagos.setText("Catalogo pagos");
+        menuPagos.setText("Pagos");
 
         itemPagarlos.setText("Pagarlos");
         itemPagarlos.addActionListener(new java.awt.event.ActionListener() {
@@ -220,9 +215,17 @@ public class FrmMainAdmin extends javax.swing.JFrame {
                 itemPagarlosActionPerformed(evt);
             }
         });
-        menuCatalogoPagos.add(itemPagarlos);
+        menuPagos.add(itemPagarlos);
 
-        jMenuBar1.add(menuCatalogoPagos);
+        itemReportePagos.setText("Reporte de pagos");
+        itemReportePagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemReportePagosActionPerformed(evt);
+            }
+        });
+        menuPagos.add(itemReportePagos);
+
+        jMenuBar1.add(menuPagos);
 
         menuCerrarSesion.setText("Cerrar sesion");
 
@@ -290,26 +293,34 @@ public class FrmMainAdmin extends javax.swing.JFrame {
         fapr.setVisible(true);
     }//GEN-LAST:event_itemPagarlosActionPerformed
 
+    private void txtNombreClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreClienteActionPerformed
+
+    private void itemReportePagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemReportePagosActionPerformed
+        // TODO add your handling code here:
+        FrmReportePagos frame = new FrmReportePagos();
+        frame.setVisible(true);
+    }//GEN-LAST:event_itemReportePagosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFiltrar;
-    private javax.swing.JComboBox<String> comboAbonado;
-    private javax.swing.JComboBox<String> comboEstatus;
     private javax.swing.JMenuItem itemAcercaDe;
     private javax.swing.JMenuItem itemCatalogoBeneficiarios;
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemPagarlos;
+    private javax.swing.JMenuItem itemReportePagos;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblAbonado;
     private javax.swing.JLabel lblCliente;
-    private javax.swing.JLabel lblEstatus;
     private javax.swing.JLabel lblFechas;
     private javax.swing.JMenu menuAcercaDe;
     private javax.swing.JMenu menuCatalogoBeneficiarios;
-    private javax.swing.JMenu menuCatalogoPagos;
     private javax.swing.JMenu menuCerrarSesion;
+    private javax.swing.JMenu menuPagos;
     private javax.swing.JTable tblPagos;
     private javax.swing.JTextField txtFechaFin;
     private javax.swing.JTextField txtFechaInicio;

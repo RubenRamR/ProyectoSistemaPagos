@@ -111,6 +111,8 @@ public class FrmVerAbonos extends javax.swing.JFrame {
         btnAbonar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        comboPago = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
@@ -140,13 +142,25 @@ public class FrmVerAbonos extends javax.swing.JFrame {
                 btnAbonarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAbonar, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 50, 110, 30));
+        jPanel1.add(btnAbonar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 50, 110, 30));
 
-        jLabel1.setText("Cuenta:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 70, -1));
+        jLabel1.setText("Cuenta: 234234234");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 140, 20));
 
-        jLabel2.setText("A usted le faltan   ???    pagos");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
+        jLabel2.setText("A usted le faltan 5 abonos para el pago:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 70, -1, -1));
+
+        comboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pago 1", "Pago 2", "Pago 3" }));
+        comboPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboPagoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(comboPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 70, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Mis abonos");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,11 +183,17 @@ public class FrmVerAbonos extends javax.swing.JFrame {
         da.setVisible(true);
     }//GEN-LAST:event_btnAbonarActionPerformed
 
+    private void comboPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboPagoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbonar;
+    private javax.swing.JComboBox<String> comboPago;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblAbonos;

@@ -4,17 +4,27 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
+import InterfacesNegocio.IBeneficiarioNegocio;
+import bo.BeneficiarioNegocio;
+import excepciones.NegocioException;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author crazy
  */
 public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
+    private IBeneficiarioNegocio beneficiarioNegocio;
+    
 
-
-    public DlgRegistrarBeneficiario(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public DlgRegistrarBeneficiario() {        
+        super();
+        this.beneficiarioNegocio = new BeneficiarioNegocio();
         initComponents();
     }
 
@@ -122,7 +132,23 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        BeneficiarioDTO beneficiario = new BeneficiarioDTO();
+        beneficiario.setNombres(txtNombres.getText());
+        beneficiario.setApellidoPaterno(txtApellidoPaterno.getText());
+        beneficiario.setApellidoMaterno(txtApellidoMaterno.getText());
+        beneficiario.setUsuario(txtUsuario.getText());
+        beneficiario.setContrasena(txtContrasena.getText());
+        beneficiario.setClaveContrato(txtClaveDeContrato.getText());
+        beneficiario.setSaldo(1000);
+        beneficiario.setEliminado(false);
+        
+        try {
+            beneficiarioNegocio.guardarBeneficiario(beneficiario);
+            JOptionPane.showMessageDialog(this, "Beneficiario registrado correctamente");
+            this.dispose();
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
 

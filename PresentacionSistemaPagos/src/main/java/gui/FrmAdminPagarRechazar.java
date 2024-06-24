@@ -40,15 +40,14 @@ public class FrmAdminPagarRechazar extends javax.swing.JFrame {
         {
             listaPagos.forEach(row ->
             {
-                Object[] fila = new Object[8];
+                Object[] fila = new Object[7];
                 fila[0] = row.getId();
-                fila[1] = row.getMonto();
-                fila[2] = row.getFechaHora();
-                fila[3] = row.getEstatus();
-                fila[4] = row.getTipo();
-                fila[5] = row.getBeneficiario();
-                fila[6] = row.getCuenta();
-                fila[7] = row.getTerminado();
+                fila[1] = row.getTipo();
+                fila[2] = row.getMonto();
+                fila[3] = row.getFechaHora();
+                fila[4] = row.getBeneficiario();
+                fila[5] = row.getCuenta();
+                fila[6] = row.getTerminado();
                 modeloTabla.addRow(fila);
             });
         }
@@ -93,8 +92,8 @@ public class FrmAdminPagarRechazar extends javax.swing.JFrame {
             rechazarPago();
         };
         
-        int indiceColumnaPagars = 8;
-        int indiceColumnaRechazar = 9;
+        int indiceColumnaPagars = 7;
+        int indiceColumnaRechazar = 8;
         TableColumnModel modeloColumnas = this.tblPagos.getColumnModel();
         
         modeloColumnas.getColumn(indiceColumnaPagars).setCellRenderer(new JButtonRenderer("Pagar"));
@@ -122,6 +121,12 @@ public class FrmAdminPagarRechazar extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPagos = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        txtCliente = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtFechaInicio = new javax.swing.JTextField();
+        txtFechaFin = new javax.swing.JTextField();
+        btnFiltrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
@@ -133,17 +138,17 @@ public class FrmAdminPagarRechazar extends javax.swing.JFrame {
 
         tblPagos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Monto", "FechaHora", "Estatus", "Tipo", "Beneficiario", "Cuenta", "Terminado", "Pagar", "Rechazar"
+                "ID", "Monto", "FechaHora", "Tipo", "Beneficiario", "Cuenta", "Terminado", "Pagar", "Rechazar"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, true
+                false, false, false, false, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -152,7 +157,19 @@ public class FrmAdminPagarRechazar extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblPagos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 760, 440));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 600, 440));
+
+        jLabel1.setText("Cliente");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, -1, -1));
+        jPanel1.add(txtCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 110, -1));
+
+        jLabel2.setText("Entre fechas:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
+        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 110, -1));
+        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 110, -1));
+
+        btnFiltrar.setText("Filtrar");
+        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -171,8 +188,14 @@ public class FrmAdminPagarRechazar extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFiltrar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblPagos;
+    private javax.swing.JTextField txtCliente;
+    private javax.swing.JTextField txtFechaFin;
+    private javax.swing.JTextField txtFechaInicio;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,20 +4,52 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
+import InterfacesNegocio.IBeneficiarioNegocio;
+import bo.BeneficiarioNegocio;
+import excepciones.NegocioException;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author crazy
  */
 public class DlgModificarBeneficiario extends javax.swing.JDialog {
+    private IBeneficiarioNegocio beneficiarioNegocio;
+    private BeneficiarioDTO beneficiarioDTO;
+    private long idBeneficiario;
 
-
-    public DlgModificarBeneficiario(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public DlgModificarBeneficiario(long idBeneficiario) {
+        super();
+        
+        this.beneficiarioNegocio = new BeneficiarioNegocio();
+        this.idBeneficiario = idBeneficiario;
+        
         initComponents();
+        
+        consultarBeneficiarioYLlenarTextFields();
     }
 
+    private void consultarBeneficiarioYLlenarTextFields(){
+        try {
+            this.beneficiarioDTO = beneficiarioNegocio.buscarBeneficiarioPorId(idBeneficiario);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
+        
+        txtNombres.setText(beneficiarioDTO.getNombres());
+        txtUsuario.setText(beneficiarioDTO.getUsuario());
+        txtClaveDeContrato.setText(beneficiarioDTO.getClaveContrato());
+        txtApellidoPaterno.setText(beneficiarioDTO.getApellidoPaterno());
+        txtApellidoMaterno.setText(beneficiarioDTO.getApellidoMaterno());
+        txtContrasena.setText(beneficiarioDTO.getContrasena());
+        
+    }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -130,12 +162,36 @@ public class DlgModificarBeneficiario extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
+        // TODO add your handling code here: 
+        
+        BeneficiarioDTO beneficiario = new BeneficiarioDTO();
+        beneficiario.setId(idBeneficiario);
+        beneficiario.setNombres(txtNombres.getText());
+        beneficiario.setApellidoPaterno(txtApellidoPaterno.getText());
+        beneficiario.setApellidoMaterno(txtApellidoMaterno.getText());
+        beneficiario.setUsuario(txtUsuario.getText());
+        beneficiario.setContrasena(txtContrasena.getText());
+        beneficiario.setClaveContrato(txtClaveDeContrato.getText());
+        beneficiario.setSaldo(1000);
+        beneficiario.setEliminado(false);
+
+        try {
+            beneficiarioNegocio.modificarBeneficiario(idBeneficiario, beneficiario);
+            JOptionPane.showMessageDialog(this, "Beneficiario modificado correctamente");
+            this.dispose();
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }    
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            beneficiarioNegocio.eliminarBeneficiario(idBeneficiario);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
+        
         this.dispose();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
