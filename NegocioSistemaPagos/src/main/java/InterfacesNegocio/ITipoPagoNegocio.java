@@ -5,15 +5,15 @@
 package InterfacesNegocio;
 
 import DTOs.TipoPagoDTO;
-import excepciones.NegocioException;
+import excepciones.PersistenciaException;
 
 /**
  *
  * @author rramirez
  */
 public interface ITipoPagoNegocio {
-
-    public void guardarTipoPago(TipoPagoDTO tipo) throws NegocioException;
-
-    public void modificarBeneficiario(Long id, TipoPagoDTO tipo) throws NegocioException;
+    void guardarTipoPago(TipoPagoDTO tipoPago) throws PersistenciaException;
+    void modificarTipoPago(Long id, TipoPagoDTO tipoPago) throws PersistenciaException;
+    TipoPagoDTO buscarTipoPagoPorId(Long idTipoPago) throws PersistenciaException;
+     void eliminarTipoPago(Long id) throws PersistenciaException;
 }

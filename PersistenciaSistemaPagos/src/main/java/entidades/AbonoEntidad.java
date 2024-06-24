@@ -17,10 +17,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- *
- * @author Chris
- */
 @Entity
 @Table(name = "abonos")
 public class AbonoEntidad implements Serializable {
@@ -40,6 +36,9 @@ public class AbonoEntidad implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idPago", nullable = false)
     private PagoEntidad pago;
+
+    @Column(name = "eliminado", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean eliminado;
 
     public AbonoEntidad() {
     }
@@ -89,9 +88,24 @@ public class AbonoEntidad implements Serializable {
         this.pago = pago;
     }
 
-    @Override
-    public String toString() {
-        return "Abono{" + "id=" + id + ", fechaHora=" + fechaHora + ", monto=" + monto + ", pago=" + pago + '}';
+    public boolean isEliminado() {
+        return eliminado;
     }
 
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("AbonoEntidad{");
+        sb.append("id=").append(id);
+        sb.append(", fechaHora=").append(fechaHora);
+        sb.append(", monto=").append(monto);
+        sb.append(", pago=").append(pago);
+        sb.append(", eliminado=").append(eliminado);
+        sb.append('}');
+        return sb.toString();
+    }
 }

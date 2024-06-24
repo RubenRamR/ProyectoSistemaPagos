@@ -6,13 +6,16 @@ package InterfacesNegocio;
 
 import DTOs.PagoDTO;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
+import java.util.List;
 
 /**
  *
  * @author rramirez
  */
 public interface IPagoNegocio {
-
-    public void guardarPago(PagoDTO pago) throws NegocioException;
-
+    void guardarPago(PagoDTO pago) throws PersistenciaException;
+    PagoDTO buscarPagoPorId(Long idPago) throws PersistenciaException;
+    void eliminarPago(Long id) throws PersistenciaException;
+    
 }

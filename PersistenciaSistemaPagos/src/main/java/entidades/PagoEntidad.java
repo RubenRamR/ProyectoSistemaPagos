@@ -56,42 +56,62 @@ public class PagoEntidad implements Serializable {
     @JoinColumn(name = "idTipoPago", nullable = false)
     private TipoPagoEntidad tipoPago;
 
+    @Column(name = "eliminado", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean eliminado;
+
     @OneToMany(mappedBy = "pago", cascade = CascadeType.PERSIST)
     private List<AbonoEntidad> abono;
 
-    @OneToMany(mappedBy = "pago", cascade =
-    {
-        CascadeType.PERSIST
-    })
+    @OneToMany(mappedBy = "pago", cascade = CascadeType.PERSIST)
     private List<Estatus_pagoEntidad> estatusPagos;
 
-    public PagoEntidad() {
+    public PagoEntidad(){
+        
+    }
+    
+    public PagoEntidad(float monto, String comprobante, Calendar fechaHora) {
         this.abono = new ArrayList<>();
         this.estatusPagos = new ArrayList<>();
+        
+        this.monto = monto;
+        this.comprobante = comprobante;
+        this.fechaHora = fechaHora;
     }
 
-    public PagoEntidad(Long id, float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, CuentaBancariaEntidad cuentasBancaria, TipoPagoEntidad tipoPago) {
+    public PagoEntidad(Long id, float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, CuentaBancariaEntidad cuentaBancaria, TipoPagoEntidad tipoPago, boolean eliminado, List<AbonoEntidad> abono, List<Estatus_pagoEntidad> estatusPagos) {
         this.id = id;
         this.monto = monto;
         this.comprobante = comprobante;
         this.fechaHora = fechaHora;
         this.beneficiario = beneficiario;
-        this.cuentaBancaria = cuentasBancaria;
+        this.cuentaBancaria = cuentaBancaria;
         this.tipoPago = tipoPago;
-        this.abono = new ArrayList<>();
-        this.estatusPagos = new ArrayList<>();
+        this.eliminado = eliminado;
+        this.abono = abono;
+        this.estatusPagos = estatusPagos;
     }
 
-    public PagoEntidad(float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, CuentaBancariaEntidad cuentasBancaria, TipoPagoEntidad tipoPago) {
+    public PagoEntidad(float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, CuentaBancariaEntidad cuentaBancaria, TipoPagoEntidad tipoPago, boolean eliminado, List<AbonoEntidad> abono, List<Estatus_pagoEntidad> estatusPagos) {
         this.monto = monto;
         this.comprobante = comprobante;
         this.fechaHora = fechaHora;
         this.beneficiario = beneficiario;
-        this.cuentaBancaria = cuentasBancaria;
+        this.cuentaBancaria = cuentaBancaria;
         this.tipoPago = tipoPago;
-        this.abono = new ArrayList<>();
-        this.estatusPagos = new ArrayList<>();
+        this.eliminado = eliminado;
+        this.abono = abono;
+        this.estatusPagos = estatusPagos;
     }
+
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    
 
     public Long getId() {
         return id;

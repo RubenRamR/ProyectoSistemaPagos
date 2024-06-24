@@ -35,26 +35,22 @@ public class TipoPagoEntidad implements Serializable {
     @Column(name = "numMensualidades", nullable = false)
     private int numMensualidades;
 
+    @Column(name = "eliminado", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean eliminado;
+
     @OneToMany(mappedBy = "tipoPago", cascade = CascadeType.PERSIST)
     private List<PagoEntidad> pagos;
 
+    public TipoPagoEntidad(String nombre, int numMensualidades, boolean eliminado, List<PagoEntidad> pagos) {
+        this.nombre = nombre;
+        this.numMensualidades = numMensualidades;
+        this.eliminado = eliminado;
+        this.pagos = pagos;
+    }
+    
     public TipoPagoEntidad() {
-        this.pagos = new ArrayList<>();
     }
-
-    public TipoPagoEntidad(Long id, String nombre, int numMensualidades) {
-        this.id = id;
-        this.nombre = nombre;
-        this.numMensualidades = numMensualidades;
-        this.pagos = new ArrayList<>();
-    }
-
-    public TipoPagoEntidad(String nombre, int numMensualidades) {
-        this.nombre = nombre;
-        this.numMensualidades = numMensualidades;
-        this.pagos = new ArrayList<>();
-    }
-
+    
     public Long getId() {
         return id;
     }
@@ -79,6 +75,14 @@ public class TipoPagoEntidad implements Serializable {
         this.numMensualidades = numMensualidades;
     }
 
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
     public List<PagoEntidad> getPagos() {
         return pagos;
     }
@@ -87,9 +91,12 @@ public class TipoPagoEntidad implements Serializable {
         this.pagos = pagos;
     }
 
-    @Override
-    public String toString() {
-        return "TipoPagoEntidad{" + "id=" + id + ", nombre=" + nombre + ", numMensualidades=" + numMensualidades + ", pagos=" + pagos + '}';
+    public TipoPagoEntidad(Long id, String nombre, int numMensualidades, boolean eliminado, List<PagoEntidad> pagos) {
+        this.id = id;
+        this.nombre = nombre;
+        this.numMensualidades = numMensualidades;
+        this.eliminado = eliminado;
+        this.pagos = pagos;
     }
-
 }
+   

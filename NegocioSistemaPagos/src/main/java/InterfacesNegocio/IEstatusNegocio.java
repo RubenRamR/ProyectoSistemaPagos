@@ -6,14 +6,22 @@ package InterfacesNegocio;
 
 import DTOs.EstatusDTO;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
+import java.util.List;
 
 /**
  *
  * @author rramirez
  */
 public interface IEstatusNegocio {
-    
-    public void guardarEstatus(EstatusDTO estatus) throws NegocioException;
 
-    public void modificarEstatus(Long id, EstatusDTO estatus) throws NegocioException;
+    void guardarEstatus(EstatusDTO estatusDTO) throws PersistenciaException;
+
+    void modificarEstatus(Long id, EstatusDTO estatusDTO) throws PersistenciaException;
+
+    EstatusDTO buscarEstatusPorId(Long id) throws PersistenciaException;
+
+     void eliminarEstatus(Long id) throws PersistenciaException;
+    
+   
 }

@@ -6,14 +6,26 @@ package interfaces;
 
 import entidades.TipoPagoEntidad;
 import excepciones.PersistenciaException;
+import java.util.List;
 
 /**
  *
  * @author Chris
  */
-public interface ITipoPagoDAO {
 
-    public void guardarTipoPago(TipoPagoEntidad tipo) throws PersistenciaException;
+
+
+
+public interface ITipoPagoDAO {
+    void guardarTipoPago(TipoPagoEntidad tipo) throws PersistenciaException;
     
-    public void modificarBeneficiario(Long id, TipoPagoEntidad tipo) throws PersistenciaException;
+    void modificarTipoPago(Long id, TipoPagoEntidad tipo) throws PersistenciaException;
+    
+    TipoPagoEntidad buscarTipoPagoPorId(Long id) throws PersistenciaException;
+    
+    List<TipoPagoEntidad> buscarTodosTiposPago() throws PersistenciaException;
+    
+    void eliminarTipoPago(Long id) throws PersistenciaException;
+    
+    List<TipoPagoEntidad> buscarTiposPagoPorNombre(String nombre) throws PersistenciaException;
 }

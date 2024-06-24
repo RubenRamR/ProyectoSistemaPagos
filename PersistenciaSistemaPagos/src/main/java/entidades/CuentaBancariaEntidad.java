@@ -18,10 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- *
- * @author Chris
- */
 @Entity
 @Table(name = "cuentasBancarias")
 public class CuentaBancariaEntidad implements Serializable {
@@ -40,7 +36,7 @@ public class CuentaBancariaEntidad implements Serializable {
     @Column(name = "banco", length = 50, nullable = false)
     private String banco;
 
-    @Column(name = "eliminado", nullable = false)
+    @Column(name = "eliminado", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean eliminado;
 
     @ManyToOne
@@ -49,23 +45,19 @@ public class CuentaBancariaEntidad implements Serializable {
 
     @OneToMany(mappedBy = "cuentaBancaria", cascade = CascadeType.PERSIST)
     private List<PagoEntidad> pagos;
-
-    public CuentaBancariaEntidad() {
-        this.pagos = new ArrayList<>();
+    
+    public CuentaBancariaEntidad(){
+    
     }
 
-    public CuentaBancariaEntidad(long par, String clave123, String banco_XYZ, boolean par1, BeneficiarioEntidad beneficiario1) {
+    public CuentaBancariaEntidad(long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioEntidad beneficiario) {
         this.pagos = new ArrayList<>();
-    }
-
-    public CuentaBancariaEntidad(Long id, long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioEntidad beneficiario) {
-        this.id = id;
+        
         this.numeroCuenta = numeroCuenta;
         this.clave = clave;
         this.banco = banco;
         this.eliminado = eliminado;
         this.beneficiario = beneficiario;
-        this.pagos = new ArrayList<>();
     }
 
     public CuentaBancariaEntidad(Long id, long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioEntidad beneficiario, List<PagoEntidad> pagos) {
@@ -76,7 +68,16 @@ public class CuentaBancariaEntidad implements Serializable {
         this.eliminado = eliminado;
         this.beneficiario = beneficiario;
         this.pagos = pagos;
-        this.pagos = new ArrayList<>();
+    }
+
+    public CuentaBancariaEntidad(Long id, long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioEntidad beneficiario, List<PagoEntidad> pagos) {
+        this.id = id;
+        this.numeroCuenta = numeroCuenta;
+        this.clave = clave;
+        this.banco = banco;
+        this.eliminado = eliminado;
+        this.beneficiario = beneficiario;
+        this.pagos = pagos;
     }
 
     public Long getId() {
@@ -137,17 +138,9 @@ public class CuentaBancariaEntidad implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("CuentaBancaria{");
-        sb.append("id=").append(id);
-        sb.append(", numeroCuenta=").append(numeroCuenta);
-        sb.append(", clave=").append(clave);
-        sb.append(", banco=").append(banco);
-        sb.append(", eliminado=").append(eliminado);
-        sb.append(", beneficiario=").append(beneficiario);
-        sb.append(", pagos=").append(pagos);
-        sb.append('}');
-        return sb.toString();
+        return "CuentaBancariaEntidad{" + "id=" + id + ", numeroCuenta=" + numeroCuenta + ", clave=" + clave + ", banco=" + banco + ", eliminado=" + eliminado + ", beneficiario=" + beneficiario + ", pagos=" + pagos + '}';
     }
+
+
 
 }

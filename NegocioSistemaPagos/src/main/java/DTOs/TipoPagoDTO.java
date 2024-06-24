@@ -16,6 +16,7 @@ public class TipoPagoDTO {
     private String nombre;
     private int numMensualidades;
     private List<PagoDTO> pagos;
+    private boolean eliminado;
 
     public TipoPagoDTO() {
     }
@@ -65,9 +66,22 @@ public class TipoPagoDTO {
         this.pagos = pagos;
     }
 
-    @Override
-    public String toString() {
-        return "TipoPagoDTO{" + "id=" + id + ", nombre=" + nombre + ", numMensualidades=" + numMensualidades + ", pagos=" + pagos + '}';
+    public boolean isEliminado() {
+        return eliminado;
     }
 
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    @Override
+    public String toString() {
+        return "TipoPagoDTO{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", numMensualidades=" + numMensualidades +
+                ", pagos=" + pagos +
+                ", eliminado=" + eliminado +
+                '}';
+    }
 }

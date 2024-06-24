@@ -6,10 +6,6 @@ package DTOs;
 
 import java.util.List;
 
-/**
- *
- * @author rramirez
- */
 public class BeneficiarioDTO {
 
     private Long id;
@@ -22,6 +18,7 @@ public class BeneficiarioDTO {
     private float saldo;
     private List<CuentaBancariaDTO> cuentas;
     private List<PagoDTO> pagos;
+    private boolean eliminado;
 
     public BeneficiarioDTO() {
     }
@@ -131,9 +128,28 @@ public class BeneficiarioDTO {
         this.pagos = pagos;
     }
 
-    @Override
-    public String toString() {
-        return "BeneficiarioDTO{" + "id=" + id + ", nombres=" + nombres + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", usuario=" + usuario + ", contrasena=" + contrasena + ", claveContrato=" + claveContrato + ", saldo=" + saldo + ", cuentas=" + cuentas + ", pagos=" + pagos + '}';
+    public boolean isEliminado() {
+        return eliminado;
     }
 
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    @Override
+    public String toString() {
+        return "BeneficiarioDTO{" +
+                "id=" + id +
+                ", nombres='" + nombres + '\'' +
+                ", apellidoPaterno='" + apellidoPaterno + '\'' +
+                ", apellidoMaterno='" + apellidoMaterno + '\'' +
+                ", usuario='" + usuario + '\'' +
+                ", contrasena='" + contrasena + '\'' +
+                ", claveContrato='" + claveContrato + '\'' +
+                ", saldo=" + saldo +
+                ", cuentas=" + cuentas +
+                ", pagos=" + pagos +
+                ", eliminado=" + eliminado +
+                '}';
+    }
 }

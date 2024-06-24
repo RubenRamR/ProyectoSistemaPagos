@@ -4,19 +4,15 @@
  */
 package DTOs;
 
-import entidades.PagoEntidad;
 import java.util.Calendar;
 
-/**
- *
- * @author rramirez
- */
 public class AbonoDTO {
 
     private Long id;
     private Calendar fechaHora;
     private float monto;
     private PagoDTO pago;
+    private boolean eliminado;
 
     public AbonoDTO() {
     }
@@ -66,9 +62,22 @@ public class AbonoDTO {
         this.pago = pago;
     }
 
-    @Override
-    public String toString() {
-        return "AbonoDTO{" + "id=" + id + ", fechaHora=" + fechaHora + ", monto=" + monto + ", pago=" + pago + '}';
+    public boolean isEliminado() {
+        return eliminado;
     }
 
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    @Override
+    public String toString() {
+        return "AbonoDTO{" +
+                "id=" + id +
+                ", fechaHora=" + fechaHora +
+                ", monto=" + monto +
+                ", pago=" + pago +
+                ", eliminado=" + eliminado +
+                '}';
+    }
 }

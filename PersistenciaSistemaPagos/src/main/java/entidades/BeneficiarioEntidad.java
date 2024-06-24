@@ -16,10 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- *
- * @author Chris
- */
 @Entity
 @Table(name = "beneficiarios")
 public class BeneficiarioEntidad implements Serializable {
@@ -50,18 +46,33 @@ public class BeneficiarioEntidad implements Serializable {
     @Column(name = "saldo", nullable = false)
     private float saldo;
 
+    @Column(name = "eliminado", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean eliminado;
+
     @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.PERSIST)
     private List<CuentaBancariaEntidad> cuentas;
 
     @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.PERSIST)
     private List<PagoEntidad> pagos;
-
-    public BeneficiarioEntidad() {
-        this.cuentas = new ArrayList<>();
-        this.pagos = new ArrayList<>();
+    
+    public BeneficiarioEntidad(){
+        
     }
 
-    public BeneficiarioEntidad(Long id, String nombres, String apellidoPaterno, String apellidoMaterno, String usuario, String contrasena, String claveContrato, float saldo) {
+    public BeneficiarioEntidad(String nombres, String apellidoPaterno, String apellidoMaterno, String usuario, String contrasena, String claveContrato, float saldo) {
+        this.cuentas = new ArrayList<>();
+        this.pagos = new ArrayList<>();
+        
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.usuario = usuario;
+        this.contrasena = contrasena;
+        this.claveContrato = claveContrato;
+        this.saldo = saldo;
+    }
+
+    public BeneficiarioEntidad(Long id, String nombres, String apellidoPaterno, String apellidoMaterno, String usuario, String contrasena, String claveContrato, float saldo, boolean eliminado, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) {
         this.id = id;
         this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;
@@ -70,11 +81,12 @@ public class BeneficiarioEntidad implements Serializable {
         this.contrasena = contrasena;
         this.claveContrato = claveContrato;
         this.saldo = saldo;
-        this.cuentas = new ArrayList<>();
-        this.pagos = new ArrayList<>();
+        this.eliminado = eliminado;
+        this.cuentas = cuentas;
+        this.pagos = pagos;
     }
 
-    public BeneficiarioEntidad(String nombres, String apellidoPaterno, String apellidoMaterno, String usuario, String contrasena, String claveContrato, float saldo) {
+    public BeneficiarioEntidad(String nombres, String apellidoPaterno, String apellidoMaterno, String usuario, String contrasena, String claveContrato, float saldo, boolean eliminado, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) {
         this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -82,8 +94,9 @@ public class BeneficiarioEntidad implements Serializable {
         this.contrasena = contrasena;
         this.claveContrato = claveContrato;
         this.saldo = saldo;
-        this.cuentas = new ArrayList<>();
-        this.pagos = new ArrayList<>();
+        this.eliminado = eliminado;
+        this.cuentas = cuentas;
+        this.pagos = pagos;
     }
 
     public Long getId() {
@@ -150,6 +163,14 @@ public class BeneficiarioEntidad implements Serializable {
         this.saldo = saldo;
     }
 
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
     public List<CuentaBancariaEntidad> getCuentas() {
         return cuentas;
     }
@@ -168,7 +189,7 @@ public class BeneficiarioEntidad implements Serializable {
 
     @Override
     public String toString() {
-        return "BeneficiarioEntidad{" + "id=" + id + ", nombres=" + nombres + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", usuario=" + usuario + ", contrasena=" + contrasena + ", claveContrato=" + claveContrato + ", saldo=" + saldo + ", cuentas=" + cuentas + ", pagos=" + pagos + '}';
+        return "BeneficiarioEntidad{" + "id=" + id + ", nombres=" + nombres + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", usuario=" + usuario + ", contrasena=" + contrasena + ", claveContrato=" + claveContrato + ", saldo=" + saldo + ", eliminado=" + eliminado + ", cuentas=" + cuentas + ", pagos=" + pagos + '}';
     }
 
 }
