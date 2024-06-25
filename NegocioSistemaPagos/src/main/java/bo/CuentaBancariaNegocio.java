@@ -18,7 +18,6 @@ import excepciones.PersistenciaException;
 import interfaces.IBeneficiarioDAO;
 import interfaces.IConexionBD;
 import interfaces.ICuentaBancariaDAO;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,8 +115,8 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
     }
 
 }
-
-
+        }
+    }
 
     @Override
     public void guardarCuentaBancariaConRelaciones(CuentaBancariaDTO cuentaBancaria, BeneficiarioDTO beneficiario, List<PagoDTO> pagos) throws NegocioException {
@@ -136,11 +135,13 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
                 cuentaBancaria.isEliminado(),
                 beneficiarioEntidad
 
+
                     cuentaBancaria.getNumeroCuenta(),
                     cuentaBancaria.getClave(),
                     cuentaBancaria.getBanco(),
                     cuentaBancaria.isEliminado(),
                     beneficiarioEntidad
+
 
             );
 
@@ -152,6 +153,7 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
             throw new NegocioException("Error al guardar la cuenta bancaria con relaciones.", ex);
         }
     }
+
 
     
     private BeneficiarioEntidad convertirBeneficiarioDTOaEntidad(BeneficiarioDTO beneficiarioDTO){

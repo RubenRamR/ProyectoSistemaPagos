@@ -102,7 +102,6 @@ public class DlgNuevoPago extends javax.swing.JDialog {
         jPanel1.add(txtCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 130, 180, -1));
         jPanel1.add(txtClabe, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 180, -1));
 
-        comboTipoDePago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Proveedor", "Viatico", "Reembolso" }));
         comboTipoDePago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboTipoDePagoActionPerformed(evt);
@@ -202,6 +201,7 @@ public class DlgNuevoPago extends javax.swing.JDialog {
             } catch (PersistenciaException ex) {
                 Logger.getLogger(DlgNuevoPago.class.getName()).log(Level.SEVERE, null, ex);
             }
+
 
         try {
             TipoPagoDTO tipoPago = new TipoPagoDTO();
