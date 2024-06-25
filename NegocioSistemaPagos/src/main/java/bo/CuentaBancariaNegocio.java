@@ -187,8 +187,8 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
     }
 
     public CuentaBancariaDTO buscarCuentaBancariaDTO(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {
+      
         try {
-
             CuentaBancariaEntidad cuentaBancariaEntidad = convertirDTOAEntidad(cuentaBancariaDTO);
             CuentaBancariaEntidad cuentaBancariaEncontrada = cuentaBancariaDAO.buscarCuentaBancaria(cuentaBancariaEntidad);
             return convertirEntidadADTO(cuentaBancariaEncontrada);
@@ -200,7 +200,7 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
     private CuentaBancariaEntidad convertirDTOAEntidad(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {
 
         BeneficiarioDAO beneficiarioDAO = new BeneficiarioDAO(conexion);
-        BeneficiarioEntidad beneficiario = null;
+        BeneficiarioEntidad beneficiario = new BeneficiarioEntidad();
 
         try {
             beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(cuentaBancariaDTO.getBeneficiario().getId());
