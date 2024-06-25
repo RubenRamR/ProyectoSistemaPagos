@@ -11,9 +11,13 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import utilerias.CheckComboBox;
+import utilerias.ComboItems;
 import utilerias.JButtonCellEditor;
 import utilerias.JButtonRenderer;
 
@@ -22,14 +26,46 @@ import utilerias.JButtonRenderer;
  * @author crazy
  */
 public class FrmReportePagos extends javax.swing.JFrame {
+
+    private JCheckBox checkCreado, checkModificado, checkAutorizado, checkRechazado, checkPagado;
+
     
     private IPagoNegocio pagosNegocio;
     
     public FrmReportePagos() {
         initComponents();
         cargarMetodosIniciales();
+        cargarComboCheck();
     }
-    
+
+    private void cargarComboCheck() {
+        checkCreado = new JCheckBox();
+        checkCreado.setText("Creado");
+        checkCreado.setBounds(20, 30, 120, 40);
+
+        checkModificado = new JCheckBox();
+        checkModificado.setText("Modificado");
+        checkModificado.setBounds(20, 40, 120, 40);
+
+        checkAutorizado = new JCheckBox();
+        checkAutorizado.setText("Autorizado");
+        checkAutorizado.setBounds(20, 50, 120, 40);
+
+        checkRechazado = new JCheckBox();
+        checkRechazado.setText("Rechazado");
+        checkRechazado.setBounds(20, 60, 120, 40);
+
+        checkPagado = new JCheckBox();
+        checkPagado.setText("Pagado");
+        checkPagado.setBounds(20, 70, 120, 40);
+
+        add(checkCreado);
+        add(checkModificado);
+        add(checkAutorizado);
+        add(checkRechazado);
+        add(checkPagado);
+    }
+
     private void llenarTablaPagos(List<Pago> listaPagos) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblPagos.getModel();
         if (modeloTabla.getRowCount() > 0)
@@ -74,6 +110,7 @@ public class FrmReportePagos extends javax.swing.JFrame {
 //            List<PagosDTO> pagosDTO = this.pagosNegocio.buscarPagoPorId(1);
             
 //            this.llenarTablaPagos(pagosDTO);
+            this.llenarTablaPagos(pagos);
         } catch (Exception ex)
         {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
@@ -84,7 +121,7 @@ public class FrmReportePagos extends javax.swing.JFrame {
         this.cargarPagosEnTabla();
 
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -100,7 +137,7 @@ public class FrmReportePagos extends javax.swing.JFrame {
         btnFiltrar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         btnGenerarPDF = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBoxCheckEstatus = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -188,6 +225,13 @@ public class FrmReportePagos extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
+        jComboBoxCheckEstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Creado", "Modificado", "Autorizado", "Rechazado", "Pagado", "Completado", " " }));
+        jComboBoxCheckEstatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCheckEstatusActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jComboBoxCheckEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
 
         jLabel4.setText("Estatus");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
@@ -230,12 +274,15 @@ public class FrmReportePagos extends javax.swing.JFrame {
     private void btnGenerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPDFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGenerarPDFActionPerformed
+    private void jComboBoxCheckEstatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCheckEstatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxCheckEstatusActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFiltrar;
     private javax.swing.JButton btnGenerarPDF;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBoxCheckEstatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
