@@ -11,11 +11,13 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import utilerias.CheckBoxComboBox;
 import utilerias.CheckComboBox;
 import utilerias.ComboItems;
 import utilerias.JButtonCellEditor;
@@ -27,43 +29,75 @@ import utilerias.JButtonRenderer;
  */
 public class FrmReportePagos extends javax.swing.JFrame {
 
-    private JCheckBox checkCreado, checkModificado, checkAutorizado, checkRechazado, checkPagado;
+    private CheckBoxComboBox cmbEstatus;
 
-    
     private IPagoNegocio pagosNegocio;
-    
+
     public FrmReportePagos() {
         initComponents();
         cargarMetodosIniciales();
-        cargarComboCheck();
+
+        JCheckBox[] checkBoxes =
+        {
+            new JCheckBox("Creado"),
+            new JCheckBox("Modificado"),
+            new JCheckBox("Autorizado"),
+            new JCheckBox("Rechazado"),
+            new JCheckBox("Pagado"),
+            new JCheckBox("Completado")
+        };
+
+        // Crear instancia de CheckBoxComboBox y asignar a cmbEstatus
+        cmbEstatus = new CheckBoxComboBox(checkBoxes);
+        cmbEstatus.addActionListener(e -> aplicarFiltros()); // Agregar ActionListener
+
+        // Agregar cmbEstatus al panel
+        jPanel1.add(cmbEstatus);
+
+        // Otros componentes del formulario pueden ser inicializados aquí
+        cargarPagosEnTabla();
     }
 
-    private void cargarComboCheck() {
-        checkCreado = new JCheckBox();
-        checkCreado.setText("Creado");
-        checkCreado.setBounds(20, 30, 120, 40);
+    private void aplicarFiltros() {
+        List<String> estatusSeleccionados = cmbEstatus.getSelectedItems();
+        String tipo = cmbTipo.getSelectedItem().toString();
+        String abonos = cmbAbonos.getSelectedItem().toString();
 
-        checkModificado = new JCheckBox();
-        checkModificado.setText("Modificado");
-        checkModificado.setBounds(20, 40, 120, 40);
+        List<Pago> pagosFiltrados = new ArrayList<>(pagosOriginales);
 
-        checkAutorizado = new JCheckBox();
-        checkAutorizado.setText("Autorizado");
-        checkAutorizado.setBounds(20, 50, 120, 40);
+        // Filtrar por tipo
+        if (!tipo.equals("<None>"))
+        {
+            pagosFiltrados = pagosFiltrados.stream()
+                    .filter(p -> p.getTipo().equalsIgnoreCase(tipo))
+                    .collect(Collectors.toList());
+        }
 
-        checkRechazado = new JCheckBox();
-        checkRechazado.setText("Rechazado");
-        checkRechazado.setBounds(20, 60, 120, 40);
+        // Filtrar por estatus
+        if (!estatusSeleccionados.isEmpty())
+        {
+            pagosFiltrados = pagosFiltrados.stream()
+                    .filter(p -> estatusSeleccionados.contains(p.getEstatus()))
+                    .collect(Collectors.toList());
+        }
 
-        checkPagado = new JCheckBox();
-        checkPagado.setText("Pagado");
-        checkPagado.setBounds(20, 70, 120, 40);
+        // Filtrar por abonos
+        if (!abonos.equals("<None>"))
+        {
+            if (abonos.equals("Si"))
+            {
+                pagosFiltrados = pagosFiltrados.stream()
+                        .filter(p -> p.getTerminado().equalsIgnoreCase("Abonado"))
+                        .collect(Collectors.toList());
+            } else if (abonos.equals("No"))
+            {
+                pagosFiltrados = pagosFiltrados.stream()
+                        .filter(p -> !p.getTerminado().equalsIgnoreCase("Abonado"))
+                        .collect(Collectors.toList());
+            }
+        }
 
-        add(checkCreado);
-        add(checkModificado);
-        add(checkAutorizado);
-        add(checkRechazado);
-        add(checkPagado);
+        llenarTablaPagos(pagosFiltrados);
     }
 
     private void llenarTablaPagos(List<Pago> listaPagos) {
@@ -108,7 +142,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
             pagos.add(new Pago("10", "1750.45", "2024-06-10 19:00", "Pagado", "Reembolso", "Alberto Mendoza", "321987654", "Terminado", "1"));
 
 //            List<PagosDTO> pagosDTO = this.pagosNegocio.buscarPagoPorId(1);
-            
 //            this.llenarTablaPagos(pagosDTO);
             this.llenarTablaPagos(pagos);
         } catch (Exception ex)
