@@ -15,7 +15,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import InterfacesNegocio.IPagoNegocio;
 import conexion.ConexionBD;
+import daos.BeneficiarioDAO;
+import daos.CuentaBancariaDAO;
 import daos.PagoDAO;
+import entidades.BeneficiarioEntidad;
+import entidades.CuentaBancariaEntidad;
+import interfaces.IBeneficiarioDAO;
 
 /**
  *
@@ -28,61 +33,74 @@ public class PagoNegocio implements IPagoNegocio {
     IConexionBD conexion;
 
     public PagoNegocio() {
-        this.conexion =  new ConexionBD();
+        this.conexion = new ConexionBD();
         this.pagoDAO = new PagoDAO(conexion);
     }
-    
-    
+
     @Override
-public void eliminarPago(Long id)  {
-    try {
-        // Buscar el pago existente por su ID
-        PagoEntidad pagoExistente = pagoDAO.buscarPagoPorId(id);
-        if (pagoExistente == null) {
+    public void eliminarPago(Long id) throws NegocioException {
+        try {
+            PagoEntidad pagoExistente = pagoDAO.buscarPagoPorId(id);
+            if (pagoExistente == null) {
+                try {
+                    throw new NegocioException("El pago con ID " + id + " no existe.");
+                } catch (NegocioException ex) {
+                    Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            // Cambiar la columna "eliminado" a true
+            pagoExistente.setEliminado(true);
+
+            // Guardar los cambios en la base de datos
+            pagoDAO.guardarPago(pagoExistente);
+        } catch (PersistenciaException ex) {
+            LOGGER.log(Level.SEVERE, "Error al eliminar el pago.", ex);
             try {
-                throw new NegocioException("El pago con ID " + id + " no existe.");
-            } catch (NegocioException ex) {
-                Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+                throw new NegocioException("Error al eliminar el pago.", ex);
+            } catch (NegocioException ex1) {
+                Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
+    }
 
-        // Cambiar la columna "eliminado" a true
-        pagoExistente.setEliminado(true);
-
-        // Guardar los cambios en la base de datos
-        pagoDAO.guardarPago(pagoExistente);
-    } catch (PersistenciaException ex) {
-        LOGGER.log(Level.SEVERE, "Error al eliminar el pago.", ex);
+    @Override
+    public void guardarPago(PagoDTO pagoDTO) throws NegocioException {
+        PagoEntidad pago = convertirADominio(pagoDTO);
         try {
-            throw new NegocioException("Error al eliminar el pago.", ex);
-        } catch (NegocioException ex1) {
-            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex1);
+            pagoDAO.guardarPago(pago);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-}
-
 
     @Override
-    public void guardarPago(PagoDTO pagoDTO) throws PersistenciaException {
-        PagoEntidad pago = convertirADominio(pagoDTO);
-        pagoDAO.guardarPago(pago);
-    }
-
-
-
-    @Override
-    public PagoDTO buscarPagoPorId(Long id) throws PersistenciaException {
-        PagoEntidad pago = pagoDAO.buscarPagoPorId(id);
+    public PagoDTO buscarPagoPorId(Long id) throws NegocioException {
+        PagoEntidad pago = null;
+        try {
+            pago = pagoDAO.buscarPagoPorId(id);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return convertirADTO(pago);
     }
 
-
-    private PagoEntidad convertirADominio(PagoDTO pagoDTO) {
+    private PagoEntidad convertirADominio(PagoDTO pagoDTO) throws NegocioException {
         // Convert DTO to Entity
-        PagoEntidad pago = new PagoEntidad(pagoDTO.getMonto(), pagoDTO.getComprobante(), pagoDTO.getFechaHora());
+        BeneficiarioDAO beneficiarioDAO = new BeneficiarioDAO(conexion);
+        BeneficiarioEntidad beneficiario = null;
+
+        CuentaBancariaDAO cuenta = new CuentaBancariaDAO(conexion);
+        CuentaBancariaEntidad cuentaBan = null;
+        try {
+            beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(pagoDTO.getBeneficiario().getId());
+            cuentaBan = cuenta.buscarCuentaBancariaPorId(pagoDTO.getCuentaBancaria().getId());
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        PagoEntidad pago = new PagoEntidad(pagoDTO.getMonto(), pagoDTO.getComprobante(), pagoDTO.getFechaHora(), beneficiario, cuentaBan, false);
         pago.setId(pagoDTO.getId());
         pago.setMonto(pagoDTO.getMonto());
-        // Set other fields
         return pago;
     }
 
