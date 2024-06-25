@@ -10,8 +10,13 @@ import DTOs.EstatusDTO;
 import DTOs.Estatus_pagoDTO;
 import DTOs.PagoDTO;
 import DTOs.TipoPagoDTO;
+import InterfacesNegocio.IBeneficiarioNegocio;
+import InterfacesNegocio.ICuentaBancariaNegocio;
 import InterfacesNegocio.IPagoNegocio;
+import bo.BeneficiarioNegocio;
+import bo.CuentaBancariaNegocio;
 import bo.PagoNegocio;
+import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -19,23 +24,29 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author crazy
  */
 public class DlgNuevoPago extends javax.swing.JDialog {
+
     private BeneficiarioDTO beneficiarioLogeado;
     private IPagoNegocio pagoneg;
+    private ICuentaBancariaNegocio cuentaneg;
+    private IBeneficiarioNegocio beneneg;
 
-    
     public DlgNuevoPago(BeneficiarioDTO beneficiarioLogeado) {
+
         super();
+        this.cuentaneg = new CuentaBancariaNegocio();
+        this.beneneg = new BeneficiarioNegocio();
         this.pagoneg = new PagoNegocio();
         this.beneficiarioLogeado = beneficiarioLogeado;
         initComponents();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -192,6 +203,51 @@ public class DlgNuevoPago extends javax.swing.JDialog {
                 Logger.getLogger(DlgNuevoPago.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+        try {
+            TipoPagoDTO tipoPago = new TipoPagoDTO();
+            tipoPago.setId(6l);
+            tipoPago.setEliminado(false);
+            tipoPago.setNombre("Mensualidad");
+            tipoPago.setNumMensualidades(12);
+
+            // Recopilando datos del formulario
+            float monto = Float.parseFloat(txtMonto.getText());
+            String comprobante = txtMensaje.getText();
+            String banco = txtBanco.getText();
+            long numeroCuenta = Long.parseLong(txtCuenta.getText());
+            String clave = txtClabe.getText();
+//            String tipoPagoSeleccionado = comboTipoDePago.getSelectedItem().toString();
+
+            BeneficiarioDTO beneficiario = beneneg.buscarBeneficiarioDTO(beneficiarioLogeado);
+
+            CuentaBancariaDTO cuentaBancaria = new CuentaBancariaDTO();
+            cuentaBancaria.setBanco(banco);
+            cuentaBancaria.setNumeroCuenta(numeroCuenta);
+            cuentaBancaria.setClave(clave);
+            cuentaBancaria.setBeneficiario(beneficiario);
+
+         
+
+            cuentaneg.guardarCuentaBancaria(cuentaBancaria);
+
+            CuentaBancariaDTO cuentaBancaria1 = cuentaneg.buscarCuentaBancariaDTO(cuentaBancaria);
+            PagoDTO nuevoPago = new PagoDTO();
+            nuevoPago.setMonto(monto);
+            nuevoPago.setComprobante(comprobante);
+            nuevoPago.setFechaHora(Calendar.getInstance());
+            nuevoPago.setBeneficiario(beneficiario);
+            nuevoPago.setCuentaBancaria(cuentaBancaria1);
+            nuevoPago.setTipoPago(tipoPago);
+            nuevoPago.setEliminado(false);
+
+            pagoneg.guardarPago(nuevoPago);
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Por favor ingrese un monto válido");
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el pago: " + ex.getMessage());
+        }
+
         // Cerrar la ventana actual
         this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
@@ -201,7 +257,6 @@ public class DlgNuevoPago extends javax.swing.JDialog {
     }//GEN-LAST:event_comboTipoDePagoActionPerformed
 
 
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;

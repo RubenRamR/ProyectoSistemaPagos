@@ -14,8 +14,11 @@ import java.util.List;
  * @author rramirez
  */
 public interface IPagoNegocio {
-    void guardarPago(PagoDTO pago) throws PersistenciaException;
-    PagoDTO buscarPagoPorId(Long idPago) throws PersistenciaException;
-    void eliminarPago(Long id) throws PersistenciaException;
-    
+
+    void guardarPago(PagoDTO pago) throws NegocioException;
+
+    PagoDTO buscarPagoPorId(Long idPago) throws NegocioException;
+
+    void eliminarPago(Long id) throws NegocioException;
+
 }
