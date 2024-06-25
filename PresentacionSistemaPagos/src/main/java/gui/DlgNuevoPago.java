@@ -161,48 +161,6 @@ public class DlgNuevoPago extends javax.swing.JDialog {
     }//GEN-LAST:event_txtMensajeActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // Crear un PagoDTO
-        PagoDTO pago = new PagoDTO();
-        CuentaBancariaDTO cuenta = new CuentaBancariaDTO();
-        EstatusDTO estatus = new EstatusDTO();
-        Estatus_pagoDTO estatusPago = new Estatus_pagoDTO();
-        TipoPagoDTO tipoPago= new TipoPagoDTO();
-
-        // Obtener los valores de los campos de texto
-        String banco = txtBanco.getText();
-        long numeroCuenta = Long.parseLong(txtCuenta.getText());
-        String clabe = txtClabe.getText();
-        String mensaje = txtMensaje.getText();
-        float monto = Float.parseFloat(txtMonto.getText()); // Asegúrate de manejar excepciones si el valor no es numérico
-        TipoPagoDTO tipoPagoSeleccionado = (TipoPagoDTO) comboTipoDePago.getSelectedItem();
-        
-        // Asignar los valores al PagoDTO
-        cuenta.setBanco(banco);
-        cuenta.setNumeroCuenta(numeroCuenta);
-        cuenta.setClave(clabe);
-        estatusPago.setMensaje(mensaje);
-        pago.setMonto(monto);
-        pago.setTipoPago(tipoPago);
-
-        // Crear un EstatusDTO y establecerlo como "Creado"
-        estatus.setNombre("Creado"); // Asegúrate de tener un método setter para el nombre en EstatusDTO
-        // Asociar el Estatus al Pago
-        List<Estatus_pagoDTO> estatusPagos = new ArrayList<>();
-
-        estatusPago.setEstatus(estatus);
-        estatusPagos.add(estatusPago);
-        pago.setEstatusPagos(estatusPagos);
-        pago.setBeneficiario(beneficiarioLogeado);
-
-        pago.setComprobante("ola");
-        pago.setFechaHora(Calendar.getInstance());
-            try {
-                pagoneg.guardarPago(pago);
-            } catch (PersistenciaException ex) {
-                Logger.getLogger(DlgNuevoPago.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-
         try {
             TipoPagoDTO tipoPago = new TipoPagoDTO();
             tipoPago.setId(6l);
@@ -225,8 +183,6 @@ public class DlgNuevoPago extends javax.swing.JDialog {
             cuentaBancaria.setNumeroCuenta(numeroCuenta);
             cuentaBancaria.setClave(clave);
             cuentaBancaria.setBeneficiario(beneficiario);
-
-         
 
             cuentaneg.guardarCuentaBancaria(cuentaBancaria);
 
