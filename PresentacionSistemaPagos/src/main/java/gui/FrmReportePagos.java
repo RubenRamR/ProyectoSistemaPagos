@@ -4,8 +4,21 @@
  */
 package gui;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import entidadestemporales.Pago;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -192,6 +205,11 @@ public class FrmReportePagos extends javax.swing.JFrame {
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
 
         btnGenerarPDF.setText("Generar reporte PDF");
+        btnGenerarPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarPDFActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnGenerarPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 450, -1, -1));
 
         cmbEstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<None>", "Creado", "Modificado", "Autorizado", "Rechazado", "Pagado", "Completado", " " }));
@@ -270,6 +288,72 @@ public class FrmReportePagos extends javax.swing.JFrame {
     JOptionPane.showMessageDialog(this, "Filtros restablecidos. Mostrando todos los pagos.", "Información", JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_btnRestablecerActionPerformed
+
+    private void btnGenerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPDFActionPerformed
+       Document document = new Document(PageSize.A4); // Cambiamos a A4 para más espacio
+    try {
+        PdfWriter.getInstance(document, new FileOutputStream("ReportePagos.pdf"));
+        document.open();
+        Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
+        Font fontSubTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.ITALIC);
+        Font fontContenido = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
+
+        // Título del reporte
+        Paragraph titulo = new Paragraph("Reporte de Pagos", fontTitulo);
+        titulo.setAlignment(Element.ALIGN_CENTER);
+        document.add(titulo);
+
+        document.add(new Paragraph(" ")); // Espacio en blanco
+
+        // Filtros aplicados
+        Paragraph filtros = new Paragraph("Filtros aplicados:", fontSubTitulo);
+        document.add(filtros);
+
+        PdfPTable tableFiltros = new PdfPTable(2);
+        tableFiltros.setWidthPercentage(100);
+        tableFiltros.addCell(new Phrase("Tipo:", fontContenido));
+        tableFiltros.addCell(new Phrase(cmbTipo.getSelectedItem().toString(), fontContenido));
+        tableFiltros.addCell(new Phrase("Estatus:", fontContenido));
+        tableFiltros.addCell(new Phrase(cmbEstatus.getSelectedItem().toString(), fontContenido));
+        tableFiltros.addCell(new Phrase("Abonos:", fontContenido));
+        tableFiltros.addCell(new Phrase(cmbAbonos.getSelectedItem().toString(), fontContenido));
+        document.add(tableFiltros);
+
+        document.add(new Paragraph(" ")); // Espacio en blanco
+
+        // Tabla de pagos
+        Paragraph tablaTitulo = new Paragraph("Pagos:", fontSubTitulo);
+        document.add(tablaTitulo);
+
+        PdfPTable table = new PdfPTable(8); // 8 columnas para los datos de Pago
+        table.setWidthPercentage(100);
+
+        // Encabezados de la tabla
+        String[] headers = {"ID", "Tipo", "Monto", "Fecha/Hora", "Beneficiario", "Cuenta", "Terminado", "Estatus"};
+        for (String header : headers) {
+            PdfPCell cell = new PdfPCell(new Phrase(header, fontContenido));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            table.addCell(cell);
+        }
+
+        // Datos de la tabla
+        DefaultTableModel model = (DefaultTableModel) tblPagos.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            for (int j = 0; j < model.getColumnCount(); j++) {
+                table.addCell(new Phrase(model.getValueAt(i, j).toString(), fontContenido));
+            }
+        }
+
+        document.add(table);
+
+    } catch (DocumentException | FileNotFoundException e) {
+        e.printStackTrace();
+    } finally {
+        document.close();
+        JOptionPane.showMessageDialog(null, "Se creó el archivo 'ReportePagos.pdf' en la carpeta del proyecto");
+    }
+    }//GEN-LAST:event_btnGenerarPDFActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
