@@ -166,24 +166,16 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
     }
 
     private CuentaBancariaDTO convertirEntidadADTO(CuentaBancariaEntidad cuentaBancariaEntidad) throws NegocioException {
-        BeneficiarioDAO beneficiarioDAO = new BeneficiarioDAO(conexion);
-        BeneficiarioEntidad beneficiario = null;
+        
+        BeneficiarioDTO beneficiarioDTO = convertirEntidadADTO(cuentaBancariaEntidad.getBeneficiario());
 
-        try {
-            beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(cuentaBancariaEntidad.getBeneficiario().getId());
-        } catch (PersistenciaException ex) {
-            throw new NegocioException("Error al buscar el beneficiario para la cuenta bancaria", ex);
-        }
-
+        
         CuentaBancariaDTO cuentaBancariaDTO = new CuentaBancariaDTO();
         cuentaBancariaDTO.setId(cuentaBancariaEntidad.getId());
         cuentaBancariaDTO.setBanco(cuentaBancariaEntidad.getBanco());
         cuentaBancariaDTO.setNumeroCuenta(cuentaBancariaEntidad.getNumeroCuenta());
         cuentaBancariaDTO.setClave(cuentaBancariaEntidad.getClave());
         cuentaBancariaDTO.setEliminado(cuentaBancariaEntidad.isEliminado());
-
-        BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
-        beneficiarioDTO.setId(beneficiario.getId());
         cuentaBancariaDTO.setBeneficiario(beneficiarioDTO);
 
         return cuentaBancariaDTO;
