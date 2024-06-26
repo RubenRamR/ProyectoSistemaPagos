@@ -145,33 +145,22 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
         return beneficiarioEntidad;
     }
 
-    private BeneficiarioDTO convertirBeneficiarioDTOaEntidad(BeneficiarioEntidad beneficiarioEntidad) {
-        BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
-        beneficiarioDTO.setApellidoMaterno(beneficiarioDTO.getApellidoMaterno());
-        beneficiarioDTO.setApellidoPaterno(beneficiarioDTO.getApellidoPaterno());
-        beneficiarioDTO.setClaveContrato(beneficiarioDTO.getClaveContrato());
-        beneficiarioDTO.setContrasena(beneficiarioDTO.getContrasena());
-        beneficiarioDTO.setNombres(beneficiarioDTO.getNombres());
-        beneficiarioDTO.setUsuario(beneficiarioDTO.getUsuario());
-        return beneficiarioDTO;
-    }
-
     private List<CuentaBancariaDTO> convertirCuentasEntidadADTO(List<CuentaBancariaEntidad> listaCuentasEntidad) {
-        List<CuentaBancariaDTO> listaCuentasDTO = new ArrayList<>();
-
-        for (CuentaBancariaEntidad entidad : listaCuentasEntidad) {
-            CuentaBancariaDTO dto = new CuentaBancariaDTO();
-            dto.setId(entidad.getId());
-            dto.setNumeroCuenta(entidad.getNumeroCuenta());
-            dto.setClave(entidad.getClave());
-            dto.setBanco(entidad.getBanco());
-            dto.setEliminado(entidad.isEliminado());
-            dto.setBeneficiario(convertirBeneficiarioDTOaEntidad(entidad.getBeneficiario()));
-            // Añadir otros campos que se necesiten
-            listaCuentasDTO.add(dto);
-        }
-
-        return listaCuentasDTO;
+//        List<CuentaBancariaDTO> listaCuentasDTO = new ArrayList<>();
+//
+//        for (CuentaBancariaEntidad entidad : listaCuentasEntidad) {
+//            CuentaBancariaDTO dto = new CuentaBancariaDTO();
+//            dto.setId(entidad.getId());
+//            dto.setNumeroCuenta(entidad.getNumeroCuenta());
+//            dto.setClave(entidad.getClave());
+//            dto.setBanco(entidad.getBanco());
+//            dto.setEliminado(entidad.isEliminado());
+//            dto.setBeneficiario(convertirBeneficiarioDTOaEntidad(entidad.getBeneficiario()));
+//            // Añadir otros campos que se necesiten
+//            listaCuentasDTO.add(dto);
+//        }
+//
+        return null;
     }
 
     @Override
@@ -187,10 +176,23 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
     }
 
     public CuentaBancariaDTO buscarCuentaBancariaDTO(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {
-      
+
         try {
             CuentaBancariaEntidad cuentaBancariaEntidad = convertirDTOAEntidad(cuentaBancariaDTO);
             CuentaBancariaEntidad cuentaBancariaEncontrada = cuentaBancariaDAO.buscarCuentaBancaria(cuentaBancariaEntidad);
+
+            return convertirEntidadADTO(cuentaBancariaEncontrada);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("Error al buscar la cuenta bancaria", e);
+        }
+    }
+
+    public CuentaBancariaDTO buscarCuentaBancariaPorId(Long id) throws NegocioException {
+        try {
+            // Buscar la cuenta bancaria en la base de datos usando el ID
+            CuentaBancariaEntidad cuentaBancariaEncontrada = cuentaBancariaDAO.buscarCuentaBancariaPorId(id);
+
+            // Convertir la entidad encontrada a DTO y devolverla
             return convertirEntidadADTO(cuentaBancariaEncontrada);
         } catch (PersistenciaException e) {
             throw new NegocioException("Error al buscar la cuenta bancaria", e);
@@ -220,15 +222,15 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
     }
 
     private CuentaBancariaDTO convertirEntidadADTO(CuentaBancariaEntidad cuentaBancariaEntidad) throws NegocioException {
+        BeneficiarioNegocio beneficiario = new BeneficiarioNegocio();
 
-//        BeneficiarioDTO beneficiarioDTO = convertirEntidadADTO(cuentaBancariaEntidad.getBeneficiario());
         CuentaBancariaDTO cuentaBancariaDTO = new CuentaBancariaDTO();
         cuentaBancariaDTO.setId(cuentaBancariaEntidad.getId());
         cuentaBancariaDTO.setBanco(cuentaBancariaEntidad.getBanco());
         cuentaBancariaDTO.setNumeroCuenta(cuentaBancariaEntidad.getNumeroCuenta());
         cuentaBancariaDTO.setClave(cuentaBancariaEntidad.getClave());
         cuentaBancariaDTO.setEliminado(cuentaBancariaEntidad.isEliminado());
-//        cuentaBancariaDTO.setBeneficiario(beneficiarioDTO);
+        cuentaBancariaDTO.setBeneficiario(beneficiario.convertirEntidadADTO(cuentaBancariaEntidad.getBeneficiario()));
 
         return cuentaBancariaDTO;
     }

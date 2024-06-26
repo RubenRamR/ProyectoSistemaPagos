@@ -198,7 +198,7 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
         return offset;
     }
     
-    private BeneficiarioEntidad convertirDTOAEntidad(BeneficiarioDTO beneficiarioDTO) {
+    public BeneficiarioEntidad convertirDTOAEntidad(BeneficiarioDTO beneficiarioDTO) {
         BeneficiarioEntidad beneficiarioEntidad = new BeneficiarioEntidad();
         beneficiarioEntidad.setId(beneficiarioDTO.getId()); 
         beneficiarioEntidad.setApellidoMaterno(beneficiarioDTO.getApellidoMaterno());
@@ -210,7 +210,7 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
         return beneficiarioEntidad;
     }
     
-    private BeneficiarioDTO convertirEntidadADTO(BeneficiarioEntidad beneficiarioEntidad) {
+    public BeneficiarioDTO convertirEntidadADTO(BeneficiarioEntidad beneficiarioEntidad) {
         BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
         beneficiarioDTO.setId(beneficiarioEntidad.getId());
         beneficiarioDTO.setApellidoMaterno(beneficiarioEntidad.getApellidoMaterno());

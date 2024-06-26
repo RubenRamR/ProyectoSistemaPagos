@@ -49,11 +49,11 @@ public class PagoEntidad implements Serializable {
     private BeneficiarioEntidad beneficiario;
 
     @ManyToOne
-    @JoinColumn(name = "idCuenta", nullable = false)
+    @JoinColumn(name = "idCuenta")
     private CuentaBancariaEntidad cuentaBancaria;
 
     @ManyToOne
-    @JoinColumn(name = "idTipoPago", nullable = false)
+    @JoinColumn(name = "idTipoPago")
     private TipoPagoEntidad tipoPago;
 
     @Column(name = "eliminado", columnDefinition = "BOOLEAN DEFAULT FALSE")
@@ -88,6 +88,17 @@ public class PagoEntidad implements Serializable {
         this.cuentaBancaria = cuentaBancaria;
         this.tipoPago = tipoPago;
         this.eliminado = eliminado;
+        this.abono = new ArrayList<>();
+        this.estatusPagos = new ArrayList<>();
+    }
+
+    public PagoEntidad(float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, TipoPagoEntidad tipoPago, boolean eliminado) {
+        this.monto = monto;
+        this.comprobante = comprobante;
+        this.fechaHora = fechaHora;
+        this.beneficiario = beneficiario;
+        this.eliminado = eliminado;
+        this.tipoPago = tipoPago;
         this.abono = new ArrayList<>();
         this.estatusPagos = new ArrayList<>();
     }

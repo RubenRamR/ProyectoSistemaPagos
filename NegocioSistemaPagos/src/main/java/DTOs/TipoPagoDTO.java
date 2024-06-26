@@ -76,12 +76,7 @@ public class TipoPagoDTO {
 
     @Override
     public String toString() {
-        return "TipoPagoDTO{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", numMensualidades=" + numMensualidades +
-                ", pagos=" + pagos +
-                ", eliminado=" + eliminado +
-                '}';
+        return nombre;
     }
+
 }

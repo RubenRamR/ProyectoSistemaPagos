@@ -61,7 +61,6 @@ gui\FrmMisCuentas.class
 gui\DlgAbonar$2.class
 utilerias\JButtonCell.class
 gui\DlgAcercaDe.class
-gui\DlgNuevoPago$5.class
 gui\FrmMainBeneficiario$3.class
 utilerias\JButtonRenderer.class
 gui\FrmReportePagos.class
