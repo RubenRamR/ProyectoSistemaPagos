@@ -124,7 +124,9 @@ public class DlgAnadirCuenta extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+
         try {
+
             String banco = txtBanco.getText();
             long numeroCuenta = Long.parseLong(txtNumeroCuenta.getText());
             String clave = txtClabe.getText();
@@ -139,12 +141,19 @@ public class DlgAnadirCuenta extends javax.swing.JDialog {
             cuenta.setBeneficiario(beneficiario);
             cuenta.setEliminado(false);
 
-            cuentaneg.guardarCuentaBancaria(cuenta);
+            try {
+                cuentaneg.guardarCuentaBancaria(cuenta);
+                JOptionPane.showMessageDialog(this, "Cuenta bancaria registrado correctamente");
 
+                this.dispose();
+            } catch (NegocioException ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            }
+
+            this.dispose();
         } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(null, "Error al guardar la cuenta: " + ex.getMessage());
+            Logger.getLogger(DlgAnadirCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
 

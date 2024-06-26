@@ -113,7 +113,7 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         actualizarTabla();
     }
     
-    private void actualizarTabla() {
+    public void actualizarTabla() {
         try {
             List<BeneficiarioDTO> listaBeneficiarios = beneficiarioNegocio.buscarBeneficiarios(limite, pagina);
             DefaultTableModel model = (DefaultTableModel) this.tblBeneficiarios.getModel();
