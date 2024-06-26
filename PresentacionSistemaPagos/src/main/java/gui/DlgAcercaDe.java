@@ -50,7 +50,7 @@ public class DlgAcercaDe extends javax.swing.JDialog {
         jLabel3.setText("Carlos");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
 
-        jLabel4.setText("Ruben");
+        jLabel4.setText("Rubén Ramírez Robles 247617");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
 
         jLabel5.setText("Cris");

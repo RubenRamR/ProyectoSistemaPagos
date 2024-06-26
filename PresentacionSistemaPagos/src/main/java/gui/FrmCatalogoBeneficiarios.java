@@ -78,6 +78,7 @@ public class FrmCatalogoBeneficiarios extends javax.swing.JFrame {
         {
             List<BeneficiarioDTO> beneficiarios = new ArrayList<>();
             beneficiarios = beneficiarioNegocio.buscarBeneficiarios(limite, pagina);
+            beneficiarios.forEach(b -> System.out.println("        .............................              "+ b.toString()));
             
             this.llenarTablaBeneficiarios(beneficiarios);
         } catch (NegocioException ex) {
