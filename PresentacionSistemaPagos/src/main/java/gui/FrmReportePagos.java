@@ -51,9 +51,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
     cmbEstatus.setSelectedItem("<None>");
     cmbAbonos.setSelectedItem("<None>");
 
-    // Limpiar los campos de texto de fechas si los tienes
-    jTextField1.setText("Desde");
-    jTextField2.setText("Hasta");
 
     // Volver a cargar todos los pagos originales en la tabla
     llenarTablaPagos(pagosOriginales);
@@ -98,60 +95,45 @@ public class FrmReportePagos extends javax.swing.JFrame {
     
     private void llenarTablaPagos(List<Pago> listaPagos) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblPagos.getModel();
-        if (modeloTabla.getRowCount() > 0)
-        {
-            for (int i = modeloTabla.getRowCount() - 1; i > -1; i--)
-            {
-                modeloTabla.removeRow(i);
-            }
-        }
-        if (listaPagos != null)
-        {
-            listaPagos.forEach(row ->
-            {
-                Object[] fila = new Object[8];
-                fila[0] = row.getId();
-                fila[1] = row.getTipo();
-                fila[2] = row.getMonto();
-                fila[3] = row.getFechaHora();
-                fila[4] = row.getBeneficiario();
-                fila[5] = row.getCuenta();
-                fila[6] = row.getTerminado();
-                fila[7] = row.getEstatus();
-                modeloTabla.addRow(fila);
-            });
-        }
+    modeloTabla.setRowCount(0);  // Limpiar la tabla
+    listaPagos.forEach(row -> {
+        Object[] fila = new Object[8];
+        fila[0] = row.getId();
+        fila[1] = row.getTipo();
+        fila[2] = row.getMonto();
+        fila[3] = row.getFechaHora();
+        fila[4] = row.getBeneficiario();
+        fila[5] = row.getCuenta();
+        fila[6] = row.getTerminado();
+        fila[7] = row.getEstatus();
+        modeloTabla.addRow(fila);
+    });
     }
 
     
     
    public void cargarPagosEnTabla() {
     try {
-        // Establecer la conexión con la base de datos
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemaPagos", "root", "root");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemaPagos", "root", "root");
+        String jpql = "SELECT p.idPago, tp.nombre AS tipo, p.monto, p.fechaHora, " +
+                "CONCAT(b.nombres, ' ', b.apellidoPaterno, ' ', b.apellidoMaterno) AS beneficiario, " +
+                "cb.numeroCuenta, " +
+                "CASE WHEN a.monto IS NOT NULL THEN 'Abonado' ELSE 'Pendiente' END AS terminado, " +
+                "e.nombre AS estatus " +
+                "FROM pagos p " +
+                "JOIN tiposPagos tp ON p.idTipoPago = tp.idTipoPago " +
+                "JOIN beneficiarios b ON p.idBeneficiario = b.idBeneficiario " +
+                "JOIN cuentasBancarias cb ON p.idCuenta = cb.idCuenta " +
+                "LEFT JOIN abonos a ON p.idPago = a.idPago " +
+                "LEFT JOIN estatusPagos ep ON p.idPago = ep.idPago " +
+                "LEFT JOIN estatus e ON ep.idEstatus = e.idEstatus " +
+                "ORDER BY p.fechaHora DESC";
         
-        // Crear la declaración SQL
-        String query = "SELECT p.idPago, tp.nombre AS tipo, p.monto, p.fechaHora, " +
-               "CONCAT(b.nombres, ' ', b.apellidoPaterno, ' ', b.apellidoMaterno) AS beneficiario, " +
-               "cb.numeroCuenta, " +
-               "CASE WHEN a.monto IS NOT NULL THEN 'Abonado' ELSE 'Pendiente' END AS terminado, " +
-               "e.nombre AS estatus " +
-               "FROM pagos p " +
-               "JOIN tiposPagos tp ON p.idTipoPago = tp.idTipoPago " +
-               "JOIN beneficiarios b ON p.idBeneficiario = b.idBeneficiario " +
-               "JOIN cuentasBancarias cb ON p.idCuenta = cb.idCuenta " +
-               "LEFT JOIN abonos a ON p.idPago = a.idPago " +
-               "LEFT JOIN estatusPagos ep ON p.idPago = ep.idPago " +
-               "LEFT JOIN estatus e ON ep.idEstatus = e.idEstatus " +
-               "ORDER BY p.fechaHora DESC";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Statement stmt = conn.createStatement();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ResultSet rs = stmt.executeQuery(jpql);
         
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        
-        // Limpiar la lista de pagos originales
         pagosOriginales.clear();
         
-        // Recorrer los resultados y añadirlos a la lista
         while (rs.next()) {
             Pago pago = new Pago(
                 rs.getString("idPago"),
@@ -162,23 +144,20 @@ public class FrmReportePagos extends javax.swing.JFrame {
                 rs.getString("beneficiario"),
                 rs.getString("numeroCuenta"),
                 rs.getString("terminado"),
-                rs.getString("idPago")  // Usando idPago como idCuenta
+                rs.getString("idPago")
             );
             pagosOriginales.add(pago);
         }
         
-        // Cerrar la conexión y los recursos
         rs.close();
         stmt.close();
         conn.close();
         
-        // Llenar la tabla con los datos obtenidos
         llenarTablaPagos(pagosOriginales);
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Error al cargar los pagos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
-
     protected void cargarMetodosIniciales() {
         this.cargarPagosEnTabla();
 
@@ -302,10 +281,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
     cmbTipo.setSelectedItem("<None>");
     cmbEstatus.setSelectedItem("<None>");
     cmbAbonos.setSelectedItem("<None>");
-
-    // Limpiar los campos de texto de fechas si los tienes
-    jTextField1.setText("Desde");
-    jTextField2.setText("Hasta");
 
     // Volver a cargar todos los pagos originales en la tabla
     llenarTablaPagos(pagosOriginales);
