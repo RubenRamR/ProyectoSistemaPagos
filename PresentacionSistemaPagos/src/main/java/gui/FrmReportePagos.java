@@ -19,6 +19,10 @@ import entidadestemporales.Pago;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -119,23 +123,59 @@ public class FrmReportePagos extends javax.swing.JFrame {
         }
     }
 
-    public void cargarPagosEnTabla() {
+    
+    
+   public void cargarPagosEnTabla() {
     try {
-        pagosOriginales.clear();
-        pagosOriginales.add(new Pago("1", "1000.00", "2024-06-01 10:00", "Autorizado", "Reembolso", "Juan Perez", "123456789", "Abonado", "1"));
-        pagosOriginales.add(new Pago("2", "1500.50", "2024-06-02 11:00", "Pagado", "Viatico", "Maria Gomez", "987654321", "Terminado", "5"));
-        pagosOriginales.add(new Pago("3", "200.00", "2024-06-03 12:00", "Rechazado", "Viatico", "Carlos Lopez", "123987456", "Abonado", "5"));
-        pagosOriginales.add(new Pago("4", "3000.00", "2024-06-04 13:00", "Autorizado", "Reembolso", "Ana Martinez", "456123789", "Abonado", "1"));
-        pagosOriginales.add(new Pago("5", "500.75", "2024-06-05 14:00", "Pagado", "Proveedor", "Luis Fernandez", "789456123", "Terminado", "7"));
-        pagosOriginales.add(new Pago("6", "750.25", "2024-06-06 15:00", "Rechazado", "Viatico", "Laura Sanchez", "321654987", "Pendiente", "5"));
-        pagosOriginales.add(new Pago("7", "900.00", "2024-06-07 16:00", "Autorizado", "Reembolso", "Pedro Ramirez", "654987321", "Pendiente", "1"));
-        pagosOriginales.add(new Pago("8", "1100.30", "2024-06-08 17:00", "Rechazado", "Proveedor", "Sofia Torres", "789123456", "Abonado", "7"));
-        pagosOriginales.add(new Pago("9", "2500.00", "2024-06-09 18:00", "Rechazado", "Proveedor", "Marta Ruiz", "987321654", "Pendiente", "7"));
-        pagosOriginales.add(new Pago("10", "1750.45", "2024-06-10 19:00", "Pagado", "Reembolso", "Alberto Mendoza", "321987654", "Terminado", "1"));
+        // Establecer la conexión con la base de datos
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemaPagos", "root", "root");
         
+        // Crear la declaración SQL
+        String query = "SELECT p.idPago, tp.nombre AS tipo, p.monto, p.fechaHora, " +
+               "CONCAT(b.nombres, ' ', b.apellidoPaterno, ' ', b.apellidoMaterno) AS beneficiario, " +
+               "cb.numeroCuenta, " +
+               "CASE WHEN a.monto IS NOT NULL THEN 'Abonado' ELSE 'Pendiente' END AS terminado, " +
+               "e.nombre AS estatus " +
+               "FROM pagos p " +
+               "JOIN tiposPagos tp ON p.idTipoPago = tp.idTipoPago " +
+               "JOIN beneficiarios b ON p.idBeneficiario = b.idBeneficiario " +
+               "JOIN cuentasBancarias cb ON p.idCuenta = cb.idCuenta " +
+               "LEFT JOIN abonos a ON p.idPago = a.idPago " +
+               "LEFT JOIN estatusPagos ep ON p.idPago = ep.idPago " +
+               "LEFT JOIN estatus e ON ep.idEstatus = e.idEstatus " +
+               "ORDER BY p.fechaHora DESC";
+        
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        
+        // Limpiar la lista de pagos originales
+        pagosOriginales.clear();
+        
+        // Recorrer los resultados y añadirlos a la lista
+        while (rs.next()) {
+            Pago pago = new Pago(
+                rs.getString("idPago"),
+                rs.getString("monto"),
+                rs.getString("fechaHora"),
+                rs.getString("estatus"),
+                rs.getString("tipo"),
+                rs.getString("beneficiario"),
+                rs.getString("numeroCuenta"),
+                rs.getString("terminado"),
+                rs.getString("idPago")  // Usando idPago como idCuenta
+            );
+            pagosOriginales.add(pago);
+        }
+        
+        // Cerrar la conexión y los recursos
+        rs.close();
+        stmt.close();
+        conn.close();
+        
+        // Llenar la tabla con los datos obtenidos
         llenarTablaPagos(pagosOriginales);
     } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Error al cargar los pagos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
 
@@ -143,8 +183,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
         this.cargarPagosEnTabla();
 
     }
-    
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -157,13 +195,10 @@ public class FrmReportePagos extends javax.swing.JFrame {
         btnGenerarPDF = new javax.swing.JButton();
         cmbEstatus = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         cmbTipo = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         cmbAbonos = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         btnRestablecer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -210,16 +245,13 @@ public class FrmReportePagos extends javax.swing.JFrame {
                 btnGenerarPDFActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGenerarPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 450, -1, -1));
+        jPanel1.add(btnGenerarPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 420, -1, -1));
 
         cmbEstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<None>", "Creado", "Modificado", "Autorizado", "Rechazado", "Pagado", "Completado", " " }));
-        jPanel1.add(cmbEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, -1, -1));
+        jPanel1.add(cmbEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 410, -1, -1));
 
         jLabel4.setText("Abonos:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 390, -1, -1));
-
-        jLabel5.setText("Rango de fechas:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 390, -1, -1));
 
         cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<None>", "Viatico", "Proveedor", "Reembolso", " " }));
         cmbTipo.addActionListener(new java.awt.event.ActionListener() {
@@ -233,16 +265,10 @@ public class FrmReportePagos extends javax.swing.JFrame {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, -1, -1));
 
         jLabel7.setText("Estatus");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 390, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, -1, -1));
 
         cmbAbonos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<None>", "Ambos", "Si", "No" }));
-        jPanel1.add(cmbAbonos, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 410, 100, -1));
-
-        jTextField1.setText("Desde");
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 410, 90, -1));
-
-        jTextField2.setText("Hasta");
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 440, 90, -1));
+        jPanel1.add(cmbAbonos, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 410, 100, -1));
 
         btnRestablecer.setText("Restablecer Filtros");
         btnRestablecer.addActionListener(new java.awt.event.ActionListener() {
@@ -250,7 +276,7 @@ public class FrmReportePagos extends javax.swing.JFrame {
                 btnRestablecerActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRestablecer, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, -1, -1));
+        jPanel1.add(btnRestablecer, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 450, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -366,13 +392,10 @@ public class FrmReportePagos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTable tblPagos;
     // End of variables declaration//GEN-END:variables
 }
