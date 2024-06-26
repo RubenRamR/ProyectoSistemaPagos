@@ -21,10 +21,9 @@ public class TipoPagoDTO {
     public TipoPagoDTO() {
     }
 
-    public TipoPagoDTO(String nombre, int numMensualidades, List<PagoDTO> pagos) {
+    public TipoPagoDTO(String nombre, int numMensualidades) {
         this.nombre = nombre;
         this.numMensualidades = numMensualidades;
-        this.pagos = pagos;
     }
 
     public TipoPagoDTO(Long id, String nombre, int numMensualidades, List<PagoDTO> pagos) {

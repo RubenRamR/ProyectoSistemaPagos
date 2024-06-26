@@ -4,7 +4,17 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
+import DTOs.CuentaBancariaDTO;
+import InterfacesNegocio.IBeneficiarioNegocio;
+import InterfacesNegocio.ICuentaBancariaNegocio;
+import bo.BeneficiarioNegocio;
+import bo.CuentaBancariaNegocio;
+import excepciones.NegocioException;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,9 +22,15 @@ import java.awt.image.BufferedImage;
  */
 public class DlgAnadirCuenta extends javax.swing.JDialog {
 
+    private BeneficiarioDTO beneficiarioLogeado;
+    private ICuentaBancariaNegocio cuentaneg;
+    private IBeneficiarioNegocio beneneg;
 
-    public DlgAnadirCuenta(java.awt.Frame parent, boolean modal) {
+    public DlgAnadirCuenta(java.awt.Frame parent, boolean modal, BeneficiarioDTO beneficiarioLogeado) {
         super(parent, modal);
+        this.cuentaneg = new CuentaBancariaNegocio();
+        this.beneneg = new BeneficiarioNegocio();
+        this.beneficiarioLogeado = beneficiarioLogeado;
         initComponents();
     }
 
@@ -108,10 +124,28 @@ public class DlgAnadirCuenta extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
+        try {
+            String banco = txtBanco.getText();
+            long numeroCuenta = Long.parseLong(txtNumeroCuenta.getText());
+            String clave = txtClabe.getText();
+
+            BeneficiarioDTO beneficiario = beneneg.buscarBeneficiarioDTO(beneficiarioLogeado);
+
+            CuentaBancariaDTO cuenta = new CuentaBancariaDTO();
+
+            cuenta.setBanco(banco);
+            cuenta.setNumeroCuenta(numeroCuenta);
+            cuenta.setClave(clave);
+            cuenta.setBeneficiario(beneficiario);
+            cuenta.setEliminado(false);
+
+            cuentaneg.guardarCuentaBancaria(cuenta);
+
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar la cuenta: " + ex.getMessage());
+        }
         this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

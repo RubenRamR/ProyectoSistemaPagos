@@ -145,7 +145,7 @@ public class DlgNuevoPago extends javax.swing.JDialog {
                 txtMensajeActionPerformed(evt);
             }
         });
-        jPanel1.add(txtMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 190, -1));
+        jPanel1.add(txtMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 180, -1));
 
         jPanel1.add(comboTipoDePago, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, 130, -1));
 
@@ -194,17 +194,17 @@ public class DlgNuevoPago extends javax.swing.JDialog {
             cuenta.setNumeroCuenta(numeroCuenta);
             cuenta.setClave(clave);
             cuenta.setBeneficiario(beneficiario);
+            cuenta.setEliminado(false);
 
             cuentaneg.guardarCuentaBancaria(cuenta);
 
-            CuentaBancariaDTO cuentaEncontrada = cuentaneg.buscarCuentaBancariaPorId(cuenta.getId());
-
+//            CuentaBancariaDTO cuentaEncontrada = cuentaneg.buscarCuentaBancariaDTO(cuenta);
             PagoDTO nuevoPago = new PagoDTO();
             nuevoPago.setMonto(monto);
             nuevoPago.setComprobante(comprobante);
             nuevoPago.setFechaHora(Calendar.getInstance());
             nuevoPago.setBeneficiario(beneficiario);
-            nuevoPago.setCuentaBancaria(cuentaEncontrada);
+//            nuevoPago.setCuentaBancaria(beneficiarioLogeado.getCuenta().toString());
             nuevoPago.setTipoPago(tipoPago);
             nuevoPago.setEliminado(false);
 

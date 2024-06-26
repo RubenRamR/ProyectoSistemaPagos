@@ -80,6 +80,24 @@ public class TipoPagoNegocio implements ITipoPagoNegocio {
         return convertirADTO(tipoPago);
     }
 
+    public void insertaTiposDePagoPredeterminados() throws NegocioException {
+        try {
+            TipoPagoDTO tipoPagoDTO1 = new TipoPagoDTO("Reembolso", 1);
+            TipoPagoDTO tipoPagoDTO2 = new TipoPagoDTO("Proveedor", 5);
+            TipoPagoDTO tipoPagoDTO3 = new TipoPagoDTO("Reembolso", 7);
+
+            TipoPagoEntidad tipoPago1 = convertirADominio(tipoPagoDTO1);
+            TipoPagoEntidad tipoPago2 = convertirADominio(tipoPagoDTO2);
+            TipoPagoEntidad tipoPago3 = convertirADominio(tipoPagoDTO3);
+
+            tipoPagoDAO.guardarTipoPago(tipoPago1);
+            tipoPagoDAO.guardarTipoPago(tipoPago2);
+            tipoPagoDAO.guardarTipoPago(tipoPago3);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(TipoPagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public List<TipoPagoDTO> muestraTiposPago() throws NegocioException {
         try {
             List<TipoPagoEntidad> tiposPagoEntidad = tipoPagoDAO.buscarTodosTiposPago();
