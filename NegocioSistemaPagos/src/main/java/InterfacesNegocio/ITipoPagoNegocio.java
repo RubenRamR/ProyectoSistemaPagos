@@ -24,4 +24,6 @@ public interface ITipoPagoNegocio {
     void eliminarTipoPago(Long id) throws PersistenciaException;
 
     public List<TipoPagoDTO> muestraTiposPago() throws NegocioException;
+    
+    public void insertaTiposDePagoPredeterminados() throws NegocioException;
 }

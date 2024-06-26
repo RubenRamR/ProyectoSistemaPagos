@@ -84,7 +84,7 @@ public class TipoPagoNegocio implements ITipoPagoNegocio {
         try {
             TipoPagoDTO tipoPagoDTO1 = new TipoPagoDTO("Reembolso", 1);
             TipoPagoDTO tipoPagoDTO2 = new TipoPagoDTO("Proveedor", 5);
-            TipoPagoDTO tipoPagoDTO3 = new TipoPagoDTO("Reembolso", 7);
+            TipoPagoDTO tipoPagoDTO3 = new TipoPagoDTO("Viatico", 7);
 
             TipoPagoEntidad tipoPago1 = convertirADominio(tipoPagoDTO1);
             TipoPagoEntidad tipoPago2 = convertirADominio(tipoPagoDTO2);

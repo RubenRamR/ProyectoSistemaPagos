@@ -21,13 +21,15 @@ public interface ICuentaBancariaNegocio {
     public void modificarCuentaBancaria(Long id, CuentaBancariaDTO cuentaBancaria) throws NegocioException;
 
     public void guardarCuentaBancariaConRelaciones(CuentaBancariaDTO cuentaBancaria, BeneficiarioDTO beneficiario, List<PagoDTO> pagos) throws NegocioException;
-    
+
+    public List<CuentaBancariaDTO> listaCuentasPorIdBeneficiario(Long id) throws NegocioException;
+
     public CuentaBancariaDTO buscarCuentaBancariaDTO(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException;
-    
+
     public CuentaBancariaDTO buscarCuentaBancariaPorId(Long id) throws NegocioException;
 
     void eliminarCuentaBancaria(Long id) throws NegocioException;
-    
+
     public List<CuentaBancariaDTO> buscarCuentasBancarias(BeneficiarioDTO beneficiario) throws NegocioException;
 
 }

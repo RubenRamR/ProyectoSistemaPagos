@@ -40,20 +40,32 @@ public class DlgNuevoPago extends javax.swing.JDialog {
     private ICuentaBancariaNegocio cuentaneg;
     private ITipoPagoNegocio tiponeg;
     private IBeneficiarioNegocio beneneg;
-    private CuentaBancariaDTO cuenta;
     List<TipoPagoDTO> listaTipoPagos;
+    List<CuentaBancariaDTO> listaCuentas;
 
     public DlgNuevoPago(BeneficiarioDTO beneficiarioLogeado) {
-
         super();
         this.cuentaneg = new CuentaBancariaNegocio();
         this.beneneg = new BeneficiarioNegocio();
         this.pagoneg = new PagoNegocio();
         this.tiponeg = new TipoPagoNegocio();
         this.beneficiarioLogeado = beneficiarioLogeado;
-        this.cuenta = new CuentaBancariaDTO();
         initComponents();
         this.llenarComboBoxTipoPago();
+        this.llenarComboBoxCuenta();
+    }
+
+    private void llenarComboBoxCuenta() {
+        try {
+            listaCuentas = cuentaneg.listaCuentasPorIdBeneficiario(beneficiarioLogeado.getId());
+
+            for (CuentaBancariaDTO cuenta : listaCuentas) {
+                cbxCuenta.addItem(cuenta);
+            }
+        } catch (NegocioException ex) {
+            Logger.getLogger(DlgNuevoPago.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private void llenarComboBoxTipoPago() {
@@ -88,6 +100,7 @@ public class DlgNuevoPago extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
         txtMensaje = new javax.swing.JTextField();
         comboTipoDePago = new javax.swing.JComboBox<>();
+        cbxCuenta = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
@@ -149,6 +162,8 @@ public class DlgNuevoPago extends javax.swing.JDialog {
 
         jPanel1.add(comboTipoDePago, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, 130, -1));
 
+        jPanel1.add(cbxCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 170, 100, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -179,33 +194,23 @@ public class DlgNuevoPago extends javax.swing.JDialog {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         try {
-
+            CuentaBancariaDTO cuenta = cbxCuenta.getSelectedItem() != null ? (CuentaBancariaDTO) cbxCuenta.getSelectedItem() : null;
             TipoPagoDTO tipoPago = comboTipoDePago.getSelectedItem() != null ? (TipoPagoDTO) comboTipoDePago.getSelectedItem() : null;
 
             float monto = Float.parseFloat(txtMonto.getText());
             String comprobante = txtMensaje.getText();
-            String banco = txtBanco.getText();
-            long numeroCuenta = Long.parseLong(txtCuenta.getText());
-            String clave = txtClabe.getText();
 
             BeneficiarioDTO beneficiario = beneneg.buscarBeneficiarioDTO(beneficiarioLogeado);
 
-            cuenta.setBanco(banco);
-            cuenta.setNumeroCuenta(numeroCuenta);
-            cuenta.setClave(clave);
-            cuenta.setBeneficiario(beneficiario);
-            cuenta.setEliminado(false);
+            CuentaBancariaDTO cuentaNueva = cuentaneg.buscarCuentaBancariaDTO(cuenta);
 
-            cuentaneg.guardarCuentaBancaria(cuenta);
-
-//            CuentaBancariaDTO cuentaEncontrada = cuentaneg.buscarCuentaBancariaDTO(cuenta);
             PagoDTO nuevoPago = new PagoDTO();
             nuevoPago.setMonto(monto);
             nuevoPago.setComprobante(comprobante);
             nuevoPago.setFechaHora(Calendar.getInstance());
             nuevoPago.setBeneficiario(beneficiario);
-//            nuevoPago.setCuentaBancaria(beneficiarioLogeado.getCuenta().toString());
             nuevoPago.setTipoPago(tipoPago);
+            nuevoPago.setCuentaBancaria(cuentaNueva);
             nuevoPago.setEliminado(false);
 
             pagoneg.guardarPago(nuevoPago);
@@ -223,6 +228,7 @@ public class DlgNuevoPago extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JComboBox<CuentaBancariaDTO> cbxCuenta;
     private javax.swing.JComboBox<TipoPagoDTO> comboTipoDePago;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblBanco;

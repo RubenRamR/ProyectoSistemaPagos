@@ -23,15 +23,14 @@ public class PagoDTO {
     public PagoDTO() {
     }
 
-    public PagoDTO(float monto, String comprobante, Calendar fechaHora, BeneficiarioDTO beneficiario, CuentaBancariaDTO cuentaBancaria, TipoPagoDTO tipoPago, List<AbonoDTO> abono, List<Estatus_pagoDTO> estatusPagos) {
+    public PagoDTO(float monto, String comprobante, Calendar fechaHora, BeneficiarioDTO beneficiario, CuentaBancariaDTO cuentaBancaria, TipoPagoDTO tipoPago) {
         this.monto = monto;
         this.comprobante = comprobante;
         this.fechaHora = fechaHora;
         this.beneficiario = beneficiario;
         this.cuentaBancaria = cuentaBancaria;
         this.tipoPago = tipoPago;
-        this.abono = abono;
-        this.estatusPagos = estatusPagos;
+
     }
 
     public PagoDTO(float monto, String comprobante, Calendar fechaHora, BeneficiarioDTO beneficiario, TipoPagoDTO tipoPago) {
