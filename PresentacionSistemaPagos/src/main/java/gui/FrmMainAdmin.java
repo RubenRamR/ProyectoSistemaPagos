@@ -1,4 +1,3 @@
-
 package gui;
 
 import InterfacesNegocio.ITipoPagoNegocio;
@@ -32,11 +31,10 @@ public class FrmMainAdmin extends javax.swing.JFrame {
 
     private ITipoPagoNegocio tipoPago;
 
-    public FrmMainAdmin()  {
+    public FrmMainAdmin() {
+        this.tipoPago = new TipoPagoNegocio();
         initComponents();
         cargarPagosEnTabla();
-        
-
     }
 
     private void llenarTablaPagos(List<Pago> listaPagos) {
@@ -62,26 +60,24 @@ public class FrmMainAdmin extends javax.swing.JFrame {
         }
     }
 
-   public void cargarPagosEnTabla()  {
+    public void cargarPagosEnTabla() {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemaPagos", "root", "root");
-            
-            String sql = "SELECT p.idPago, p.monto, p.fechaHora, p.comprobante, tp.nombre as tipoPago, " +
-                    "b.nombres, b.apellidoPaterno, cb.numeroCuenta, " +
-                    "(SELECT ep.idEstatus FROM estatusPagos ep WHERE ep.idPago = p.idPago ORDER BY ep.fechaHora DESC LIMIT 1) as ultimoEstatus " +
-                    "FROM pagos p " +
-                    "JOIN tiposPagos tp ON p.idTipoPago = tp.idTipoPago " +
-                    "JOIN beneficiarios b ON p.idBeneficiario = b.idBeneficiario " +
-                    "JOIN cuentasBancarias cb ON p.idCuenta = cb.idCuenta " +
-                    "WHERE p.eliminado = false";
-            
-            
-            
+
+            String sql = "SELECT p.idPago, p.monto, p.fechaHora, p.comprobante, tp.nombre as tipoPago, "
+                    + "b.nombres, b.apellidoPaterno, cb.numeroCuenta, "
+                    + "(SELECT ep.idEstatus FROM estatusPagos ep WHERE ep.idPago = p.idPago ORDER BY ep.fechaHora DESC LIMIT 1) as ultimoEstatus "
+                    + "FROM pagos p "
+                    + "JOIN tiposPagos tp ON p.idTipoPago = tp.idTipoPago "
+                    + "JOIN beneficiarios b ON p.idBeneficiario = b.idBeneficiario "
+                    + "JOIN cuentasBancarias cb ON p.idCuenta = cb.idCuenta "
+                    + "WHERE p.eliminado = false";
+
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
-            
+
             List<Pago> pagos = new ArrayList<>();
-            
+
             while (rs.next()) {
                 Pago pago = new Pago(
                         rs.getString("idPago"),
@@ -96,33 +92,39 @@ public class FrmMainAdmin extends javax.swing.JFrame {
                 );
                 pagos.add(pago);
             }
-            
+
             this.llenarTablaPagos(pagos);
         } catch (SQLException ex) {
             Logger.getLogger(FrmMainAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-private String getEstatusNombre(int idEstatus) {
-    // Aquí deberías implementar una lógica para convertir el ID del estatus a su nombre
-    // Por ejemplo, podrías usar un switch o un map
-    switch (idEstatus) {
-        case 1: return "Autorizado";
-        case 2: return "Pagado";
-        case 3: return "Rechazado";
-        default: return "Desconocido";
+    private String getEstatusNombre(int idEstatus) {
+        // Aquí deberías implementar una lógica para convertir el ID del estatus a su nombre
+        // Por ejemplo, podrías usar un switch o un map
+        switch (idEstatus) {
+            case 1:
+                return "Autorizado";
+            case 2:
+                return "Pagado";
+            case 3:
+                return "Rechazado";
+            default:
+                return "Desconocido";
+        }
     }
-}
 
-private String getTerminado(int idEstatus) {
-    // Similar al método anterior, pero para determinar si está terminado
-    switch (idEstatus) {
-        case 2: return "Terminado";
-        default: return "Pendiente";
+    private String getTerminado(int idEstatus) {
+        // Similar al método anterior, pero para determinar si está terminado
+        switch (idEstatus) {
+            case 2:
+                return "Terminado";
+            default:
+                return "Pendiente";
+        }
     }
-}
 
-    protected void cargarMetodosIniciales() throws SQLException{
+    protected void cargarMetodosIniciales() throws SQLException {
         this.cargarConfiguracionInicialTablaPagos();
         this.cargarPagosEnTabla();
 

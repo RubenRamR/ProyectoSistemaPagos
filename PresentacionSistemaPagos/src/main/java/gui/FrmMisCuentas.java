@@ -10,6 +10,7 @@ import InterfacesNegocio.ICuentaBancariaNegocio;
 import bo.CuentaBancariaNegocio;
 import entidadestemporales.Cuenta;
 import entidadestemporales.Pago;
+import excepciones.NegocioException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -26,17 +27,18 @@ import utilerias.JButtonRenderer;
  * @author crazy
  */
 public class FrmMisCuentas extends javax.swing.JFrame {
-    
+
     private BeneficiarioDTO beneficiarioLogeado;
     private ICuentaBancariaNegocio cuentasNegocio;
-    
+
     public FrmMisCuentas(BeneficiarioDTO beneficiarioLogeado) {
         this.beneficiarioLogeado = beneficiarioLogeado;
         this.cuentasNegocio = new CuentaBancariaNegocio();
         initComponents();
         cargarMetodosIniciales();
+        actualizarTabla();
     }
-    
+
     private void llenarTablaCuentas(List<CuentaBancariaDTO> listaCuentas) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblCuentas.getModel();
         if (modeloTabla.getRowCount() > 0) {
@@ -56,41 +58,61 @@ public class FrmMisCuentas extends javax.swing.JFrame {
             });
         }
     }
-    
+
+    public void actualizarTabla() {
+        try {
+            List<CuentaBancariaDTO> cuentas = cuentasNegocio.listaCuentasPorIdBeneficiario(beneficiarioLogeado.getId());
+            DefaultTableModel model = (DefaultTableModel) this.tblCuentas.getModel();
+            model.setRowCount(0);
+
+            for (CuentaBancariaDTO cuenta : cuentas) {
+                Object[] fila = {
+                    cuenta.getId(),
+                    cuenta.getNumeroCuenta(),
+                    cuenta.getClave(),
+                    cuenta.getBanco()
+                };
+                model.addRow(fila);
+            }
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public void cargarCuentasEnTabla() {
         try {
             List<CuentaBancariaDTO> cuentas = cuentasNegocio.listaCuentasPorIdBeneficiario(beneficiarioLogeado.getId());
-            
+
             this.llenarTablaCuentas(cuentas);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     protected void cargarMetodosIniciales() {
         this.cargarConfiguracionInicialTablaPelicula();
         this.cargarCuentasEnTabla();
-        
+
     }
-    
+
     private void cargarConfiguracionInicialTablaPelicula() {
         ActionListener onModificarPagoClickListener = (ActionEvent e)
                 -> {
             masOpciones();
         };
-        
+
         int indiceColumnaMasOpciones = 4;
         TableColumnModel modeloColumnas = this.tblCuentas.getColumnModel();
-        
+
         modeloColumnas.getColumn(indiceColumnaMasOpciones).setCellRenderer(new JButtonRenderer("Mas opciones"));
         modeloColumnas.getColumn(indiceColumnaMasOpciones).setCellEditor(new JButtonCellEditor("Mas opciones", onModificarPagoClickListener));
     }
-    
+
     public void masOpciones() {
         DlgModificarCuenta frame = new DlgModificarCuenta(this, false);
         frame.setVisible(true);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -182,6 +204,8 @@ public class FrmMisCuentas extends javax.swing.JFrame {
         // TODO add your handling code here:
         DlgAnadirCuenta dac = new DlgAnadirCuenta(this, false, beneficiarioLogeado);
         dac.setVisible(true);
+        cargarMetodosIniciales();
+        actualizarTabla();
     }//GEN-LAST:event_btnCrearCuentaActionPerformed
 
 

@@ -17,7 +17,6 @@ gui\FrmVerAbonos$1.class
 gui\DlgRegistrarBeneficiario$1.class
 utilerias\JButtonCellEditor.class
 gui\FrmMainAdmin$1.class
-gui\DlgNuevoPago$4.class
 gui\DlgModificarPago$1.class
 gui\FrmReportePagos$3.class
 gui\FrmLogin$2.class
