@@ -30,7 +30,7 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
     public CuentaBancariaDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
-    
+
     @Override
     public void eliminarCuentaBancaria(Long id) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -146,6 +146,29 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
     }
 
     @Override
+    public List<CuentaBancariaEntidad> listaCuentasPorIdBeneficiario(Long idBeneficiario) throws PersistenciaException {
+        EntityManager em = conexion.crearConexion();
+        List<CuentaBancariaEntidad> cuentasBancarias = null;
+
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<CuentaBancariaEntidad> criteria = cb.createQuery(CuentaBancariaEntidad.class);
+            Root<CuentaBancariaEntidad> root = criteria.from(CuentaBancariaEntidad.class);
+
+            criteria.select(root).where(cb.equal(root.get("beneficiario").get("id"), idBeneficiario));
+
+            TypedQuery<CuentaBancariaEntidad> query = em.createQuery(criteria);
+            cuentasBancarias = query.getResultList();
+
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al leer todas las cuentas bancarias", e);
+        } finally {
+            em.close();
+        }
+        return cuentasBancarias;
+    }
+
+    @Override
     public List<CuentaBancariaEntidad> buscarCuentasBancarias(BeneficiarioEntidad beneficiario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -171,7 +194,5 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
     public List<CuentaBancariaEntidad> buscarCuentasBancarias() throws PersistenciaException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    
-    
+
 }

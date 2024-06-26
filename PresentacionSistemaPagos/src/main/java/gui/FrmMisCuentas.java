@@ -26,6 +26,7 @@ import utilerias.JButtonRenderer;
  * @author crazy
  */
 public class FrmMisCuentas extends javax.swing.JFrame {
+    
     private BeneficiarioDTO beneficiarioLogeado;
     private ICuentaBancariaNegocio cuentasNegocio;
     
@@ -38,17 +39,14 @@ public class FrmMisCuentas extends javax.swing.JFrame {
     
     private void llenarTablaCuentas(List<CuentaBancariaDTO> listaCuentas) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblCuentas.getModel();
-        if (modeloTabla.getRowCount() > 0)
-        {
-            for (int i = modeloTabla.getRowCount() - 1; i > -1; i--)
-            {
+        if (modeloTabla.getRowCount() > 0) {
+            for (int i = modeloTabla.getRowCount() - 1; i > -1; i--) {
                 modeloTabla.removeRow(i);
             }
         }
-        if (listaCuentas != null)
-        {
-            listaCuentas.forEach(row ->
-            {
+        if (listaCuentas != null) {
+            listaCuentas.forEach(row
+                    -> {
                 Object[] fila = new Object[6];
                 fila[0] = row.getId();
                 fila[1] = row.getNumeroCuenta();
@@ -58,44 +56,40 @@ public class FrmMisCuentas extends javax.swing.JFrame {
             });
         }
     }
-
+    
     public void cargarCuentasEnTabla() {
-        try
-        {
-            List<CuentaBancariaDTO> cuentas = cuentasNegocio.buscarCuentasBancarias(beneficiarioLogeado);
+        try {
+            List<CuentaBancariaDTO> cuentas = cuentasNegocio.listaCuentasPorIdBeneficiario(beneficiarioLogeado.getId());
             
             this.llenarTablaCuentas(cuentas);
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     protected void cargarMetodosIniciales() {
         this.cargarConfiguracionInicialTablaPelicula();
         this.cargarCuentasEnTabla();
-
+        
     }
-
+    
     private void cargarConfiguracionInicialTablaPelicula() {
-        ActionListener onModificarPagoClickListener = (ActionEvent e) ->
-        {
+        ActionListener onModificarPagoClickListener = (ActionEvent e)
+                -> {
             masOpciones();
         };
-
+        
         int indiceColumnaMasOpciones = 4;
         TableColumnModel modeloColumnas = this.tblCuentas.getColumnModel();
         
         modeloColumnas.getColumn(indiceColumnaMasOpciones).setCellRenderer(new JButtonRenderer("Mas opciones"));
         modeloColumnas.getColumn(indiceColumnaMasOpciones).setCellEditor(new JButtonCellEditor("Mas opciones", onModificarPagoClickListener));
     }
-
+    
     public void masOpciones() {
         DlgModificarCuenta frame = new DlgModificarCuenta(this, false);
         frame.setVisible(true);
     }
-
-    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -186,7 +180,7 @@ public class FrmMisCuentas extends javax.swing.JFrame {
 
     private void btnCrearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearCuentaActionPerformed
         // TODO add your handling code here:
-        DlgAnadirCuenta dac = new DlgAnadirCuenta(this, false);
+        DlgAnadirCuenta dac = new DlgAnadirCuenta(this, false, beneficiarioLogeado);
         dac.setVisible(true);
     }//GEN-LAST:event_btnCrearCuentaActionPerformed
 

@@ -94,14 +94,7 @@ public class CuentaBancariaDTO {
 
     @Override
     public String toString() {
-        return "CuentaBancariaDTO{" +
-                "id=" + id +
-                ", numeroCuenta=" + numeroCuenta +
-                ", clave='" + clave + '\'' +
-                ", banco='" + banco + '\'' +
-                ", eliminado=" + eliminado +
-                ", beneficiario=" + beneficiario +
-                ", pagos=" + pagos +
-                '}';
+        return numeroCuenta + " " + banco;
     }
+
 }

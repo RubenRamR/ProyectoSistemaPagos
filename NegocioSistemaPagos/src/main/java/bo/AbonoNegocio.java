@@ -45,7 +45,7 @@ public class AbonoNegocio implements IAbonoNegocio {
         this.conexion = new ConexionBD();
         this.abonoDAO = new AbonoDAO(conexion);
     }
-    
+
     @Override
     public void eliminarAbono(Long id) throws NegocioException {
         try {
@@ -71,7 +71,7 @@ public class AbonoNegocio implements IAbonoNegocio {
     }
 
     @Override
-    
+
     public void modificarAbono(Long id, AbonoDTO abono) throws NegocioException {
         try {
             // Buscar el abono existente por su ID
@@ -92,46 +92,41 @@ public class AbonoNegocio implements IAbonoNegocio {
         }
     }
 
-
     @Override
     public void guardarAbonoConRelacion(AbonoDTO abonoDTO, PagoDTO pagoDTO) throws NegocioException {
-        try {
-            beneficiarioDAO = new BeneficiarioDAO(conexion);
-            cuentaBancariaDAO = new CuentaBancariaDAO(conexion);
-            tipoDAO = new TipoPagoDAO(conexion);
-
-            BeneficiarioEntidad beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(pagoDTO.getBeneficiario().getId());
-
-            CuentaBancariaEntidad cuentaBancaria = cuentaBancariaDAO.buscarCuentaBancariaPorId(pagoDTO.getCuentaBancaria().getId());
-
-            TipoPagoEntidad tipo = tipoDAO.buscarTipoPagoPorId(pagoDTO.getTipoPago().getId());
-
-            PagoEntidad pago = new PagoEntidad(
-                    pagoDTO.getMonto(),
-                    pagoDTO.getComprobante(),
-                    pagoDTO.getFechaHora());
-
-            PagoDAO pagodao = new PagoDAO(conexion);
-            if (pagoDTO.getId() == null) {
-                pagodao.guardarPago(pago);
-            } else {
-                pago = pagodao.buscarPagoPorId(pagoDTO.getId());
-            }
-
-            AbonoEntidad abonoE = new AbonoEntidad(
-                    abonoDTO.getFechaHora(),
-                    abonoDTO.getMonto(),
-                    pago);
-
-            abonoDAO.guardarAbono(abonoE);
-
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(AbonoNegocio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+//        try {
+//            beneficiarioDAO = new BeneficiarioDAO(conexion);
+//            cuentaBancariaDAO = new CuentaBancariaDAO(conexion);
+//            tipoDAO = new TipoPagoDAO(conexion);
+//
+//            BeneficiarioEntidad beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(pagoDTO.getBeneficiario().getId());
+//
+//            CuentaBancariaEntidad cuentaBancaria = cuentaBancariaDAO.buscarCuentaBancariaPorId(pagoDTO.getCuentaBancaria().getId());
+//
+//            TipoPagoEntidad tipo = tipoDAO.buscarTipoPagoPorId(pagoDTO.getTipoPago().getId());
+//
+//            PagoEntidad pago = new PagoEntidad(
+//                    pagoDTO.getMonto(),
+//                    pagoDTO.getComprobante(),
+//                    pagoDTO.getFechaHora());
+//
+//            PagoDAO pagodao = new PagoDAO(conexion);
+//            if (pagoDTO.getId() == null) {
+//                pagodao.guardarPago(pago);
+//            } else {
+//                pago = pagodao.buscarPagoPorId(pagoDTO.getId());
+//            }
+//
+//            AbonoEntidad abonoE = new AbonoEntidad(
+//                    abonoDTO.getFechaHora(),
+//                    abonoDTO.getMonto(),
+//                    pago);
+//
+//            abonoDAO.guardarAbono(abonoE);
+//
+//        } catch (PersistenciaException ex) {
+//            Logger.getLogger(AbonoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
-    
-    
-
 
 }

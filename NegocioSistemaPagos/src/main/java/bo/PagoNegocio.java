@@ -18,8 +18,10 @@ import conexion.ConexionBD;
 import daos.BeneficiarioDAO;
 import daos.CuentaBancariaDAO;
 import daos.PagoDAO;
+import daos.TipoPagoDAO;
 import entidades.BeneficiarioEntidad;
 import entidades.CuentaBancariaEntidad;
+import entidades.TipoPagoEntidad;
 import interfaces.IBeneficiarioDAO;
 
 /**
@@ -90,17 +92,21 @@ public class PagoNegocio implements IPagoNegocio {
         BeneficiarioDAO beneficiarioDAO = new BeneficiarioDAO(conexion);
         BeneficiarioEntidad beneficiario = null;
 
+        TipoPagoDAO tipo = new TipoPagoDAO(conexion);
+        TipoPagoEntidad tipoPago = null;
+
         CuentaBancariaDAO cuenta = new CuentaBancariaDAO(conexion);
-        CuentaBancariaEntidad cuentaBan = null;
+        CuentaBancariaEntidad cuentaNueva = null;
+
         try {
             beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(pagoDTO.getBeneficiario().getId());
-            cuentaBan = cuenta.buscarCuentaBancariaPorId(pagoDTO.getCuentaBancaria().getId());
+            tipoPago = tipo.buscarTipoPagoPorId(pagoDTO.getTipoPago().getId());
+            cuentaNueva = cuenta.buscarCuentaBancariaPorId(pagoDTO.getCuentaBancaria().getId());
         } catch (PersistenciaException ex) {
             Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        PagoEntidad pago = new PagoEntidad(pagoDTO.getMonto(), pagoDTO.getComprobante(), pagoDTO.getFechaHora(), beneficiario, cuentaBan, false);
-        pago.setId(pagoDTO.getId());
-        pago.setMonto(pagoDTO.getMonto());
+        PagoEntidad pago = new PagoEntidad(pagoDTO.getId(), pagoDTO.getMonto(), pagoDTO.getComprobante(), pagoDTO.getFechaHora(), beneficiario, cuentaNueva, tipoPago, false);
+
         return pago;
     }
 

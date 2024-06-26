@@ -92,6 +92,17 @@ public class PagoEntidad implements Serializable {
         this.estatusPagos = new ArrayList<>();
     }
 
+    public PagoEntidad(float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, CuentaBancariaEntidad cuentaBancaria, TipoPagoEntidad tipoPago, boolean eliminado) {
+        this.monto = monto;
+        this.comprobante = comprobante;
+        this.fechaHora = fechaHora;
+        this.beneficiario = beneficiario;
+        this.eliminado = eliminado;
+        this.tipoPago = tipoPago;
+        this.abono = new ArrayList<>();
+        this.estatusPagos = new ArrayList<>();
+    }
+
     public PagoEntidad(float monto, String comprobante, Calendar fechaHora, BeneficiarioEntidad beneficiario, CuentaBancariaEntidad cuentaBancaria, boolean eliminado) {
         this.monto = monto;
         this.comprobante = comprobante;

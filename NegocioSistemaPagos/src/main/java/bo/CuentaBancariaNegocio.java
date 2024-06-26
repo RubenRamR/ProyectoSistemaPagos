@@ -134,7 +134,7 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
         }
     }
 
-    private BeneficiarioEntidad convertirBeneficiarioDTOaEntidad(BeneficiarioDTO beneficiarioDTO) {
+    public BeneficiarioEntidad convertirBeneficiarioDTOaEntidad(BeneficiarioDTO beneficiarioDTO) {
         BeneficiarioEntidad beneficiarioEntidad = new BeneficiarioEntidad();
         beneficiarioEntidad.setApellidoMaterno(beneficiarioDTO.getApellidoMaterno());
         beneficiarioEntidad.setApellidoPaterno(beneficiarioDTO.getApellidoPaterno());
@@ -145,52 +145,40 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
         return beneficiarioEntidad;
     }
 
-    private BeneficiarioDTO convertirBeneficiarioDTOaEntidad(BeneficiarioEntidad beneficiarioEntidad) {
-        BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
-        beneficiarioDTO.setApellidoMaterno(beneficiarioDTO.getApellidoMaterno());
-        beneficiarioDTO.setApellidoPaterno(beneficiarioDTO.getApellidoPaterno());
-        beneficiarioDTO.setClaveContrato(beneficiarioDTO.getClaveContrato());
-        beneficiarioDTO.setContrasena(beneficiarioDTO.getContrasena());
-        beneficiarioDTO.setNombres(beneficiarioDTO.getNombres());
-        beneficiarioDTO.setUsuario(beneficiarioDTO.getUsuario());
-        return beneficiarioDTO;
-    }
-
-    private List<CuentaBancariaDTO> convertirCuentasEntidadADTO(List<CuentaBancariaEntidad> listaCuentasEntidad) {
-        List<CuentaBancariaDTO> listaCuentasDTO = new ArrayList<>();
-
-        for (CuentaBancariaEntidad entidad : listaCuentasEntidad) {
-            CuentaBancariaDTO dto = new CuentaBancariaDTO();
-            dto.setId(entidad.getId());
-            dto.setNumeroCuenta(entidad.getNumeroCuenta());
-            dto.setClave(entidad.getClave());
-            dto.setBanco(entidad.getBanco());
-            dto.setEliminado(entidad.isEliminado());
-            dto.setBeneficiario(convertirBeneficiarioDTOaEntidad(entidad.getBeneficiario()));
-            // Añadir otros campos que se necesiten
-            listaCuentasDTO.add(dto);
-        }
-
-        return listaCuentasDTO;
-    }
-
     @Override
-    public List<CuentaBancariaDTO> buscarCuentasBancarias(BeneficiarioDTO beneficiario) throws NegocioException {
-        BeneficiarioEntidad beneficiarioEntidad = convertirBeneficiarioDTOaEntidad(beneficiario);
-
+    public List<CuentaBancariaDTO> listaCuentasPorIdBeneficiario(Long id) throws NegocioException {
         try {
-            List<CuentaBancariaEntidad> listaCuentas = cuentaBancariaDAO.buscarCuentasBancarias(beneficiarioEntidad);
-            return convertirCuentasEntidadADTO(listaCuentas);
-        } catch (PersistenciaException ex) {
-            throw new NegocioException(ex.getMessage());
+
+            List<CuentaBancariaEntidad> listaCuentasBancariasEntidad = cuentaBancariaDAO.listaCuentasPorIdBeneficiario(id);
+            List<CuentaBancariaDTO> listaCuentasBancariasDTO = new ArrayList<>();
+
+            for (CuentaBancariaEntidad cuentaBancariaEntidad : listaCuentasBancariasEntidad) {
+                listaCuentasBancariasDTO.add(convertirEntidadADTO(cuentaBancariaEntidad));
+            }
+            return listaCuentasBancariasDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException("Error al consultar lista de cuentas bancarias", e);
         }
     }
 
     public CuentaBancariaDTO buscarCuentaBancariaDTO(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {
-      
+
         try {
             CuentaBancariaEntidad cuentaBancariaEntidad = convertirDTOAEntidad(cuentaBancariaDTO);
             CuentaBancariaEntidad cuentaBancariaEncontrada = cuentaBancariaDAO.buscarCuentaBancaria(cuentaBancariaEntidad);
+
+            return convertirEntidadADTO(cuentaBancariaEncontrada);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("Error al buscar la cuenta bancaria", e);
+        }
+    }
+
+    public CuentaBancariaDTO buscarCuentaBancariaPorId(Long id) throws NegocioException {
+        try {
+            // Buscar la cuenta bancaria en la base de datos usando el ID
+            CuentaBancariaEntidad cuentaBancariaEncontrada = cuentaBancariaDAO.buscarCuentaBancariaPorId(id);
+
+            // Convertir la entidad encontrada a DTO y devolverla
             return convertirEntidadADTO(cuentaBancariaEncontrada);
         } catch (PersistenciaException e) {
             throw new NegocioException("Error al buscar la cuenta bancaria", e);
@@ -221,16 +209,23 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
 
     private CuentaBancariaDTO convertirEntidadADTO(CuentaBancariaEntidad cuentaBancariaEntidad) throws NegocioException {
 
-//        BeneficiarioDTO beneficiarioDTO = convertirEntidadADTO(cuentaBancariaEntidad.getBeneficiario());
-        CuentaBancariaDTO cuentaBancariaDTO = new CuentaBancariaDTO();
-        cuentaBancariaDTO.setId(cuentaBancariaEntidad.getId());
-        cuentaBancariaDTO.setBanco(cuentaBancariaEntidad.getBanco());
-        cuentaBancariaDTO.setNumeroCuenta(cuentaBancariaEntidad.getNumeroCuenta());
-        cuentaBancariaDTO.setClave(cuentaBancariaEntidad.getClave());
-        cuentaBancariaDTO.setEliminado(cuentaBancariaEntidad.isEliminado());
-//        cuentaBancariaDTO.setBeneficiario(beneficiarioDTO);
+        BeneficiarioNegocio b = new BeneficiarioNegocio();
 
-        return cuentaBancariaDTO;
+        CuentaBancariaDTO cuentaDTO = new CuentaBancariaDTO(
+                cuentaBancariaEntidad.getId(),
+                cuentaBancariaEntidad.getNumeroCuenta(),
+                cuentaBancariaEntidad.getClave(),
+                cuentaBancariaEntidad.getBanco(),
+                cuentaBancariaEntidad.isEliminado(),
+                b.convertirEntidadADTO(cuentaBancariaEntidad.getBeneficiario())
+        );
+
+        return cuentaDTO;
+    }
+
+    @Override
+    public List<CuentaBancariaDTO> buscarCuentasBancarias(BeneficiarioDTO beneficiario) throws NegocioException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

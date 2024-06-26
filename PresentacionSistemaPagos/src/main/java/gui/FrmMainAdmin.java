@@ -4,12 +4,17 @@
  */
 package gui;
 
+import InterfacesNegocio.ITipoPagoNegocio;
+import bo.TipoPagoNegocio;
 import entidadestemporales.Pago;
+import excepciones.NegocioException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -23,25 +28,25 @@ import utilerias.JButtonRenderer;
  * @author crazy
  */
 public class FrmMainAdmin extends javax.swing.JFrame {
-    
+
+    private ITipoPagoNegocio tipoPago;
+
     public FrmMainAdmin() {
         initComponents();
+        this.tipoPago = new TipoPagoNegocio();
         cargarMetodosIniciales();
     }
-    
+
     private void llenarTablaPagos(List<Pago> listaPagos) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblPagos.getModel();
-        if (modeloTabla.getRowCount() > 0)
-        {
-            for (int i = modeloTabla.getRowCount() - 1; i > -1; i--)
-            {
+        if (modeloTabla.getRowCount() > 0) {
+            for (int i = modeloTabla.getRowCount() - 1; i > -1; i--) {
                 modeloTabla.removeRow(i);
             }
         }
-        if (listaPagos != null)
-        {
-            listaPagos.forEach(row ->
-            {
+        if (listaPagos != null) {
+            listaPagos.forEach(row
+                    -> {
                 Object[] fila = new Object[7];
                 fila[0] = row.getId();
                 fila[1] = row.getTipo();
@@ -56,8 +61,7 @@ public class FrmMainAdmin extends javax.swing.JFrame {
     }
 
     public void cargarPagosEnTabla() {
-        try
-        {
+        try {
             List<Pago> pagos = new ArrayList<>();
             pagos.add(new Pago("1", "1000.00", "2024-06-01 10:00", "Autorizado", "Reembolso", "Juan Perez", "123456789", "Abonado", "1"));
             pagos.add(new Pago("2", "1500.50", "2024-06-02 11:00", "Pagado", "Viatico", "Maria Gomez", "987654321", "Terminado", "5"));
@@ -70,10 +74,8 @@ public class FrmMainAdmin extends javax.swing.JFrame {
             pagos.add(new Pago("9", "2500.00", "2024-06-09 18:00", "Rechazado", "Proveedor", "Marta Ruiz", "987321654", "Pendiente", "7"));
             pagos.add(new Pago("10", "1750.45", "2024-06-10 19:00", "Pagado", "Reembolso", "Alberto Mendoza", "321987654", "Terminado", "1"));
 
-            
             this.llenarTablaPagos(pagos);
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -85,38 +87,35 @@ public class FrmMainAdmin extends javax.swing.JFrame {
     }
 
     private void cargarConfiguracionInicialTablaPagos() {
-        ActionListener onAutorizarPagoClickListener = (ActionEvent e) ->
-        {
+        ActionListener onAutorizarPagoClickListener = (ActionEvent e)
+                -> {
             autorizarPago();
         };
-        ActionListener onRechazarPagoClickListener = (ActionEvent e) ->
-        {
+        ActionListener onRechazarPagoClickListener = (ActionEvent e)
+                -> {
             rechazarPago();
         };
-        
+
         int indiceColumnaAutorizar = 7;
         int indiceColumnaRechazar = 8;
         TableColumnModel modeloColumnas = this.tblPagos.getColumnModel();
-        
+
         modeloColumnas.getColumn(indiceColumnaAutorizar).setCellRenderer(new JButtonRenderer("Autorizar"));
         modeloColumnas.getColumn(indiceColumnaAutorizar).setCellEditor(new JButtonCellEditor("Autorizar", onAutorizarPagoClickListener));
-        
+
         modeloColumnas.getColumn(indiceColumnaRechazar).setCellRenderer(new JButtonRenderer("Rechazar"));
         modeloColumnas.getColumn(indiceColumnaRechazar).setCellEditor(new JButtonCellEditor("Rechazar", onRechazarPagoClickListener));
-        
+
     }
 
     public void autorizarPago() {
         JOptionPane.showMessageDialog(this, "se autorizó el pago");
     }
-    
-    public void rechazarPago(){
+
+    public void rechazarPago() {
         JOptionPane.showMessageDialog(this, "se rechazó el pago");
     }
-    
-    
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -131,6 +130,7 @@ public class FrmMainAdmin extends javax.swing.JFrame {
         txtFechaFin = new javax.swing.JTextField();
         btnFiltrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuCatalogoBeneficiarios = new javax.swing.JMenu();
         itemCatalogoBeneficiarios = new javax.swing.JMenuItem();
@@ -194,6 +194,14 @@ public class FrmMainAdmin extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Autorización de pagos");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, -1, -1));
+
+        jButton1.setText("Insertar tipo pago");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
 
         menuCatalogoBeneficiarios.setText("Catalogo beneficiarios");
 
@@ -303,6 +311,14 @@ public class FrmMainAdmin extends javax.swing.JFrame {
         frame.setVisible(true);
     }//GEN-LAST:event_itemReportePagosActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            tipoPago.insertaTiposDePagoPredeterminados();
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmMainAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFiltrar;
@@ -311,6 +327,7 @@ public class FrmMainAdmin extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemPagarlos;
     private javax.swing.JMenuItem itemReportePagos;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
