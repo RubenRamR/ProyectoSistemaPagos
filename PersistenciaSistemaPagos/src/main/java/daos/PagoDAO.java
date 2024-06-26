@@ -50,16 +50,13 @@ public class PagoDAO implements IPagoDAO {
     @Override
     public void guardarPago(PagoEntidad pago) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
             em.persist(pago);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al guardar el pago", e);

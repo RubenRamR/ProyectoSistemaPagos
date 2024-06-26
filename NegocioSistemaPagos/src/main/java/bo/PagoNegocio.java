@@ -40,18 +40,6 @@ public class PagoNegocio implements IPagoNegocio {
     }
 
     @Override
-    public void eliminarPago(Long id) {
-        try
-        {
-            // Buscar el pago existente por su ID
-            PagoEntidad pagoExistente = pagoDAO.buscarPagoPorId(id);
-            if (pagoExistente == null)
-            {
-                try
-                {
-                    throw new NegocioException("El pago con ID " + id + " no existe.");
-                } catch (NegocioException ex)
-                {
     public void eliminarPago(Long id) throws NegocioException {
         try {
             PagoEntidad pagoExistente = pagoDAO.buscarPagoPorId(id);
@@ -68,32 +56,6 @@ public class PagoNegocio implements IPagoNegocio {
 
             // Guardar los cambios en la base de datos
             pagoDAO.guardarPago(pagoExistente);
-        } catch (PersistenciaException ex)
-        {
-            LOGGER.log(Level.SEVERE, "Error al eliminar el pago.", ex);
-            try
-            {
-                throw new NegocioException("Error al eliminar el pago.", ex);
-            } catch (NegocioException ex1)
-            {
-                Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-        }
-    }
-
-    @Override
-    public void guardarPago(PagoDTO pagoDTO) throws PersistenciaException {
-        PagoEntidad pago = convertirADominio(pagoDTO);
-        pagoDAO.guardarPago(pago);
-    }
-
-    @Override
-    public PagoDTO buscarPagoPorId(Long id) throws PersistenciaException {
-        PagoEntidad pago = pagoDAO.buscarPagoPorId(id);
-        return convertirADTO(pago);
-    }
-
-    private PagoEntidad convertirADominio(PagoDTO pagoDTO) {
         } catch (PersistenciaException ex) {
             LOGGER.log(Level.SEVERE, "Error al eliminar el pago.", ex);
             try {

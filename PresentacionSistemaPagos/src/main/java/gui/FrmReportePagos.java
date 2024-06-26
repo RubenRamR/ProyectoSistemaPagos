@@ -4,7 +4,6 @@
  */
 package gui;
 
-import InterfacesNegocio.IPagoNegocio;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -27,16 +26,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
-import utilerias.CheckBoxComboBox;
-import utilerias.CheckComboBox;
-import utilerias.ComboItems;
-import utilerias.JButtonCellEditor;
-import utilerias.JButtonRenderer;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -45,78 +34,6 @@ import javax.swing.table.DefaultTableModel;
  * @author crazy
  */
 public class FrmReportePagos extends javax.swing.JFrame {
-
-    private CheckBoxComboBox cmbEstatus;
-
-    private IPagoNegocio pagosNegocio;
-
-    public FrmReportePagos() {
-        initComponents();
-        cargarMetodosIniciales();
-
-        JCheckBox[] checkBoxes =
-        {
-            new JCheckBox("Creado"),
-            new JCheckBox("Modificado"),
-            new JCheckBox("Autorizado"),
-            new JCheckBox("Rechazado"),
-            new JCheckBox("Pagado"),
-            new JCheckBox("Completado")
-        };
-
-        // Crear instancia de CheckBoxComboBox y asignar a cmbEstatus
-        cmbEstatus = new CheckBoxComboBox(checkBoxes);
-        cmbEstatus.addActionListener(e -> aplicarFiltros()); // Agregar ActionListener
-
-        // Agregar cmbEstatus al panel
-        jPanel1.add(cmbEstatus);
-
-        // Otros componentes del formulario pueden ser inicializados aquí
-        cargarPagosEnTabla();
-    }
-
-    private void aplicarFiltros() {
-        List<String> estatusSeleccionados = cmbEstatus.getSelectedItems();
-        String tipo = cmbTipo.getSelectedItem().toString();
-        String abonos = cmbAbonos.getSelectedItem().toString();
-
-        List<Pago> pagosFiltrados = new ArrayList<>(pagosOriginales);
-
-        // Filtrar por tipo
-        if (!tipo.equals("<None>"))
-        {
-            pagosFiltrados = pagosFiltrados.stream()
-                    .filter(p -> p.getTipo().equalsIgnoreCase(tipo))
-                    .collect(Collectors.toList());
-        }
-
-        // Filtrar por estatus
-        if (!estatusSeleccionados.isEmpty())
-        {
-            pagosFiltrados = pagosFiltrados.stream()
-                    .filter(p -> estatusSeleccionados.contains(p.getEstatus()))
-                    .collect(Collectors.toList());
-        }
-
-        // Filtrar por abonos
-        if (!abonos.equals("<None>"))
-        {
-            if (abonos.equals("Si"))
-            {
-                pagosFiltrados = pagosFiltrados.stream()
-                        .filter(p -> p.getTerminado().equalsIgnoreCase("Abonado"))
-                        .collect(Collectors.toList());
-            } else if (abonos.equals("No"))
-            {
-                pagosFiltrados = pagosFiltrados.stream()
-                        .filter(p -> !p.getTerminado().equalsIgnoreCase("Abonado"))
-                        .collect(Collectors.toList());
-            }
-        }
-
-        llenarTablaPagos(pagosFiltrados);
-    }
-
     private final List<Pago> pagosOriginales = new ArrayList<>();
     public FrmReportePagos() {
         initComponents();
@@ -193,27 +110,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
     });
     }
 
-    public void cargarPagosEnTabla() {
-        try
-        {
-            List<Pago> pagos = new ArrayList<>();
-            pagos.add(new Pago("1", "1000.00", "2024-06-01 10:00", "Autorizado", "Reembolso", "Juan Perez", "123456789", "Abonado", "1"));
-            pagos.add(new Pago("2", "1500.50", "2024-06-02 11:00", "Pagado", "Viatico", "Maria Gomez", "987654321", "Terminado", "5"));
-            pagos.add(new Pago("3", "200.00", "2024-06-03 12:00", "Rechazado", "Viatico", "Carlos Lopez", "123987456", "Abonado", "5"));
-            pagos.add(new Pago("4", "3000.00", "2024-06-04 13:00", "Autorizado", "Reembolso", "Ana Martinez", "456123789", "Abonado", "1"));
-            pagos.add(new Pago("5", "500.75", "2024-06-05 14:00", "Pagado", "Proveedor", "Luis Fernandez", "789456123", "Terminado", "7"));
-            pagos.add(new Pago("6", "750.25", "2024-06-06 15:00", "Rechazado", "Viatico", "Laura Sanchez", "321654987", "Pendiente", "5"));
-            pagos.add(new Pago("7", "900.00", "2024-06-07 16:00", "Autorizado", "Reembolso", "Pedro Ramirez", "654987321", "Pendiente", "1"));
-            pagos.add(new Pago("8", "1100.30", "2024-06-08 17:00", "Rechazado", "Proveedor", "Sofia Torres", "789123456", "Abonado", "7"));
-            pagos.add(new Pago("9", "2500.00", "2024-06-09 18:00", "Rechazado", "Proveedor", "Marta Ruiz", "987321654", "Pendiente", "7"));
-            pagos.add(new Pago("10", "1750.45", "2024-06-10 19:00", "Pagado", "Reembolso", "Alberto Mendoza", "321987654", "Terminado", "1"));
-
-//            List<PagosDTO> pagosDTO = this.pagosNegocio.buscarPagoPorId(1);
-//            this.llenarTablaPagos(pagosDTO);
-            this.llenarTablaPagos(pagos);
-        } catch (Exception ex)
-        {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
     
     
    public void cargarPagosEnTabla() {
@@ -266,8 +162,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
         this.cargarPagosEnTabla();
 
     }
-
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -278,7 +172,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnGenerarPDF = new javax.swing.JButton();
-        jComboBoxCheckEstatus = new javax.swing.JComboBox<>();
         cmbEstatus = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         cmbTipo = new javax.swing.JComboBox<>();
@@ -318,40 +211,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 770, 240));
 
-        jLabel1.setText("Cliente");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
-
-        txtCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtClienteActionPerformed(evt);
-            }
-        });
-        jPanel1.add(txtCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 110, -1));
-
-        jLabel2.setText("Entre fechas:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
-
-        txtFechaInicio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaInicioActionPerformed(evt);
-            }
-        });
-        jPanel1.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 110, -1));
-
-        txtFechaFin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaFinActionPerformed(evt);
-            }
-        });
-        jPanel1.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 110, -1));
-
-        btnFiltrar.setText("Filtrar");
-        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFiltrarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, -1, -1));
         jLabel2.setText("Tipo:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 390, -1, -1));
 
@@ -365,22 +224,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
                 btnGenerarPDFActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGenerarPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, -1, -1));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Creado", "Modificado", "Autorizado", "Rechazado", "Pagado", "Completado", " " }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
-        jComboBoxCheckEstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Creado", "Modificado", "Autorizado", "Rechazado", "Pagado", "Completado", " " }));
-        jComboBoxCheckEstatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxCheckEstatusActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jComboBoxCheckEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
         jPanel1.add(btnGenerarPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 420, -1, -1));
 
         cmbEstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<None>", "Creado", "Modificado", "Autorizado", "Rechazado", "Pagado", "Completado", " " }));
@@ -429,32 +272,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void txtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtClienteActionPerformed
-
-    private void txtFechaInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaInicioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaInicioActionPerformed
-
-    private void txtFechaFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaFinActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaFinActionPerformed
-
-    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnFiltrarActionPerformed
-
-    private void btnGenerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPDFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnGenerarPDFActionPerformed
-    private void jComboBoxCheckEstatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCheckEstatusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxCheckEstatusActionPerformed
     private void cmbTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTipoActionPerformed
@@ -542,8 +359,6 @@ public class FrmReportePagos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarPDF;
-    private javax.swing.JComboBox<String> jComboBoxCheckEstatus;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton btnRestablecer;
     private javax.swing.JComboBox<String> cmbAbonos;
     private javax.swing.JComboBox<String> cmbEstatus;

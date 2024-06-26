@@ -26,16 +26,13 @@ public class TipoPagoDAO implements ITipoPagoDAO {
     @Override
     public void guardarTipoPago(TipoPagoEntidad tipo) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
             em.persist(tipo);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al guardar el tipo de pago", e);
@@ -45,13 +42,9 @@ public class TipoPagoDAO implements ITipoPagoDAO {
     @Override
     public void modificarTipoPago(Long id, TipoPagoEntidad tipo) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
             TipoPagoEntidad tipoPago = em.find(TipoPagoEntidad.class, id);
-            if (tipoPago == null)
-            {
-                throw new PersistenciaException("La cuenta bancaria con ID " + id + " no existe");
             if (tipoPago == null) {
                 throw new PersistenciaException("El tipo de pago con ID " + id + " no existe");
             }
@@ -59,10 +52,8 @@ public class TipoPagoDAO implements ITipoPagoDAO {
             tipoPago.setNumMensualidades(tipo.getNumMensualidades());
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al modificar el tipo de pago", e);

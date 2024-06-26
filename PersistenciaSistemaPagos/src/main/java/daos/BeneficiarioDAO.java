@@ -57,16 +57,13 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     @Override
     public void guardarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
             em.persist(beneficiario);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al guardar el beneficiario", e);
@@ -76,12 +73,10 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     @Override
     public void modificarBeneficiario(Long id, BeneficiarioEntidad beneficiario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
             BeneficiarioEntidad beneficiarioExistente = em.find(BeneficiarioEntidad.class, id);
-            if (beneficiarioExistente == null)
-            {
+            if (beneficiarioExistente == null) {
                 throw new PersistenciaException("El beneficiario con ID " + id + " no existe");
             }
             beneficiarioExistente.setNombres(beneficiario.getNombres());
@@ -95,10 +90,8 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
             em.merge(beneficiarioExistente);
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al modificar el beneficiario", e);
@@ -108,18 +101,15 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     @Override
     public void guardarBeneficiarioConRelaciones(BeneficiarioEntidad beneficiario, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
             beneficiario.setCuentas(cuentas);
             beneficiario.setPagos(pagos);
             em.persist(beneficiario);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al guardar el beneficiario con relaciones", e);
