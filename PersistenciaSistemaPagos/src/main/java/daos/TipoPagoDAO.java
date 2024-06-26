@@ -16,14 +16,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 public class TipoPagoDAO implements ITipoPagoDAO {
+
     final IConexionBD conexion;
 
     public TipoPagoDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
-    
-    
-
 
     @Override
     public void guardarTipoPago(TipoPagoEntidad tipo) throws PersistenciaException {

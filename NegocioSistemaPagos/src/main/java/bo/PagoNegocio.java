@@ -15,7 +15,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import InterfacesNegocio.IPagoNegocio;
 import conexion.ConexionBD;
+import daos.BeneficiarioDAO;
+import daos.CuentaBancariaDAO;
 import daos.PagoDAO;
+import daos.TipoPagoDAO;
+import entidades.BeneficiarioEntidad;
+import entidades.CuentaBancariaEntidad;
+import entidades.TipoPagoEntidad;
+import interfaces.IBeneficiarioDAO;
 
 /**
  *
@@ -45,6 +52,13 @@ public class PagoNegocio implements IPagoNegocio {
                     throw new NegocioException("El pago con ID " + id + " no existe.");
                 } catch (NegocioException ex)
                 {
+    public void eliminarPago(Long id) throws NegocioException {
+        try {
+            PagoEntidad pagoExistente = pagoDAO.buscarPagoPorId(id);
+            if (pagoExistente == null) {
+                try {
+                    throw new NegocioException("El pago con ID " + id + " no existe.");
+                } catch (NegocioException ex) {
                     Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -80,11 +94,57 @@ public class PagoNegocio implements IPagoNegocio {
     }
 
     private PagoEntidad convertirADominio(PagoDTO pagoDTO) {
+        } catch (PersistenciaException ex) {
+            LOGGER.log(Level.SEVERE, "Error al eliminar el pago.", ex);
+            try {
+                throw new NegocioException("Error al eliminar el pago.", ex);
+            } catch (NegocioException ex1) {
+                Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+    }
+
+    @Override
+    public void guardarPago(PagoDTO pagoDTO) throws NegocioException {
+        PagoEntidad pago = convertirADominio(pagoDTO);
+        try {
+            pagoDAO.guardarPago(pago);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public PagoDTO buscarPagoPorId(Long id) throws NegocioException {
+        PagoEntidad pago = null;
+        try {
+            pago = pagoDAO.buscarPagoPorId(id);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return convertirADTO(pago);
+    }
+
+    private PagoEntidad convertirADominio(PagoDTO pagoDTO) throws NegocioException {
         // Convert DTO to Entity
-        PagoEntidad pago = new PagoEntidad(pagoDTO.getMonto(), pagoDTO.getComprobante(), pagoDTO.getFechaHora());
-        pago.setId(pagoDTO.getId());
-        pago.setMonto(pagoDTO.getMonto());
-        // Set other fields
+        BeneficiarioDAO beneficiarioDAO = new BeneficiarioDAO(conexion);
+        BeneficiarioEntidad beneficiario = null;
+
+        TipoPagoDAO tipo = new TipoPagoDAO(conexion);
+        TipoPagoEntidad tipoPago = null;
+
+        CuentaBancariaDAO cuenta = new CuentaBancariaDAO(conexion);
+        CuentaBancariaEntidad cuentaNueva = null;
+
+        try {
+            beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(pagoDTO.getBeneficiario().getId());
+            tipoPago = tipo.buscarTipoPagoPorId(pagoDTO.getTipoPago().getId());
+            cuentaNueva = cuenta.buscarCuentaBancariaPorId(pagoDTO.getCuentaBancaria().getId());
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        PagoEntidad pago = new PagoEntidad(pagoDTO.getId(), pagoDTO.getMonto(), pagoDTO.getComprobante(), pagoDTO.getFechaHora(), beneficiario, cuentaNueva, tipoPago, false);
+
         return pago;
     }
 

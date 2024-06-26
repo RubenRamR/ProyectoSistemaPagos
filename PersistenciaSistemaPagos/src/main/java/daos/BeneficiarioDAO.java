@@ -32,8 +32,8 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     public BeneficiarioDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
-    
-        @Override
+
+    @Override
     public void eliminarBeneficiario(Long id) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         try {
@@ -91,7 +91,7 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
             beneficiarioExistente.setContrasena(beneficiario.getContrasena());
             beneficiarioExistente.setClaveContrato(beneficiario.getClaveContrato());
             beneficiarioExistente.setSaldo(beneficiario.getSaldo());
-            
+
             em.merge(beneficiarioExistente);
             em.getTransaction().commit();
             System.out.println("Operación terminada correctamente");
@@ -132,7 +132,7 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
         Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
-        criteria.select(root).where(cb.equal(root.get("idBeneficiario"), beneficiario.getId()));
+        criteria.select(root).where(cb.equal(root.get("id"), beneficiario.getId()));
         TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
         BeneficiarioEntidad beneficiarios;
         try {
@@ -168,9 +168,9 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
         Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
         criteria.select(root).where(cb.equal(root.get("eliminado"), false));
-        
+
         TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
-        
+
         query.setFirstResult(offset);
         query.setMaxResults(limite);
 
@@ -187,36 +187,21 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     public List<BeneficiarioEntidad> buscarBeneficiarios() throws PersistenciaException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public BeneficiarioEntidad loginBeneficiario(String usuario, String contrasena) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
+        Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
+        criteria.select(root).where(cb.and(cb.equal(root.get("usuario"), usuario), cb.equal(root.get("contrasena"), contrasena)));
+        TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
         try {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
-            Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
-
-            // Create the conditions (predicates)
-            Predicate condition1 = cb.equal(root.get("usuario"), usuario);
-            Predicate condition2 = cb.equal(root.get("contrasena"), contrasena);
-
-            // Combine conditions with AND
-            criteria.select(root).where(cb.and(condition1, condition2));
-
-            // Execute the query
-            List<BeneficiarioEntidad> resultList = em.createQuery(criteria).getResultList();
-
-            // Check if a result is found
-            if (resultList.isEmpty()) {
-                throw new PersistenciaException("No se encontró el usuario");
-            }  else {
-                return resultList.get(0); // Return the first (and presumably only) result
-            }
-        } finally {
-            em.close();
+            return query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
         }
+
     }
-    
-    
-    
+
 }

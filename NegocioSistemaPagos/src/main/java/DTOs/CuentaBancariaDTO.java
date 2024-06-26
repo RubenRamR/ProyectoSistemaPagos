@@ -19,23 +19,21 @@ public class CuentaBancariaDTO {
     public CuentaBancariaDTO() {
     }
 
-    public CuentaBancariaDTO(long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioDTO beneficiario, List<PagoDTO> pagos) {
+    public CuentaBancariaDTO(long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioDTO beneficiario) {
         this.numeroCuenta = numeroCuenta;
         this.clave = clave;
         this.banco = banco;
         this.eliminado = eliminado;
         this.beneficiario = beneficiario;
-        this.pagos = pagos;
     }
 
-    public CuentaBancariaDTO(Long id, long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioDTO beneficiario, List<PagoDTO> pagos) {
+    public CuentaBancariaDTO(Long id, long numeroCuenta, String clave, String banco, boolean eliminado, BeneficiarioDTO beneficiario) {
         this.id = id;
         this.numeroCuenta = numeroCuenta;
         this.clave = clave;
         this.banco = banco;
         this.eliminado = eliminado;
         this.beneficiario = beneficiario;
-        this.pagos = pagos;
     }
 
     public Long getId() {
@@ -96,14 +94,7 @@ public class CuentaBancariaDTO {
 
     @Override
     public String toString() {
-        return "CuentaBancariaDTO{" +
-                "id=" + id +
-                ", numeroCuenta=" + numeroCuenta +
-                ", clave='" + clave + '\'' +
-                ", banco='" + banco + '\'' +
-                ", eliminado=" + eliminado +
-                ", beneficiario=" + beneficiario +
-                ", pagos=" + pagos +
-                '}';
+        return numeroCuenta + " " + banco;
     }
+
 }

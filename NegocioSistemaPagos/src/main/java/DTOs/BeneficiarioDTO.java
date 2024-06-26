@@ -17,6 +17,7 @@ public class BeneficiarioDTO {
     private String claveContrato;
     private float saldo;
     private List<CuentaBancariaDTO> cuentas;
+    private CuentaBancariaDTO cuenta;
     private List<PagoDTO> pagos;
     private boolean eliminado;
 
@@ -120,6 +121,14 @@ public class BeneficiarioDTO {
         this.cuentas = cuentas;
     }
 
+    public CuentaBancariaDTO getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(CuentaBancariaDTO cuenta) {
+        this.cuenta = cuenta;
+    }
+
     public List<PagoDTO> getPagos() {
         return pagos;
     }
@@ -138,18 +147,18 @@ public class BeneficiarioDTO {
 
     @Override
     public String toString() {
-        return "BeneficiarioDTO{" +
-                "id=" + id +
-                ", nombres='" + nombres + '\'' +
-                ", apellidoPaterno='" + apellidoPaterno + '\'' +
-                ", apellidoMaterno='" + apellidoMaterno + '\'' +
-                ", usuario='" + usuario + '\'' +
-                ", contrasena='" + contrasena + '\'' +
-                ", claveContrato='" + claveContrato + '\'' +
-                ", saldo=" + saldo +
-                ", cuentas=" + cuentas +
-                ", pagos=" + pagos +
-                ", eliminado=" + eliminado +
-                '}';
+        return "BeneficiarioDTO{"
+                + "id=" + id
+                + ", nombres='" + nombres + '\''
+                + ", apellidoPaterno='" + apellidoPaterno + '\''
+                + ", apellidoMaterno='" + apellidoMaterno + '\''
+                + ", usuario='" + usuario + '\''
+                + ", contrasena='" + contrasena + '\''
+                + ", claveContrato='" + claveContrato + '\''
+                + ", saldo=" + saldo
+                + ", cuentas=" + cuentas
+                + ", pagos=" + pagos
+                + ", eliminado=" + eliminado
+                + '}';
     }
 }

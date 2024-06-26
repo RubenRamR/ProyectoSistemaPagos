@@ -23,15 +23,22 @@ public class PagoDTO {
     public PagoDTO() {
     }
 
-    public PagoDTO(float monto, String comprobante, Calendar fechaHora, BeneficiarioDTO beneficiario, CuentaBancariaDTO cuentaBancaria, TipoPagoDTO tipoPago, List<AbonoDTO> abono, List<Estatus_pagoDTO> estatusPagos) {
+    public PagoDTO(float monto, String comprobante, Calendar fechaHora, BeneficiarioDTO beneficiario, CuentaBancariaDTO cuentaBancaria, TipoPagoDTO tipoPago) {
         this.monto = monto;
         this.comprobante = comprobante;
         this.fechaHora = fechaHora;
         this.beneficiario = beneficiario;
         this.cuentaBancaria = cuentaBancaria;
         this.tipoPago = tipoPago;
-        this.abono = abono;
-        this.estatusPagos = estatusPagos;
+
+    }
+
+    public PagoDTO(float monto, String comprobante, Calendar fechaHora, BeneficiarioDTO beneficiario, TipoPagoDTO tipoPago) {
+        this.monto = monto;
+        this.comprobante = comprobante;
+        this.fechaHora = fechaHora;
+        this.beneficiario = beneficiario;
+        this.tipoPago = tipoPago;
     }
 
     public PagoDTO(Long id, float monto, String comprobante, Calendar fechaHora, BeneficiarioDTO beneficiario, CuentaBancariaDTO cuentaBancaria, TipoPagoDTO tipoPago, List<AbonoDTO> abono, List<Estatus_pagoDTO> estatusPagos) {
@@ -128,17 +135,17 @@ public class PagoDTO {
 
     @Override
     public String toString() {
-        return "PagoDTO{" +
-                "id=" + id +
-                ", monto=" + monto +
-                ", comprobante='" + comprobante + '\'' +
-                ", fechaHora=" + fechaHora +
-                ", beneficiario=" + beneficiario +
-                ", cuentaBancaria=" + cuentaBancaria +
-                ", tipoPago=" + tipoPago +
-                ", abono=" + abono +
-                ", estatusPagos=" + estatusPagos +
-                ", eliminado=" + eliminado +
-                '}';
+        return "PagoDTO{"
+                + "id=" + id
+                + ", monto=" + monto
+                + ", comprobante='" + comprobante + '\''
+                + ", fechaHora=" + fechaHora
+                + ", beneficiario=" + beneficiario
+                + ", cuentaBancaria=" + cuentaBancaria
+                + ", tipoPago=" + tipoPago
+                + ", abono=" + abono
+                + ", estatusPagos=" + estatusPagos
+                + ", eliminado=" + eliminado
+                + '}';
     }
 }

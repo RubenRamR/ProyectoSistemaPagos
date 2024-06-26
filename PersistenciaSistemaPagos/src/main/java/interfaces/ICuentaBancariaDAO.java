@@ -22,6 +22,8 @@ public interface ICuentaBancariaDAO {
 
     public void guardarCuentaBancariaConRelaciones(CuentaBancariaEntidad cuentaBancaria, BeneficiarioEntidad beneficiario, List<PagoEntidad> pagos) throws PersistenciaException;
 
+    List<CuentaBancariaEntidad> listaCuentasPorIdBeneficiario(Long id) throws PersistenciaException;
+
     public CuentaBancariaEntidad buscarCuentaBancaria(CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException;
 
     public CuentaBancariaEntidad buscarCuentaBancariaPorId(Long idCuentaBancaria) throws PersistenciaException;
@@ -29,4 +31,7 @@ public interface ICuentaBancariaDAO {
     public List<CuentaBancariaEntidad> buscarCuentasBancarias() throws PersistenciaException;
 
     void eliminarCuentaBancaria(Long id) throws PersistenciaException;
+
+    public List<CuentaBancariaEntidad> buscarCuentasBancarias(BeneficiarioEntidad beneficiario) throws PersistenciaException;
+
 }

@@ -26,16 +26,16 @@ import java.util.logging.Logger;
  * @author rramirez
  */
 public class BeneficiarioNegocio implements IBeneficiarioNegocio {
-
+    
     private IBeneficiarioDAO beneficiarioDAO;
     IConexionBD conexion;
     private static final Logger LOGGER = Logger.getLogger(BeneficiarioNegocio.class.getName());
-
+    
     public BeneficiarioNegocio() {
         this.conexion = new ConexionBD();
         this.beneficiarioDAO = new BeneficiarioDAO(conexion);
     }
-
+    
     @Override
     public void eliminarBeneficiario(Long id) throws NegocioException {
         try {
@@ -54,7 +54,7 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
             Logger.getLogger(BeneficiarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("Error al eliminar el beneficiario.", ex);
         }
-
+        
     }
     
     @Override
@@ -75,9 +75,9 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
         } catch (PersistenciaException ex) {
             Logger.getLogger(BeneficiarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     @Override
     public void modificarBeneficiario(Long id, BeneficiarioDTO beneficiario) throws NegocioException {
         try {
@@ -85,7 +85,7 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
             if (beneficiarioExistente == null) {
                 throw new NegocioException("El beneficiario con ID " + id + " no existe.");
             }
-
+            
             beneficiarioExistente.setNombres(beneficiario.getNombres());
             beneficiarioExistente.setApellidoPaterno(beneficiario.getApellidoPaterno());
             beneficiarioExistente.setApellidoMaterno(beneficiario.getApellidoMaterno());
@@ -93,14 +93,14 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
             beneficiarioExistente.setContrasena(beneficiario.getContrasena());
             beneficiarioExistente.setClaveContrato(beneficiario.getClaveContrato());
             beneficiarioExistente.setSaldo(beneficiario.getSaldo());
-
+            
             beneficiarioDAO.modificarBeneficiario(beneficiarioExistente.getId(), beneficiarioExistente);
         } catch (PersistenciaException ex) {
             Logger.getLogger(BeneficiarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("Error al modificar el beneficiario.", ex);
         }
     }
-
+    
     @Override
     public void guardarBeneficiarioConRelaciones(BeneficiarioDTO beneficiario, List<CuentaBancariaDTO> cuentas, List<PagoDTO> pagos) throws NegocioException {
         try {
@@ -122,17 +122,40 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
             throw new NegocioException("Error al guardar el beneficiario con relaciones.", ex);
         }
     }
+    
+    public BeneficiarioDTO buscarBeneficiarioDTO(BeneficiarioDTO beneficiarioDTO) throws NegocioException {
+        try {
+            // Imprimir los datos del beneficiarioDTO
+            System.out.println("Buscando BeneficiarioDTO con ID: " + beneficiarioDTO.getId());
 
+            // Convertir BeneficiarioDTO a BeneficiarioEntidad
+            BeneficiarioEntidad beneficiarioEntidad = convertirDTOAEntidad(beneficiarioDTO);
+
+            // Buscar el beneficiario en la base de datos
+            BeneficiarioEntidad beneficiarioEncontrado = beneficiarioDAO.buscarBeneficiario(beneficiarioEntidad);
+
+            // Convertir la entidad encontrada a DTO y devolverla
+            BeneficiarioDTO beneficiarioEncontradoDTO = convertirEntidadADTO(beneficiarioEncontrado);
+
+            // Imprimir los datos del beneficiario encontrado
+            System.out.println("Beneficiario encontrado: " + beneficiarioEncontradoDTO.getId());
+            
+            return beneficiarioEncontradoDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException("Error al buscar el beneficiario", e);
+        }
+    }
+    
     @Override
     public List<BeneficiarioDTO> buscarBeneficiarios(int limit, int pagina) throws NegocioException {
         try {
             this.esNumeroNegativo(limit);
             this.esNumeroNegativo(pagina);
-
+            
             int offset = this.obtenerOFFSETMySQL(limit, pagina);
-
+            
             List<BeneficiarioEntidad> listaBeneficiarios = this.beneficiarioDAO.buscarBeneficiarios(limit, offset);
-
+            
             if (listaBeneficiarios == null || listaBeneficiarios.isEmpty()) {
                 throw new NegocioException("No existen beneficiarios registrados");
             }
@@ -142,7 +165,7 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
             throw new NegocioException(e.getMessage());
         }
     }
-
+    
     private List<BeneficiarioDTO> convertirBeneficiarioDTO(List<BeneficiarioEntidad> beneficiarios) throws NegocioException {
         if (beneficiarios == null) {
             throw new NegocioException("No se pudieron obtener la lista de beneficiarios");
@@ -162,22 +185,34 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
         }
         return beneficiariosDTO;
     }
-
+    
     private void esNumeroNegativo(int numero) throws NegocioException {
         if (numero < 0) {
             throw new NegocioException("El numero ingresado es negativo bro");
         }
     }
-
+    
     private int obtenerOFFSETMySQL(int limite, int pagina) throws NegocioException {
         int offset = new Utilidades().RegresarOFFSETMySQL(limite, pagina);
         this.esNumeroNegativo(offset);
         return offset;
     }
-
     
-    private BeneficiarioDTO convertirEntidadADTO(BeneficiarioEntidad beneficiarioEntidad){
+    public BeneficiarioEntidad convertirDTOAEntidad(BeneficiarioDTO beneficiarioDTO) {
+        BeneficiarioEntidad beneficiarioEntidad = new BeneficiarioEntidad();
+        beneficiarioEntidad.setId(beneficiarioDTO.getId()); 
+        beneficiarioEntidad.setApellidoMaterno(beneficiarioDTO.getApellidoMaterno());
+        beneficiarioEntidad.setApellidoPaterno(beneficiarioDTO.getApellidoPaterno());
+        beneficiarioEntidad.setClaveContrato(beneficiarioDTO.getClaveContrato());
+        beneficiarioEntidad.setContrasena(beneficiarioDTO.getContrasena());
+        beneficiarioEntidad.setNombres(beneficiarioDTO.getNombres());
+        beneficiarioEntidad.setUsuario(beneficiarioDTO.getUsuario());
+        return beneficiarioEntidad;
+    }
+    
+    public BeneficiarioDTO convertirEntidadADTO(BeneficiarioEntidad beneficiarioEntidad) {
         BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
+        beneficiarioDTO.setId(beneficiarioEntidad.getId());
         beneficiarioDTO.setApellidoMaterno(beneficiarioEntidad.getApellidoMaterno());
         beneficiarioDTO.setApellidoPaterno(beneficiarioEntidad.getApellidoPaterno());
         beneficiarioDTO.setClaveContrato(beneficiarioEntidad.getClaveContrato());
@@ -186,7 +221,6 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
         beneficiarioDTO.setUsuario(beneficiarioEntidad.getUsuario());
         
         return beneficiarioDTO;
-        
     }
     
     @Override
@@ -200,18 +234,16 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
         return null;
     }
     
-    
     @Override
-    public BeneficiarioDTO loginBeneficiario(String usuario, String contrasena) throws NegocioException{
+    public BeneficiarioDTO loginBeneficiario(String usuario, String contrasena) throws NegocioException {
         
         try {
             BeneficiarioEntidad beneficiarioEntidad = beneficiarioDAO.loginBeneficiario(usuario, contrasena);
             return convertirEntidadADTO(beneficiarioEntidad);
         } catch (PersistenciaException ex) {
             throw new NegocioException(ex.getMessage());
-        } 
+        }
         
     }
     
-
 }
