@@ -23,12 +23,12 @@ import javax.swing.JOptionPane;
 public class DlgAnadirCuenta extends javax.swing.JDialog {
 
     private BeneficiarioDTO beneficiarioLogeado;
-    private ICuentaBancariaNegocio cuentaneg;
+    private ICuentaBancariaNegocio cuentaNegocio;
     private IBeneficiarioNegocio beneneg;
 
     public DlgAnadirCuenta(java.awt.Frame parent, boolean modal, BeneficiarioDTO beneficiarioLogeado) {
         super(parent, modal);
-        this.cuentaneg = new CuentaBancariaNegocio();
+        this.cuentaNegocio = new CuentaBancariaNegocio();
         this.beneneg = new BeneficiarioNegocio();
         this.beneficiarioLogeado = beneficiarioLogeado;
         initComponents();
@@ -126,34 +126,38 @@ public class DlgAnadirCuenta extends javax.swing.JDialog {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
 
         try {
+        String banco = txtBanco.getText();
+        long numeroCuenta = Long.parseLong(txtNumeroCuenta.getText());
+        String clave = txtClabe.getText();
 
-            String banco = txtBanco.getText();
-            long numeroCuenta = Long.parseLong(txtNumeroCuenta.getText());
-            String clave = txtClabe.getText();
+        if (banco.isEmpty() || txtNumeroCuenta.getText().trim().isEmpty() || clave.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-            BeneficiarioDTO beneficiario = beneneg.buscarBeneficiarioDTO(beneficiarioLogeado);
+        BeneficiarioDTO beneficiario = beneneg.buscarBeneficiarioDTO(beneficiarioLogeado);
 
-            CuentaBancariaDTO cuenta = new CuentaBancariaDTO();
+        CuentaBancariaDTO cuenta = new CuentaBancariaDTO();
 
-            cuenta.setBanco(banco);
-            cuenta.setNumeroCuenta(numeroCuenta);
-            cuenta.setClave(clave);
-            cuenta.setBeneficiario(beneficiario);
-            cuenta.setEliminado(false);
+        cuenta.setBanco(banco);
+        cuenta.setNumeroCuenta(numeroCuenta);
+        cuenta.setClave(clave);
+        cuenta.setBeneficiario(beneficiario);
+        cuenta.setEliminado(false);
 
-            try {
-                cuentaneg.guardarCuentaBancaria(cuenta);
-                JOptionPane.showMessageDialog(this, "Cuenta bancaria registrado correctamente");
-
-                this.dispose();
-            } catch (NegocioException ex) {
-                JOptionPane.showMessageDialog(this, ex);
-            }
+        try {
+            cuentaNegocio.guardarCuentaBancaria(cuenta);
+            JOptionPane.showMessageDialog(this, "Cuenta bancaria registrada correctamente");
 
             this.dispose();
         } catch (NegocioException ex) {
-            Logger.getLogger(DlgAnadirCuenta.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
+
+        this.dispose();
+    } catch (NegocioException ex) {
+        Logger.getLogger(DlgAnadirCuenta.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
 

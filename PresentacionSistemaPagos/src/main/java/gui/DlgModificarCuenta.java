@@ -4,20 +4,49 @@
  */
 package gui;
 
+import DTOs.CuentaBancariaDTO;
+import InterfacesNegocio.ICuentaBancariaNegocio;
+import bo.CuentaBancariaNegocio;
+import excepciones.NegocioException;
 import java.awt.image.BufferedImage;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author crazy
  */
 public class DlgModificarCuenta extends javax.swing.JDialog {
-    
-    public DlgModificarCuenta(java.awt.Frame parent, boolean modal) {
+
+    private ICuentaBancariaNegocio cuentaBancariaNegocio;
+    private CuentaBancariaDTO cuentaBancariaDTO;
+    private long idCuentaBancaria;
+
+    public DlgModificarCuenta(java.awt.Frame parent, boolean modal, long idCuentaBancaria) {
         super(parent, modal);
         initComponents();
+        this.cuentaBancariaNegocio = new CuentaBancariaNegocio();
+        this.idCuentaBancaria = idCuentaBancaria;
+
+        consultarCuentaYLlenarTextFields();
     }
-    
-    
+
+    private void consultarCuentaYLlenarTextFields() {
+        try
+        {
+            this.cuentaBancariaDTO = cuentaBancariaNegocio.buscarCuentaBancariaPorId(idCuentaBancaria);
+        } catch (NegocioException ex)
+        {
+            JOptionPane.showMessageDialog(this, ex);
+        }
+
+        String numeroCuenta = String.valueOf(cuentaBancariaDTO.getNumeroCuenta());
+
+        txtNumeroCuenta.setText(numeroCuenta);
+        txtClabe.setText(cuentaBancariaDTO.getClave());
+        txtBanco.setText(cuentaBancariaDTO.getBanco());
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -118,12 +147,56 @@ public class DlgModificarCuenta extends javax.swing.JDialog {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        if (txtNumeroCuenta.getText().trim().isEmpty()
+                || txtClabe.getText().trim().isEmpty()
+                || txtBanco.getText().trim().isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        CuentaBancariaDTO cuentaBancaria = new CuentaBancariaDTO();
+        cuentaBancaria.setId(idCuentaBancaria);
+        cuentaBancaria.setNumeroCuenta(Long.parseLong(txtNumeroCuenta.getText()));
+        cuentaBancaria.setClave(txtClabe.getText());
+        cuentaBancaria.setBanco(txtBanco.getText());
+        cuentaBancaria.setEliminado(false);
+
+        try
+        {
+            cuentaBancariaNegocio.modificarCuentaBancaria(idCuentaBancaria, cuentaBancaria);
+            JOptionPane.showMessageDialog(this, "Cuenta Bancaria modificada correctamente");
+
+            this.dispose();
+
+        } catch (NegocioException ex)
+        {
+            JOptionPane.showMessageDialog(this, ex);
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        try
+        {
+            CuentaBancariaDTO cuentaBancaria = cuentaBancariaNegocio.buscarCuentaBancariaPorId(idCuentaBancaria);
+            if (cuentaBancaria == null)
+            {
+                JOptionPane.showMessageDialog(this, "La cuenta bancaria con ID " + idCuentaBancaria + " no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            cuentaBancaria.setEliminado(true);
+            cuentaBancariaNegocio.modificarCuentaBancaria(idCuentaBancaria, cuentaBancaria);
+
+            JOptionPane.showMessageDialog(this, "Cuenta Bancaria eliminada correctamente");
+
+            this.dispose();
+
+        } catch (NegocioException ex)
+        {
+            JOptionPane.showMessageDialog(this, "Error al eliminar la cuenta bancaria: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**

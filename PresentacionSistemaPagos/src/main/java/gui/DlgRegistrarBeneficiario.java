@@ -9,20 +9,17 @@ import InterfacesNegocio.IBeneficiarioNegocio;
 import bo.BeneficiarioNegocio;
 import excepciones.NegocioException;
 import java.awt.image.BufferedImage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-
 
 /**
  *
  * @author crazy
  */
 public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
-    private IBeneficiarioNegocio beneficiarioNegocio;
-    
 
-    public DlgRegistrarBeneficiario() {        
+    private IBeneficiarioNegocio beneficiarioNegocio;
+
+    public DlgRegistrarBeneficiario() {
         super();
         this.beneficiarioNegocio = new BeneficiarioNegocio();
         initComponents();
@@ -132,6 +129,18 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
+        if (txtNombres.getText().trim().isEmpty()
+                || txtApellidoPaterno.getText().trim().isEmpty()
+                || txtApellidoMaterno.getText().trim().isEmpty()
+                || txtUsuario.getText().trim().isEmpty()
+                || txtContrasena.getText().trim().isEmpty()
+                || txtClaveDeContrato.getText().trim().isEmpty())
+        {
+
+            JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         BeneficiarioDTO beneficiario = new BeneficiarioDTO();
         beneficiario.setNombres(txtNombres.getText());
         beneficiario.setApellidoPaterno(txtApellidoPaterno.getText());
@@ -141,12 +150,14 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
         beneficiario.setClaveContrato(txtClaveDeContrato.getText());
         beneficiario.setSaldo(1000);
         beneficiario.setEliminado(false);
-        
-        try {
+
+        try
+        {
             beneficiarioNegocio.guardarBeneficiario(beneficiario);
             JOptionPane.showMessageDialog(this, "Beneficiario registrado correctamente");
             this.dispose();
-        } catch (NegocioException ex) {
+        } catch (NegocioException ex)
+        {
             JOptionPane.showMessageDialog(this, ex);
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed

@@ -5,8 +5,6 @@
 package gui;
 
 import DTOs.BeneficiarioDTO;
-import entidadestemporales.Beneficiario;
-import entidadestemporales.Pago;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -20,11 +18,6 @@ import utilerias.JButtonRenderer;
 
 import InterfacesNegocio.IBeneficiarioNegocio;
 import bo.BeneficiarioNegocio;
-import conexion.ConexionBD;
-import daos.BeneficiarioDAO;
-import interfaces.IBeneficiarioDAO;
-import interfaces.IConexionBD;
-import entidades.BeneficiarioEntidad;
 import excepciones.NegocioException;
 
 

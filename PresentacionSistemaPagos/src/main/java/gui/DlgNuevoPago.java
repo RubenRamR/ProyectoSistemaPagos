@@ -18,11 +18,8 @@ import bo.BeneficiarioNegocio;
 import bo.CuentaBancariaNegocio;
 import bo.PagoNegocio;
 import bo.TipoPagoNegocio;
-import entidades.TipoPagoEntidad;
 import excepciones.NegocioException;
-import excepciones.PersistenciaException;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -56,26 +53,32 @@ public class DlgNuevoPago extends javax.swing.JDialog {
     }
 
     private void llenarComboBoxCuenta() {
-        try {
+        try
+        {
             listaCuentas = cuentaneg.listaCuentasPorIdBeneficiario(beneficiarioLogeado.getId());
 
-            for (CuentaBancariaDTO cuenta : listaCuentas) {
+            for (CuentaBancariaDTO cuenta : listaCuentas)
+            {
                 cbxCuenta.addItem(cuenta);
             }
-        } catch (NegocioException ex) {
+        } catch (NegocioException ex)
+        {
             Logger.getLogger(DlgNuevoPago.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
     private void llenarComboBoxTipoPago() {
-        try {
+        try
+        {
             listaTipoPagos = tiponeg.muestraTiposPago();
 
-            for (TipoPagoDTO tipoPago : listaTipoPagos) {
+            for (TipoPagoDTO tipoPago : listaTipoPagos)
+            {
                 comboTipoDePago.addItem(tipoPago);
             }
-        } catch (NegocioException ex) {
+        } catch (NegocioException ex)
+        {
             Logger.getLogger(DlgNuevoPago.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -112,6 +115,12 @@ public class DlgNuevoPago extends javax.swing.JDialog {
 
         lblMensaje.setText("Comprobante:");
         jPanel1.add(lblMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, -1, -1));
+
+        txtMonto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMontoActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 140, -1));
 
         btnAceptar.setText("Aceptar");
@@ -169,7 +178,13 @@ public class DlgNuevoPago extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        try {
+        if (txtMensaje.getText().trim().isEmpty() || txtMonto.getText().trim().isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try
+        {
             CuentaBancariaDTO cuenta = cbxCuenta.getSelectedItem() != null ? (CuentaBancariaDTO) cbxCuenta.getSelectedItem() : null;
             TipoPagoDTO tipoPago = comboTipoDePago.getSelectedItem() != null ? (TipoPagoDTO) comboTipoDePago.getSelectedItem() : null;
 
@@ -191,14 +206,20 @@ public class DlgNuevoPago extends javax.swing.JDialog {
 
             pagoneg.guardarPago(nuevoPago);
 
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex)
+        {
             JOptionPane.showMessageDialog(null, "Por favor ingrese un monto válido");
-        } catch (NegocioException ex) {
+        } catch (NegocioException ex)
+        {
             JOptionPane.showMessageDialog(null, "Error al guardar el pago: " + ex.getMessage());
         }
 
         this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void txtMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMontoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

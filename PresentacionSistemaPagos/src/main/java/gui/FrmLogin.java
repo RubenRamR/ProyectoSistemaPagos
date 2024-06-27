@@ -7,27 +7,18 @@ package gui;
 import DTOs.BeneficiarioDTO;
 import InterfacesNegocio.IBeneficiarioNegocio;
 import bo.BeneficiarioNegocio;
-import conexion.ConexionBD;
-import daos.BeneficiarioDAO;
-import entidades.BeneficiarioEntidad;
 import excepciones.NegocioException;
-import excepciones.PersistenciaException;
-import interfaces.IBeneficiarioDAO;
-import interfaces.IConexionBD;
 import java.awt.image.BufferedImage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-
 
 /**
  *
  * @author crazy
  */
 public class FrmLogin extends javax.swing.JFrame {
-    
+
     private IBeneficiarioNegocio beneficiarioNegocio;
-    
+
     public FrmLogin() {
         this.beneficiarioNegocio = new BeneficiarioNegocio();
         initComponents();
@@ -134,15 +125,23 @@ public class FrmLogin extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // TODO add your handling code here:
-        try {
+        if (txtUsuario.getText().trim().isEmpty() || txtContrasena.getText().trim().isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "El campo de usuario o contraseña no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try
+        {
             BeneficiarioDTO beneficiario = beneficiarioNegocio.loginBeneficiario(txtUsuario.getText(), txtContrasena.getText());
             FrmMainBeneficiario fb = new FrmMainBeneficiario(beneficiario);
             fb.setVisible(true);
             this.dispose();
-        } catch (NegocioException ex) {
+        } catch (NegocioException ex)
+        {
             JOptionPane.showMessageDialog(this, "No se encontró el usuario");
         }
-        
+
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed

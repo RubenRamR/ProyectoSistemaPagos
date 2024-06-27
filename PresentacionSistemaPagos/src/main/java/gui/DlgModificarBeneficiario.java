@@ -9,8 +9,6 @@ import InterfacesNegocio.IBeneficiarioNegocio;
 import bo.BeneficiarioNegocio;
 import excepciones.NegocioException;
 import java.awt.image.BufferedImage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,38 +16,40 @@ import javax.swing.JOptionPane;
  * @author crazy
  */
 public class DlgModificarBeneficiario extends javax.swing.JDialog {
+
     private IBeneficiarioNegocio beneficiarioNegocio;
     private BeneficiarioDTO beneficiarioDTO;
     private long idBeneficiario;
 
     public DlgModificarBeneficiario(long idBeneficiario) {
         super();
-        
+
         this.beneficiarioNegocio = new BeneficiarioNegocio();
         this.idBeneficiario = idBeneficiario;
-        
+
         initComponents();
-        
+
         consultarBeneficiarioYLlenarTextFields();
     }
 
-    private void consultarBeneficiarioYLlenarTextFields(){
-        try {
+    private void consultarBeneficiarioYLlenarTextFields() {
+        try
+        {
             this.beneficiarioDTO = beneficiarioNegocio.buscarBeneficiarioPorId(idBeneficiario);
-        } catch (NegocioException ex) {
+        } catch (NegocioException ex)
+        {
             JOptionPane.showMessageDialog(this, ex);
         }
-        
+
         txtNombres.setText(beneficiarioDTO.getNombres());
         txtUsuario.setText(beneficiarioDTO.getUsuario());
         txtClaveDeContrato.setText(beneficiarioDTO.getClaveContrato());
         txtApellidoPaterno.setText(beneficiarioDTO.getApellidoPaterno());
         txtApellidoMaterno.setText(beneficiarioDTO.getApellidoMaterno());
         txtContrasena.setText(beneficiarioDTO.getContrasena());
-        
+
     }
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -163,7 +163,16 @@ public class DlgModificarBeneficiario extends javax.swing.JDialog {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here: 
-        
+        if (txtNombres.getText().trim().isEmpty()
+                || txtApellidoPaterno.getText().trim().isEmpty()
+                || txtUsuario.getText().trim().isEmpty()
+                || txtContrasena.getText().trim().isEmpty()
+                || txtClaveDeContrato.getText().trim().isEmpty())
+        {
+
+            JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         BeneficiarioDTO beneficiario = new BeneficiarioDTO();
         beneficiario.setId(idBeneficiario);
         beneficiario.setNombres(txtNombres.getText());
@@ -175,23 +184,27 @@ public class DlgModificarBeneficiario extends javax.swing.JDialog {
         beneficiario.setSaldo(1000);
         beneficiario.setEliminado(false);
 
-        try {
+        try
+        {
             beneficiarioNegocio.modificarBeneficiario(idBeneficiario, beneficiario);
             JOptionPane.showMessageDialog(this, "Beneficiario modificado correctamente");
             this.dispose();
-        } catch (NegocioException ex) {
+        } catch (NegocioException ex)
+        {
             JOptionPane.showMessageDialog(this, ex);
-        }    
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        try {
+        try
+        {
             // TODO add your handling code here:
             beneficiarioNegocio.eliminarBeneficiario(idBeneficiario);
-        } catch (NegocioException ex) {
+        } catch (NegocioException ex)
+        {
             JOptionPane.showMessageDialog(this, ex);
         }
-        
+
         this.dispose();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
