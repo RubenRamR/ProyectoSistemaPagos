@@ -4,7 +4,6 @@
  */
 package daos;
 
-import static Utileria.Utilidades.RegresarOFFSETMySQL;
 import entidades.BeneficiarioEntidad;
 import entidades.CuentaBancariaEntidad;
 import entidades.PagoEntidad;
@@ -18,12 +17,11 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 /**
- *
- * @author caarl
+ * Clase que implementa las operaciones de acceso a datos para la entidad BeneficiarioEntidad.
+ * Implementa la interfaz IBeneficiarioDAO.
  */
 public class BeneficiarioDAO implements IBeneficiarioDAO {
 
@@ -33,6 +31,11 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         this.conexion = conexion;
     }
 
+    /**
+     * Elimina un beneficiario especificado por su ID.
+     * @param id El ID del beneficiario a eliminar.
+     * @throws PersistenciaException Si ocurre un error durante la eliminación.
+     */
     @Override
     public void eliminarBeneficiario(Long id) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -54,6 +57,11 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         }
     }
 
+    /**
+     * Guarda un nuevo beneficiario en la base de datos.
+     * @param beneficiario El beneficiario a guardar.
+     * @throws PersistenciaException Si ocurre un error durante la operación de guardado.
+     */
     @Override
     public void guardarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -70,6 +78,12 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         }
     }
 
+    /**
+     * Modifica un beneficiario existente en la base de datos.
+     * @param id El ID del beneficiario a modificar.
+     * @param beneficiario El beneficiario con los nuevos datos.
+     * @throws PersistenciaException Si ocurre un error durante la modificación.
+     */
     @Override
     public void modificarBeneficiario(Long id, BeneficiarioEntidad beneficiario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -98,6 +112,13 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         }
     }
 
+    /**
+     * Guarda un beneficiario con sus relaciones (cuentas bancarias y pagos).
+     * @param beneficiario El beneficiario a guardar.
+     * @param cuentas La lista de cuentas bancarias asociadas al beneficiario.
+     * @param pagos La lista de pagos asociados al beneficiario.
+     * @throws PersistenciaException Si ocurre un error durante la operación de guardado.
+     */
     @Override
     public void guardarBeneficiarioConRelaciones(BeneficiarioEntidad beneficiario, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -116,6 +137,12 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         }
     }
 
+    /**
+     * Busca un beneficiario en la base de datos basado en el objeto beneficiario proporcionado.
+     * @param beneficiario El beneficiario con el ID a buscar.
+     * @return El beneficiario encontrado.
+     * @throws PersistenciaException Si no se encuentra ningún beneficiario con el ID especificado.
+     */
     @Override
     public BeneficiarioEntidad buscarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -134,6 +161,12 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         return beneficiarios;
     }
 
+    /**
+     * Busca un beneficiario en la base de datos basado en su ID.
+     * @param idBeneficiario El ID del beneficiario a buscar.
+     * @return El beneficiario encontrado.
+     * @throws PersistenciaException Si no se encuentra ningún beneficiario con el ID especificado.
+     */
     @Override
     public BeneficiarioEntidad buscarBeneficiarioPorId(Long idBeneficiario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -151,6 +184,13 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         return beneficiario;
     }
 
+    /**
+     * Busca todos los beneficiarios no eliminados en la base de datos.
+     * @param limite El número máximo de resultados a devolver.
+     * @param offset El número de resultados que se deben omitir desde el principio.
+     * @return Una lista de beneficiarios.
+     * @throws PersistenciaException Si ocurre un error durante la búsqueda.
+     */
     @Override
     public List<BeneficiarioEntidad> buscarBeneficiarios(int limite, int offset) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();

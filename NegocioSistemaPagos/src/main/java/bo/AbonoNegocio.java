@@ -9,15 +9,7 @@ import DTOs.PagoDTO;
 import InterfacesNegocio.IAbonoNegocio;
 import conexion.ConexionBD;
 import daos.AbonoDAO;
-import daos.BeneficiarioDAO;
-import daos.CuentaBancariaDAO;
-import daos.PagoDAO;
-import daos.TipoPagoDAO;
 import entidades.AbonoEntidad;
-import entidades.BeneficiarioEntidad;
-import entidades.CuentaBancariaEntidad;
-import entidades.PagoEntidad;
-import entidades.TipoPagoEntidad;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IAbonoDAO;
@@ -29,8 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author rramirez
+ * Clase que implementa la lógica de negocio relacionada con los abonos. Utiliza
+ * DAOs para interactuar con la capa de persistencia.
  */
 public class AbonoNegocio implements IAbonoNegocio {
 
@@ -41,17 +33,30 @@ public class AbonoNegocio implements IAbonoNegocio {
     private static final Logger LOGGER = Logger.getLogger(AbonoNegocio.class.getName());
     IConexionBD conexion;
 
+    /**
+     * Constructor de la clase AbonoNegocio. Inicializa los DAOs necesarios para
+     * interactuar con la base de datos.
+     */
     public AbonoNegocio() {
         this.conexion = new ConexionBD();
         this.abonoDAO = new AbonoDAO(conexion);
     }
 
+    /**
+     * Método para eliminar un abono dado su ID.
+     *
+     * @param id ID del abono a eliminar.
+     * @throws NegocioException Si ocurre un error durante la eliminación del
+     * abono.
+     */
     @Override
     public void eliminarAbono(Long id) throws NegocioException {
-        try {
+        try
+        {
             // Buscar el abono existente por su ID
             AbonoEntidad abonoExistente = abonoDAO.buscarAbonoPorId(id);
-            if (abonoExistente == null) {
+            if (abonoExistente == null)
+            {
                 throw new NegocioException("El abono con ID " + id + " no existe.");
             }
 
@@ -60,7 +65,8 @@ public class AbonoNegocio implements IAbonoNegocio {
 
             // Guardar los cambios en la base de datos
             abonoDAO.guardarAbono(abonoExistente);
-        } catch (PersistenciaException ex) {
+        } catch (PersistenciaException ex)
+        {
             Logger.getLogger(AbonoNegocio.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("Error al eliminar el abono.", ex);
         }
@@ -70,13 +76,22 @@ public class AbonoNegocio implements IAbonoNegocio {
     public void guardarAbono(AbonoDTO abonoDTO) throws NegocioException {
     }
 
+    /**
+     * Método para modificar los datos de un abono existente.
+     *
+     * @param id ID del abono a modificar.
+     * @param abono DTO con los nuevos datos del abono.
+     * @throws NegocioException Si ocurre un error durante la modificación del
+     * abono.
+     */
     @Override
-
     public void modificarAbono(Long id, AbonoDTO abono) throws NegocioException {
-        try {
+        try
+        {
             // Buscar el abono existente por su ID
             AbonoEntidad abonoExistente = abonoDAO.buscarAbonoPorId(id);
-            if (abonoExistente == null) {
+            if (abonoExistente == null)
+            {
                 throw new NegocioException("El abono con ID " + id + " no existe.");
             }
 
@@ -86,7 +101,8 @@ public class AbonoNegocio implements IAbonoNegocio {
 
             // Guardar los cambios en la base de datos
             abonoDAO.guardarAbono(abonoExistente);
-        } catch (PersistenciaException ex) {
+        } catch (PersistenciaException ex)
+        {
             Logger.getLogger(AbonoNegocio.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("Error al modificar el abono.", ex);
         }

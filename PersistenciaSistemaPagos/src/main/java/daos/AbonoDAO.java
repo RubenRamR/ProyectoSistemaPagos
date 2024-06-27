@@ -19,8 +19,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
- *
- * @author caarl
+ * Clase que implementa las operaciones de acceso a datos para la entidad AbonoEntidad.
+ * Implementa la interfaz IAbonoDAO.
  */
 public class AbonoDAO implements IAbonoDAO {
 
@@ -30,6 +30,11 @@ public class AbonoDAO implements IAbonoDAO {
         this.conexion = conexion;
     }
     
+    /**
+     * Elimina un abono especificado por su ID.
+     * @param id El ID del abono a eliminar.
+     * @throws PersistenciaException Si ocurre un error durante la eliminación.
+     */
     @Override
     public void eliminarAbono(Long id) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -49,6 +54,11 @@ public class AbonoDAO implements IAbonoDAO {
         }
     }
 
+    /**
+     * Guarda un nuevo abono en la base de datos.
+     * @param abono El abono a guardar.
+     * @throws PersistenciaException Si ocurre un error durante la operación de guardado.
+     */
     @Override
     public void guardarAbono(AbonoEntidad abono) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -63,6 +73,12 @@ public class AbonoDAO implements IAbonoDAO {
         }
     }
 
+    /**
+     * Modifica un abono existente en la base de datos.
+     * @param id El ID del abono a modificar.
+     * @param abono El abono con los nuevos datos.
+     * @throws PersistenciaException Si ocurre un error durante la modificación.
+     */
     @Override
     public void modificarAbono(Long id, AbonoEntidad abono) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -84,6 +100,12 @@ public class AbonoDAO implements IAbonoDAO {
         }
     }
 
+    /**
+     * Guarda un abono asociado a un pago específico.
+     * @param abono El abono a guardar.
+     * @param pago El pago asociado al abono.
+     * @throws PersistenciaException Si ocurre un error durante la operación de guardado.
+     */
     @Override
     public void guardarAbonoConRelacion(AbonoEntidad abono, PagoEntidad pago) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -99,6 +121,12 @@ public class AbonoDAO implements IAbonoDAO {
         }
     }
 
+    /**
+     * Busca un abono en la base de datos basado en su ID.
+     * @param abono El abono con el ID a buscar.
+     * @return El abono encontrado.
+     * @throws PersistenciaException Si no se encuentra ningún abono con el ID especificado.
+     */
     @Override
     public AbonoEntidad buscarAbono(AbonoEntidad abono) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -118,6 +146,12 @@ public class AbonoDAO implements IAbonoDAO {
         return abonos;
     }
 
+    /**
+     * Busca un abono en la base de datos basado en su ID.
+     * @param idAbono El ID del abono a buscar.
+     * @return El abono encontrado.
+     * @throws PersistenciaException Si no se encuentra ningún abono con el ID especificado.
+     */
     @Override
     public AbonoEntidad buscarAbonoPorId(Long idAbono) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
@@ -135,6 +169,11 @@ public class AbonoDAO implements IAbonoDAO {
         return abonos;
     }
 
+    /**
+     * Busca todos los abonos existentes en la base de datos.
+     * @return Una lista de abonos.
+     * @throws PersistenciaException Si ocurre un error durante la búsqueda.
+     */
     @Override
     public List<AbonoEntidad> buscarAbonos() throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
