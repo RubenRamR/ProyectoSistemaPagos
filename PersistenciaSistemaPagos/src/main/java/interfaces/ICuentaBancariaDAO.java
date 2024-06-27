@@ -34,11 +34,10 @@ public interface ICuentaBancariaDAO {
     /**
      * Modifica una cuenta bancaria existente en la base de datos.
      *
-     * @param id El ID de la cuenta bancaria a modificar.
      * @param cuentaBancaria La cuenta bancaria modificada.
      * @throws PersistenciaException Si ocurre un error durante la persistencia.
      */
-    public void modificarCuentaBancaria(Long id, CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException;
+    public void modificarCuentaBancaria(CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException;
 
     /**
      * Guarda una cuenta bancaria junto con sus relaciones a beneficiario y

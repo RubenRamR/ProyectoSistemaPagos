@@ -49,12 +49,10 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
      */
     @Override
     public void eliminarCuentaBancaria(Long id) throws NegocioException {
-        try
-        {
+        try {
             // Buscar la cuenta bancaria existente por su ID
             CuentaBancariaEntidad cuentaExistente = cuentaBancariaDAO.buscarCuentaBancariaPorId(id);
-            if (cuentaExistente == null)
-            {
+            if (cuentaExistente == null) {
                 throw new NegocioException("La cuenta bancaria con ID " + id + " no existe.");
             }
 
@@ -63,8 +61,7 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
 
             // Guardar los cambios en la base de datos
             cuentaBancariaDAO.guardarCuentaBancaria(cuentaExistente);
-        } catch (PersistenciaException ex)
-        {
+        } catch (PersistenciaException ex) {
             Logger.getLogger(CuentaBancariaNegocio.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("Error al eliminar la cuenta bancaria.", ex);
         }
@@ -79,12 +76,10 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
      */
     @Override
     public void guardarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {
-        try
-        {
+        try {
             beneficiarioDAO = new BeneficiarioDAO(conexion);
             BeneficiarioEntidad beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(cuentaBancariaDTO.getBeneficiario().getId());
-            if (beneficiario == null)
-            {
+            if (beneficiario == null) {
                 throw new NegocioException("Beneficiario no encontrado con id: " + cuentaBancariaDTO.getBeneficiario().getId());
             }
 
@@ -97,8 +92,7 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
             );
 
             cuentaBancariaDAO.guardarCuentaBancaria(cuentaBancaria);
-        } catch (PersistenciaException ex)
-        {
+        } catch (PersistenciaException ex) {
             throw new NegocioException("Error al guardar la cuenta bancaria", ex);
         }
     }
@@ -106,34 +100,20 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
     /**
      * Modifica los datos de una cuenta bancaria existente.
      *
-     * @param id ID de la cuenta bancaria a modificar.
      * @param cuentaBancariaDTO Nuevos datos de la cuenta bancaria.
      * @throws NegocioException Si ocurre un error al modificar la cuenta
      * bancaria.
      */
     @Override
-    public void modificarCuentaBancaria(Long id, CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {
-        try
-        {
-            // Buscar la cuenta bancaria existente por su ID
-            CuentaBancariaEntidad cuentaExistente = cuentaBancariaDAO.buscarCuentaBancariaPorId(id);
-            if (cuentaExistente == null)
-            {
-                throw new NegocioException("La cuenta bancaria con ID " + id + " no existe.");
-            }
+    public void modificarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {
+        validarCuentaBancaria(cuentaBancariaDTO);
 
-            // Actualizar los valores de la cuenta bancaria con los proporcionados en el DTO
-            cuentaExistente.setNumeroCuenta(cuentaBancariaDTO.getNumeroCuenta());
-            cuentaExistente.setClave(cuentaBancariaDTO.getClave());
-            cuentaExistente.setBanco(cuentaBancariaDTO.getBanco());
-            cuentaExistente.setEliminado(cuentaBancariaDTO.isEliminado());
+        try {
+            CuentaBancariaEntidad cuentaBancariaEntidad = convertirDTOAEntidad(cuentaBancariaDTO);
 
-            // Guardar los cambios en la base de datos
-            cuentaBancariaDAO.modificarCuentaBancaria(id, cuentaExistente);
-        } catch (PersistenciaException ex)
-        {
-            Logger.getLogger(CuentaBancariaNegocio.class.getName()).log(Level.SEVERE, null, ex);
-            throw new NegocioException("Error al modificar la cuenta bancaria.", ex);
+            cuentaBancariaDAO.modificarCuentaBancaria(cuentaBancariaEntidad);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("Error al editar cuenta bancaria", e);
         }
     }
 
@@ -149,12 +129,10 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
      */
     @Override
     public void guardarCuentaBancariaConRelaciones(CuentaBancariaDTO cuentaBancaria, BeneficiarioDTO beneficiario, List<PagoDTO> pagos) throws NegocioException {
-        try
-        {
+        try {
             // Crear una instancia de CuentaBancariaEntidad con los datos del DTO
             BeneficiarioEntidad beneficiarioEntidad = beneficiarioDAO.buscarBeneficiarioPorId(beneficiario.getId());
-            if (beneficiarioEntidad == null)
-            {
+            if (beneficiarioEntidad == null) {
                 throw new NegocioException("Beneficiario no encontrado con ID " + beneficiario.getId());
             }
 
@@ -168,8 +146,7 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
             // Guardar la cuenta bancaria en la base de datos
             cuentaBancariaDAO.guardarCuentaBancaria(cuentaBancariaEntidad);
 
-        } catch (PersistenciaException ex)
-        {
+        } catch (PersistenciaException ex) {
             Logger.getLogger(CuentaBancariaNegocio.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("Error al guardar la cuenta bancaria con relaciones.", ex);
         }
@@ -203,19 +180,16 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
      */
     @Override
     public List<CuentaBancariaDTO> listaCuentasPorIdBeneficiario(Long id) throws NegocioException {
-        try
-        {
+        try {
 
             List<CuentaBancariaEntidad> listaCuentasBancariasEntidad = cuentaBancariaDAO.listaCuentasPorIdBeneficiario(id);
             List<CuentaBancariaDTO> listaCuentasBancariasDTO = new ArrayList<>();
 
-            for (CuentaBancariaEntidad cuentaBancariaEntidad : listaCuentasBancariasEntidad)
-            {
+            for (CuentaBancariaEntidad cuentaBancariaEntidad : listaCuentasBancariasEntidad) {
                 listaCuentasBancariasDTO.add(convertirEntidadADTO(cuentaBancariaEntidad));
             }
             return listaCuentasBancariasDTO;
-        } catch (PersistenciaException e)
-        {
+        } catch (PersistenciaException e) {
             throw new NegocioException("Error al consultar lista de cuentas bancarias", e);
         }
     }
@@ -230,14 +204,12 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
      */
     public CuentaBancariaDTO buscarCuentaBancariaDTO(CuentaBancariaDTO cuentaBancariaDTO) throws NegocioException {
 
-        try
-        {
+        try {
             CuentaBancariaEntidad cuentaBancariaEntidad = convertirDTOAEntidad(cuentaBancariaDTO);
             CuentaBancariaEntidad cuentaBancariaEncontrada = cuentaBancariaDAO.buscarCuentaBancaria(cuentaBancariaEntidad);
 
             return convertirEntidadADTO(cuentaBancariaEncontrada);
-        } catch (PersistenciaException e)
-        {
+        } catch (PersistenciaException e) {
             throw new NegocioException("Error al buscar la cuenta bancaria", e);
         }
     }
@@ -250,15 +222,13 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
      * @throws NegocioException Si ocurre un error al buscar la cuenta bancaria.
      */
     public CuentaBancariaDTO buscarCuentaBancariaPorId(Long id) throws NegocioException {
-        try
-        {
+        try {
             // Buscar la cuenta bancaria en la base de datos usando el ID
             CuentaBancariaEntidad cuentaBancariaEncontrada = cuentaBancariaDAO.buscarCuentaBancariaPorId(id);
 
             // Convertir la entidad encontrada a DTO y devolverla
             return convertirEntidadADTO(cuentaBancariaEncontrada);
-        } catch (PersistenciaException e)
-        {
+        } catch (PersistenciaException e) {
             throw new NegocioException("Error al buscar la cuenta bancaria", e);
         }
     }
@@ -276,11 +246,9 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
         BeneficiarioDAO beneficiarioDAO = new BeneficiarioDAO(conexion);
         BeneficiarioEntidad beneficiario = new BeneficiarioEntidad();
 
-        try
-        {
+        try {
             beneficiario = beneficiarioDAO.buscarBeneficiarioPorId(cuentaBancariaDTO.getBeneficiario().getId());
-        } catch (PersistenciaException ex)
-        {
+        } catch (PersistenciaException ex) {
             Logger.getLogger(CuentaBancariaNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -322,6 +290,17 @@ public class CuentaBancariaNegocio implements ICuentaBancariaNegocio {
     @Override
     public List<CuentaBancariaDTO> buscarCuentasBancarias(BeneficiarioDTO beneficiario) throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void validarCuentaBancaria(CuentaBancariaDTO cuentaBancaria) throws NegocioException {
+        if (cuentaBancaria == null) {
+            throw new NegocioException("Cuenta bancaria no puede ser nula");
+        }
+
+        if (cuentaBancaria.getId() == null) {
+            throw new NegocioException("Id de cuenta bancaria no puede ser nulo");
+        }
+
     }
 
 }

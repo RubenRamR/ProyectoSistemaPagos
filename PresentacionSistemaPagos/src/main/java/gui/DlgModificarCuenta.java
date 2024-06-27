@@ -4,11 +4,14 @@
  */
 package gui;
 
+import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import InterfacesNegocio.ICuentaBancariaNegocio;
 import bo.CuentaBancariaNegocio;
 import excepciones.NegocioException;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,13 +20,15 @@ import javax.swing.JOptionPane;
  */
 public class DlgModificarCuenta extends javax.swing.JDialog {
 
+    private BeneficiarioDTO beneficiarioLogeado;
     private ICuentaBancariaNegocio cuentaBancariaNegocio;
     private CuentaBancariaDTO cuentaBancariaDTO;
     private long idCuentaBancaria;
 
-    public DlgModificarCuenta(java.awt.Frame parent, boolean modal, long idCuentaBancaria) {
+    public DlgModificarCuenta(java.awt.Frame parent, boolean modal, long idCuentaBancaria, BeneficiarioDTO beneficiarioLogeado) {
         super(parent, modal);
         initComponents();
+        this.beneficiarioLogeado = beneficiarioLogeado;
         this.cuentaBancariaNegocio = new CuentaBancariaNegocio();
         this.idCuentaBancaria = idCuentaBancaria;
 
@@ -31,11 +36,9 @@ public class DlgModificarCuenta extends javax.swing.JDialog {
     }
 
     private void consultarCuentaYLlenarTextFields() {
-        try
-        {
+        try {
             this.cuentaBancariaDTO = cuentaBancariaNegocio.buscarCuentaBancariaPorId(idCuentaBancaria);
-        } catch (NegocioException ex)
-        {
+        } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, ex);
         }
 
@@ -149,8 +152,7 @@ public class DlgModificarCuenta extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (txtNumeroCuenta.getText().trim().isEmpty()
                 || txtClabe.getText().trim().isEmpty()
-                || txtBanco.getText().trim().isEmpty())
-        {
+                || txtBanco.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -161,40 +163,34 @@ public class DlgModificarCuenta extends javax.swing.JDialog {
         cuentaBancaria.setClave(txtClabe.getText());
         cuentaBancaria.setBanco(txtBanco.getText());
         cuentaBancaria.setEliminado(false);
+        cuentaBancaria.setBeneficiario(beneficiarioLogeado);
 
-        try
-        {
-            cuentaBancariaNegocio.modificarCuentaBancaria(idCuentaBancaria, cuentaBancaria);
-            JOptionPane.showMessageDialog(this, "Cuenta Bancaria modificada correctamente");
-
-            this.dispose();
-
-        } catch (NegocioException ex)
-        {
-            JOptionPane.showMessageDialog(this, ex);
+        try {
+            cuentaBancariaNegocio.modificarCuentaBancaria(cuentaBancaria);
+        } catch (NegocioException ex) {
+            Logger.getLogger(DlgModificarCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
+        JOptionPane.showMessageDialog(this, "Cuenta Bancaria modificada correctamente");
+        this.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             CuentaBancariaDTO cuentaBancaria = cuentaBancariaNegocio.buscarCuentaBancariaPorId(idCuentaBancaria);
-            if (cuentaBancaria == null)
-            {
+            if (cuentaBancaria == null) {
                 JOptionPane.showMessageDialog(this, "La cuenta bancaria con ID " + idCuentaBancaria + " no existe", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             cuentaBancaria.setEliminado(true);
-            cuentaBancariaNegocio.modificarCuentaBancaria(idCuentaBancaria, cuentaBancaria);
+            cuentaBancariaNegocio.modificarCuentaBancaria(cuentaBancaria);
 
             JOptionPane.showMessageDialog(this, "Cuenta Bancaria eliminada correctamente");
 
             this.dispose();
 
-        } catch (NegocioException ex)
-        {
+        } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "Error al eliminar la cuenta bancaria: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed

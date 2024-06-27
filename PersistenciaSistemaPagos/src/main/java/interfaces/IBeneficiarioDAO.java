@@ -36,11 +36,10 @@ public interface IBeneficiarioDAO {
     /**
      * Modifica un beneficiario existente en el sistema.
      *
-     * @param id El ID del beneficiario a modificar.
      * @param beneficiario El beneficiario con los cambios a aplicar.
      * @throws PersistenciaException Si ocurre un error durante la persistencia.
      */
-    public void modificarBeneficiario(Long id, BeneficiarioEntidad beneficiario) throws PersistenciaException;
+    public void modificarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException;
 
     /**
      * Guarda un beneficiario estableciendo relaciones con cuentas bancarias y

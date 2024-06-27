@@ -20,8 +20,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
- * Clase que implementa las operaciones de acceso a datos para la entidad BeneficiarioEntidad.
- * Implementa la interfaz IBeneficiarioDAO.
+ * Clase que implementa las operaciones de acceso a datos para la entidad
+ * BeneficiarioEntidad. Implementa la interfaz IBeneficiarioDAO.
  */
 public class BeneficiarioDAO implements IBeneficiarioDAO {
 
@@ -33,6 +33,7 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
 
     /**
      * Elimina un beneficiario especificado por su ID.
+     *
      * @param id El ID del beneficiario a eliminar.
      * @throws PersistenciaException Si ocurre un error durante la eliminación.
      */
@@ -59,8 +60,10 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
 
     /**
      * Guarda un nuevo beneficiario en la base de datos.
+     *
      * @param beneficiario El beneficiario a guardar.
-     * @throws PersistenciaException Si ocurre un error durante la operación de guardado.
+     * @throws PersistenciaException Si ocurre un error durante la operación de
+     * guardado.
      */
     @Override
     public void guardarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException {
@@ -80,44 +83,35 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
 
     /**
      * Modifica un beneficiario existente en la base de datos.
-     * @param id El ID del beneficiario a modificar.
+     *
      * @param beneficiario El beneficiario con los nuevos datos.
      * @throws PersistenciaException Si ocurre un error durante la modificación.
      */
     @Override
-    public void modificarBeneficiario(Long id, BeneficiarioEntidad beneficiario) throws PersistenciaException {
+    public void modificarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         try {
             em.getTransaction().begin();
-            BeneficiarioEntidad beneficiarioExistente = em.find(BeneficiarioEntidad.class, id);
-            if (beneficiarioExistente == null) {
-                throw new PersistenciaException("El beneficiario con ID " + id + " no existe");
-            }
-            beneficiarioExistente.setNombres(beneficiario.getNombres());
-            beneficiarioExistente.setApellidoPaterno(beneficiario.getApellidoPaterno());
-            beneficiarioExistente.setApellidoMaterno(beneficiario.getApellidoMaterno());
-            beneficiarioExistente.setUsuario(beneficiario.getUsuario());
-            beneficiarioExistente.setContrasena(beneficiario.getContrasena());
-            beneficiarioExistente.setClaveContrato(beneficiario.getClaveContrato());
-            beneficiarioExistente.setSaldo(beneficiario.getSaldo());
-
-            em.merge(beneficiarioExistente);
+            em.merge(beneficiario);
             em.getTransaction().commit();
-            System.out.println("Operación terminada correctamente");
-        } catch (PersistenceException e) {
+        } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            throw new PersistenciaException("Error al modificar el beneficiario", e);
+            throw new PersistenciaException("Error al actualizar beneficiario", e);
+        } finally {
+            em.close();
         }
     }
 
     /**
      * Guarda un beneficiario con sus relaciones (cuentas bancarias y pagos).
+     *
      * @param beneficiario El beneficiario a guardar.
      * @param cuentas La lista de cuentas bancarias asociadas al beneficiario.
      * @param pagos La lista de pagos asociados al beneficiario.
-     * @throws PersistenciaException Si ocurre un error durante la operación de guardado.
+     * @throws PersistenciaException Si ocurre un error durante la operación de
+     * guardado.
      */
     @Override
     public void guardarBeneficiarioConRelaciones(BeneficiarioEntidad beneficiario, List<CuentaBancariaEntidad> cuentas, List<PagoEntidad> pagos) throws PersistenciaException {
@@ -138,10 +132,13 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
     }
 
     /**
-     * Busca un beneficiario en la base de datos basado en el objeto beneficiario proporcionado.
+     * Busca un beneficiario en la base de datos basado en el objeto
+     * beneficiario proporcionado.
+     *
      * @param beneficiario El beneficiario con el ID a buscar.
      * @return El beneficiario encontrado.
-     * @throws PersistenciaException Si no se encuentra ningún beneficiario con el ID especificado.
+     * @throws PersistenciaException Si no se encuentra ningún beneficiario con
+     * el ID especificado.
      */
     @Override
     public BeneficiarioEntidad buscarBeneficiario(BeneficiarioEntidad beneficiario) throws PersistenciaException {
@@ -163,9 +160,11 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
 
     /**
      * Busca un beneficiario en la base de datos basado en su ID.
+     *
      * @param idBeneficiario El ID del beneficiario a buscar.
      * @return El beneficiario encontrado.
-     * @throws PersistenciaException Si no se encuentra ningún beneficiario con el ID especificado.
+     * @throws PersistenciaException Si no se encuentra ningún beneficiario con
+     * el ID especificado.
      */
     @Override
     public BeneficiarioEntidad buscarBeneficiarioPorId(Long idBeneficiario) throws PersistenciaException {
@@ -186,8 +185,10 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
 
     /**
      * Busca todos los beneficiarios no eliminados en la base de datos.
+     *
      * @param limite El número máximo de resultados a devolver.
-     * @param offset El número de resultados que se deben omitir desde el principio.
+     * @param offset El número de resultados que se deben omitir desde el
+     * principio.
      * @return Una lista de beneficiarios.
      * @throws PersistenciaException Si ocurre un error durante la búsqueda.
      */

@@ -40,22 +40,18 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
     @Override
     public void eliminarCuentaBancaria(Long id) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
             CuentaBancariaEntidad cuentaBancariaExistente = em.find(CuentaBancariaEntidad.class, id);
-            if (cuentaBancariaExistente == null)
-            {
+            if (cuentaBancariaExistente == null) {
                 throw new PersistenciaException("La cuenta bancaria con ID " + id + " no existe");
             }
             cuentaBancariaExistente.setEliminado(true); // Cambiar la columna "eliminado" a true
             em.persist(cuentaBancariaExistente);
             em.getTransaction().commit();
             System.out.println("Operación de eliminación terminada correctamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al eliminar la cuenta bancaria", e);
@@ -72,16 +68,13 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
     @Override
     public void guardarCuentaBancaria(CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
             em.merge(cuentaBancaria);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al guardar la cuenta bancaria", e);
@@ -91,35 +84,23 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
     /**
      * Modifica una cuenta bancaria existente en la base de datos.
      *
-     * @param id El ID de la cuenta bancaria a modificar.
      * @param cuentaBancaria La cuenta bancaria con los nuevos datos.
      * @throws PersistenciaException Si ocurre un error durante la modificación.
      */
     @Override
-    public void modificarCuentaBancaria(Long id, CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException {
+    public void modificarCuentaBancaria(CuentaBancariaEntidad cuentaBancaria) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
-            CuentaBancariaEntidad cuentaBancariaExistente = em.find(CuentaBancariaEntidad.class, id);
-            if (cuentaBancariaExistente == null)
-            {
-                throw new PersistenciaException("La cuenta bancaria con ID " + id + " no existe");
-            }
-            cuentaBancariaExistente.setNumeroCuenta(cuentaBancaria.getNumeroCuenta());
-            cuentaBancariaExistente.setClave(cuentaBancaria.getClave());
-            cuentaBancariaExistente.setBanco(cuentaBancaria.getBanco());
-            cuentaBancariaExistente.setEliminado(cuentaBancaria.isEliminado());
-            cuentaBancariaExistente.setBeneficiario(cuentaBancaria.getBeneficiario());
+            em.merge(cuentaBancaria);
             em.getTransaction().commit();
-            System.out.println("Operación terminada correctamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            throw new PersistenciaException("Error al modificar la cuenta bancaria", e);
+            throw new PersistenciaException("Error al actualizar cuenta bancaria", e);
+        } finally {
+            em.close();
         }
     }
 
@@ -135,18 +116,15 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
     @Override
     public void guardarCuentaBancariaConRelaciones(CuentaBancariaEntidad cuentaBancaria, BeneficiarioEntidad beneficiario, List<PagoEntidad> pagos) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
-        try
-        {
+        try {
             em.getTransaction().begin();
             cuentaBancaria.setBeneficiario(beneficiario);
             cuentaBancaria.setPagos(pagos);
             em.persist(cuentaBancaria);
             em.getTransaction().commit();
             System.out.println("Operación terminada exitosamente");
-        } catch (PersistenceException e)
-        {
-            if (em.getTransaction().isActive())
-            {
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw new PersistenciaException("Error al guardar la cuenta bancaria con relaciones", e);
@@ -171,12 +149,10 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
         criteria.select(root).where(cb.equal(root.get("id"), cuentaBancaria.getId()));
         TypedQuery<CuentaBancariaEntidad> query = em.createQuery(criteria);
         CuentaBancariaEntidad cuentas;
-        try
-        {
+        try {
             cuentas = (CuentaBancariaEntidad) query.getSingleResult();
 
-        } catch (NoResultException nre)
-        {
+        } catch (NoResultException nre) {
             throw new PersistenciaException("Número de placa inexistente");
         }
         return cuentas;
@@ -184,9 +160,11 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
 
     /**
      * Busca una cuenta bancaria en la base de datos basado en su ID.
+     *
      * @param idCuentaBancaria El ID de la cuenta bancaria a buscar.
      * @return La cuenta bancaria encontrada.
-     * @throws PersistenciaException Si no se encuentra ninguna cuenta bancaria con el ID especificado.
+     * @throws PersistenciaException Si no se encuentra ninguna cuenta bancaria
+     * con el ID especificado.
      */
     @Override
     public CuentaBancariaEntidad buscarCuentaBancariaPorId(Long idCuentaBancaria) throws PersistenciaException {
@@ -197,11 +175,9 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
         criteria.select(root).where(cb.equal(root.get("id"), idCuentaBancaria));
         TypedQuery<CuentaBancariaEntidad> query = em.createQuery(criteria);
         CuentaBancariaEntidad cuentaBancaria;
-        try
-        {
+        try {
             cuentaBancaria = query.getSingleResult();
-        } catch (NoResultException nre)
-        {
+        } catch (NoResultException nre) {
             throw new PersistenciaException("Cuenta bancaria no encontrada con id: " + idCuentaBancaria);
         }
         return cuentaBancaria;
@@ -209,7 +185,9 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
 
     /**
      * Lista todas las cuentas bancarias asociadas a un beneficiario.
-     * @param idBeneficiario El ID del beneficiario cuyas cuentas se desean listar.
+     *
+     * @param idBeneficiario El ID del beneficiario cuyas cuentas se desean
+     * listar.
      * @return Una lista de cuentas bancarias asociadas al beneficiario.
      * @throws PersistenciaException Si ocurre un error durante la búsqueda.
      */
@@ -218,8 +196,7 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
         EntityManager em = conexion.crearConexion();
         List<CuentaBancariaEntidad> cuentasBancarias = null;
 
-        try
-        {
+        try {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<CuentaBancariaEntidad> criteria = cb.createQuery(CuentaBancariaEntidad.class);
             Root<CuentaBancariaEntidad> root = criteria.from(CuentaBancariaEntidad.class);
@@ -229,11 +206,9 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
             TypedQuery<CuentaBancariaEntidad> query = em.createQuery(criteria);
             cuentasBancarias = query.getResultList();
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenciaException("Error al leer todas las cuentas bancarias", e);
-        } finally
-        {
+        } finally {
             em.close();
         }
         return cuentasBancarias;
@@ -251,14 +226,11 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO {
 
         TypedQuery<CuentaBancariaEntidad> query = em.createQuery(criteria);
         List<CuentaBancariaEntidad> cuentasBancarias;
-        try
-        {
+        try {
             cuentasBancarias = query.getResultList();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenciaException("Error al buscar cuentas bancarias", e);
-        } finally
-        {
+        } finally {
             em.close();
         }
         return cuentasBancarias;

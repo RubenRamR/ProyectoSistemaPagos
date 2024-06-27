@@ -186,7 +186,7 @@ public class DlgModificarBeneficiario extends javax.swing.JDialog {
 
         try
         {
-            beneficiarioNegocio.modificarBeneficiario(idBeneficiario, beneficiario);
+            beneficiarioNegocio.modificarBeneficiario(beneficiario);
             JOptionPane.showMessageDialog(this, "Beneficiario modificado correctamente");
             this.dispose();
         } catch (NegocioException ex)

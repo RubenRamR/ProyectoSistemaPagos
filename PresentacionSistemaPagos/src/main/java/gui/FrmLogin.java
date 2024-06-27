@@ -68,6 +68,12 @@ public class FrmLogin extends javax.swing.JFrame {
             }
         });
         jPanel1.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 190, 300, -1));
+
+        txtContrasena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtContrasenaActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 290, 300, -1));
 
         btnIngresar.setText("Ingresar");
@@ -150,6 +156,10 @@ public class FrmLogin extends javax.swing.JFrame {
         fma.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAdminActionPerformed
+
+    private void txtContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContrasenaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtContrasenaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
