@@ -100,13 +100,12 @@ public interface IBeneficiarioDAO {
     void eliminarBeneficiario(Long id) throws PersistenciaException;
 
     /**
-     * Autentica un beneficiario en el sistema mediante un usuario y contraseña.
+     * Autentica un beneficiario en el sistema mediante un usuario.
      *
      * @param usuario El nombre de usuario del beneficiario.
-     * @param contrasena La contraseña del beneficiario.
      * @return El beneficiario autenticado.
      * @throws PersistenciaException Si ocurre un error durante la persistencia.
      */
-    public BeneficiarioEntidad loginBeneficiario(String usuario, String contrasena) throws PersistenciaException;
+    public BeneficiarioEntidad buscarPorUsuario(String usuario) throws PersistenciaException;
 
 }

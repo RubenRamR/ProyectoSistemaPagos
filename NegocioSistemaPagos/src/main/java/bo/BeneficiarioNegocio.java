@@ -8,6 +8,7 @@ import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import DTOs.PagoDTO;
 import InterfacesNegocio.IBeneficiarioNegocio;
+import Utileria.Encriptacion;
 import Utileria.Utilidades;
 import conexion.ConexionBD;
 import daos.BeneficiarioDAO;
@@ -87,7 +88,8 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
                     beneficiarioDTO.getSaldo()
             );
             beneficiario.setEliminado(beneficiarioDTO.isEliminado());
-
+            String contraseñaEncriptada = Encriptacion.encriptarPassword(beneficiario.getContrasena());
+            beneficiario.setContrasena(contraseñaEncriptada);
             beneficiarioDAO.guardarBeneficiario(beneficiario);
         } catch (PersistenciaException ex) {
             Logger.getLogger(BeneficiarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
@@ -303,13 +305,33 @@ public class BeneficiarioNegocio implements IBeneficiarioNegocio {
     @Override
     public BeneficiarioDTO loginBeneficiario(String usuario, String contrasena) throws NegocioException {
 
-        try {
-            BeneficiarioEntidad beneficiarioEntidad = beneficiarioDAO.loginBeneficiario(usuario, contrasena);
-            return convertirEntidadADTO(beneficiarioEntidad);
-        } catch (PersistenciaException ex) {
-            throw new NegocioException(ex.getMessage());
+        BeneficiarioDTO benefi = buscarPorUsuario(usuario);
+        if (benefi == null) {
+            throw new NegocioException("Usuario no encontrado.");
         }
+        boolean contraseñaValida = Encriptacion.verificarPasswordConHash(contrasena, benefi.getContrasena());
+        if (!contraseñaValida) {
+            throw new NegocioException("Credenciales no válidas.");
+        }
+        return benefi;
 
+    }
+
+    /**
+     * Metodo para buscar beneficiario por su usuario.
+     *
+     * @param usuario El nombre de usuario del beneficiario.
+     * @return El beneficairio encontrado.
+     * @throws NegocioException
+     */
+    @Override
+    public BeneficiarioDTO buscarPorUsuario(String usuario) throws NegocioException {
+        try {
+            BeneficiarioEntidad benefi = beneficiarioDAO.buscarPorUsuario(usuario);
+            return convertirEntidadADTO(benefi);
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("Error al buscar el beneificiario por usuario y contraseña: ");
+        }
     }
 
     private void validarBeneficiario(BeneficiarioDTO beneficiario) throws NegocioException {

@@ -97,4 +97,13 @@ public interface IBeneficiarioNegocio {
      */
     public BeneficiarioDTO loginBeneficiario(String usuario, String contrasena) throws NegocioException;
 
+    /**
+     * Metodo para buscar beneficiario por su usuario.
+     *
+     * @param usuario El nombre de usuario del beneficiario.
+     * @return El beneficairio encontrado.
+     * @throws NegocioException
+     */
+    public BeneficiarioDTO buscarPorUsuario(String usuario) throws NegocioException;
+
 }

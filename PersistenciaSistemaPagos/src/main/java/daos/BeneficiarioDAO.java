@@ -219,20 +219,28 @@ public class BeneficiarioDAO implements IBeneficiarioDAO {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * Autentica un beneficiario en el sistema mediante un usuario.
+     *
+     * @param usuario El nombre de usuario del beneficiario.
+     * @return El beneficiario autenticado.
+     * @throws PersistenciaException Si ocurre un error durante la persistencia.
+     */
     @Override
-    public BeneficiarioEntidad loginBeneficiario(String usuario, String contrasena) throws PersistenciaException {
+    public BeneficiarioEntidad buscarPorUsuario(String usuario) throws PersistenciaException {
         EntityManager em = conexion.crearConexion();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<BeneficiarioEntidad> criteria = cb.createQuery(BeneficiarioEntidad.class);
         Root<BeneficiarioEntidad> root = criteria.from(BeneficiarioEntidad.class);
-        criteria.select(root).where(cb.and(cb.equal(root.get("usuario"), usuario), cb.equal(root.get("contrasena"), contrasena)));
+        criteria.select(root).where(cb.equal(root.get("usuario"), usuario));
         TypedQuery<BeneficiarioEntidad> query = em.createQuery(criteria);
         try {
             return query.getSingleResult();
         } catch (NoResultException nre) {
             return null;
+        } finally {
+            em.close();
         }
-
     }
 
 }

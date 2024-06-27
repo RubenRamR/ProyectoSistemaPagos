@@ -38,13 +38,15 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
         lblApellidoM = new javax.swing.JLabel();
         lblClaveContrato = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        txtContrasena = new javax.swing.JTextField();
         txtNombres = new javax.swing.JTextField();
         txtApellidoPaterno = new javax.swing.JTextField();
         txtApellidoMaterno = new javax.swing.JTextField();
         txtClaveDeContrato = new javax.swing.JTextField();
         btnRegistrar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        lblContrasena1 = new javax.swing.JLabel();
+        txtContrasena = new javax.swing.JPasswordField();
+        txtContrasenaRep = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
@@ -58,22 +60,22 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 210, 30));
 
         lblContrasena.setText("Contraseña del usuario:");
-        jPanel1.add(lblContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, -1, -1));
+        jPanel1.add(lblContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 110, -1, -1));
 
         lblUsuario.setText("Nombre de usuario:");
         jPanel1.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 110, 20));
 
         lblNombre.setText("Nombre(s):");
-        jPanel1.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
+        jPanel1.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
 
         lblApellidoP.setText("Apellido paterno:");
-        jPanel1.add(lblApellidoP, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 180, -1, -1));
+        jPanel1.add(lblApellidoP, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 250, -1, -1));
 
         lblApellidoM.setText("Apellido materno:");
-        jPanel1.add(lblApellidoM, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 180, -1, -1));
+        jPanel1.add(lblApellidoM, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 250, -1, -1));
 
         lblClaveContrato.setText("Clave de contrato:");
-        jPanel1.add(lblClaveContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 310, -1, -1));
+        jPanel1.add(lblClaveContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 370, -1, -1));
 
         txtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,11 +83,10 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
             }
         });
         jPanel1.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 230, -1));
-        jPanel1.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 230, -1));
-        jPanel1.add(txtNombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 190, -1));
-        jPanel1.add(txtApellidoPaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 190, -1));
-        jPanel1.add(txtApellidoMaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 190, -1));
-        jPanel1.add(txtClaveDeContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 330, 270, -1));
+        jPanel1.add(txtNombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 190, -1));
+        jPanel1.add(txtApellidoPaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 270, 190, -1));
+        jPanel1.add(txtApellidoMaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 190, -1));
+        jPanel1.add(txtClaveDeContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 390, 270, -1));
 
         btnRegistrar.setText("Registrar");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -93,7 +94,7 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
                 btnRegistrarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 400, -1, -1));
+        jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 450, -1, -1));
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -101,13 +102,18 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
                 btnCancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 400, -1, -1));
+        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 450, -1, -1));
+
+        lblContrasena1.setText("Repite la contraseña:");
+        jPanel1.add(lblContrasena1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 110, -1, -1));
+        jPanel1.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 230, -1));
+        jPanel1.add(txtContrasenaRep, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 230, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,10 +140,18 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
                 || txtApellidoMaterno.getText().trim().isEmpty()
                 || txtUsuario.getText().trim().isEmpty()
                 || txtContrasena.getText().trim().isEmpty()
-                || txtClaveDeContrato.getText().trim().isEmpty())
-        {
+                || txtContrasenaRep.getText().trim().isEmpty()
+                || txtClaveDeContrato.getText().trim().isEmpty()) {
 
             JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String contraseña = new String(txtContrasena.getPassword()).trim();
+        String confirmarContraseña = new String(txtContrasenaRep.getPassword()).trim();
+
+        if (!contraseña.equals(confirmarContraseña)) {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error de contraseña", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -146,18 +160,16 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
         beneficiario.setApellidoPaterno(txtApellidoPaterno.getText());
         beneficiario.setApellidoMaterno(txtApellidoMaterno.getText());
         beneficiario.setUsuario(txtUsuario.getText());
-        beneficiario.setContrasena(txtContrasena.getText());
+        beneficiario.setContrasena(contraseña);
         beneficiario.setClaveContrato(txtClaveDeContrato.getText());
         beneficiario.setSaldo(1000);
         beneficiario.setEliminado(false);
 
-        try
-        {
+        try {
             beneficiarioNegocio.guardarBeneficiario(beneficiario);
             JOptionPane.showMessageDialog(this, "Beneficiario registrado correctamente");
             this.dispose();
-        } catch (NegocioException ex)
-        {
+        } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, ex);
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
@@ -172,12 +184,14 @@ public class DlgRegistrarBeneficiario extends javax.swing.JDialog {
     private javax.swing.JLabel lblApellidoP;
     private javax.swing.JLabel lblClaveContrato;
     private javax.swing.JLabel lblContrasena;
+    private javax.swing.JLabel lblContrasena1;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTextField txtApellidoMaterno;
     private javax.swing.JTextField txtApellidoPaterno;
     private javax.swing.JTextField txtClaveDeContrato;
-    private javax.swing.JTextField txtContrasena;
+    private javax.swing.JPasswordField txtContrasena;
+    private javax.swing.JPasswordField txtContrasenaRep;
     private javax.swing.JTextField txtNombres;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
